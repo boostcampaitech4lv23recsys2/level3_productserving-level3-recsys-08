@@ -1,0 +1,31 @@
+field_separator: "\t"
+USER_ID_FIELD: user_id
+ITEM_ID_FIELD: item_id
+TIME_FIELD: timestamp
+
+load_col:
+    inter: [user_id, item_id, timestamp]
+    user : [user_id]
+    item: [item_id, year, writer, title, genre, director]
+
+train_neg_sample_args:
+    distribution : uniform
+    sample_num : 1
+
+train_batch_size: 2048
+
+loss_type: CE
+
+selected_features: [year, writer, title, genre, director]
+
+show_progress : False
+device : torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+metrics: ['Recall', 'MRR', 'NDCG', 'Hit', 'Precision', 'MAP']
+topk: 10
+valid_metric: Recall@10
+
+stopping_step : 5
+
+log_wandb : True
+wandb_project : Recbole

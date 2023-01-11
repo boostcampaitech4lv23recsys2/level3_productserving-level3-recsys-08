@@ -1,0 +1,31 @@
+program : train.py
+entity : recsys8
+project : Recbole
+
+method : bayes
+name : NeuMF_Sweep2
+
+metric:
+  name : valid/recall@10
+  goal : maxmize
+
+parameters :  
+  model_name:
+    value : "NeuMF"
+  inference : 
+    value : False
+  epochs :
+    values : [3,5,7,9,10,15]
+  mlp_hidden_size:
+    values: [
+     [256,128,64],
+     [512,256], [512,256,128],
+     [1024,512], [1024,512,256], [1024,512,256,128],
+     [2048,1024], [2048,1024,512], [2048,1024,512,256], [2048,1024,512,256,128]
+     ]
+  mf_embedding_size:
+    values: [32,64,128,256,512]
+  mlp_embedding_size:
+    values: [32,64,128,256,512]
+  
+  
