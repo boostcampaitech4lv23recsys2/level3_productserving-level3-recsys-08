@@ -1,8 +1,8 @@
 # Level3 Last Project
 
-<p style="text-align: center;">
-    <img width="357" alt="image" src="https://user-images.githubusercontent.com/57648890/211701382-0014bb80-2371-4fae-b101-0e71a3462c67.png">
-</p>
+<div style="text-align:center">
+    <img width="357" alt="image" src="https://user-images.githubusercontent.com/57648890/211701382-0014bb80-2371-4fae-b101-0e71a3462c67.png" style="display:block">
+</div>
 
 ### 깃 Convention
 
