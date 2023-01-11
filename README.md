@@ -13,4 +13,5 @@ level3_productserving-level3-recsys-08 created by GitHub Classroom
 
 ### 깃 PR 규칙
 git push 이후에 이어서 같이하기
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/10c007f6-5a64-41f6-9550-49e88b1af82e/Untitled.png)
+<img width="900" alt="image" src="https://user-images.githubusercontent.com/57648890/211700244-f321290e-0085-4b00-8b1e-75d14a0be387.png">
+
