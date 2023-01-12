@@ -1,5 +1,8 @@
-# level3_productserving-level3-recsys-08
-level3_productserving-level3-recsys-08 created by GitHub Classroom
+# Level3 Last Project
+
+<div align="center">
+  <img width="357" alt="image" src="https://user-images.githubusercontent.com/57648890/211701382-0014bb80-2371-4fae-b101-0e71a3462c67.png">
+</div>
 
 ### 깃 Convention
 
@@ -12,6 +15,8 @@ level3_productserving-level3-recsys-08 created by GitHub Classroom
 7. **[Chore]**: 패키지 매니지, requirements, config.yaml 수정
 
 ### 깃 PR 규칙
+
 git push 이후에 이어서 같이하기
+
 <img width="900" alt="image" src="https://user-images.githubusercontent.com/57648890/211700244-f321290e-0085-4b00-8b1e-75d14a0be387.png">
 
