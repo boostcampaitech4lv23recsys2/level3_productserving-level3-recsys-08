@@ -10,17 +10,24 @@ answer_style = {
 
 
 def render_answer(State, index):
+    # print(int(index))
     return pc.tr(
         pc.td(index + 1),
         pc.td(
             pc.cond(
-                State.answers[index].to_string() == State.answer_key[index].to_string(),
+                True,
                 pc.icon(tag="CheckIcon", color="green"),
                 pc.icon(tag="CloseIcon", color="red"),
+            ),
+        ),
+        pc.td(
+            pc.circular_progress(
+                pc.circular_progress_label(100),
+                value=100,
+                size="3em",
             )
         ),
-        pc.td(State.answers[index].to_string()),
-        pc.td(State.answer_key[index].to_string()),
+        pc.td(State.enneagram2[index].to_string()),
     )
 
 
@@ -28,26 +35,12 @@ def results(State):
     """The results view."""
     return pc.center(
         pc.vstack(
-            pc.heading("Results"),
+            pc.heading("추천 결과"),
             pc.text("Below are the results of the quiz."),
             pc.divider(),
-            pc.center(
-                pc.circular_progress(
-                    pc.circular_progress_label(State.score + "%"),
-                    value=State.score,
-                    size="3em",
-                )
-            ),
             pc.table(
-                pc.thead(
-                    pc.tr(
-                        pc.th("#"),
-                        pc.th("Result"),
-                        pc.th("Your Answer"),
-                        pc.th("Correct Answer"),
-                    )
-                ),
-                pc.foreach(State.answers, lambda answer, i: render_answer(State, i)),
+                pc.thead(pc.tr(pc.th("#"), pc.th("Result"), pc.th("유사도"), pc.th("하하"))),
+                pc.foreach(State.enneagram2, lambda answer, i: render_answer(State, i)),
             ),
             pc.link(pc.button("Take Quiz Again"), href="/"),
             bg="white",
