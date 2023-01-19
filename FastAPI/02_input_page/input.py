@@ -19,7 +19,7 @@ templates = Jinja2Templates(directory='./')
 
 @app.get("/",response_class = HTMLResponse)
 def insert_info_form(request: Request):
-    return templates.TemplateResponse('template.html',context = {'request':request})
+    return templates.TemplateResponse('input.html',context = {'request':request})
 
 @app.get("/print")
 def get_info():
@@ -35,7 +35,7 @@ def insert_info(request: Request, MBTI: str = Form(...), enneagram: str = Form(.
     Info.MBTI = MBTI
     Info.enneagram = enneagram
 
-    return templates.TemplateResponse('template.html',context = {'request':request})
+    return templates.TemplateResponse('input.html',context = {'request':request})
 
 if __name__ == '__main__':
     uvicorn.run(app, host="0.0.0.0", port=8000)
