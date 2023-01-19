@@ -86,7 +86,7 @@
   </head>
   <body class="bg-light">
     
-<div class="container">
+<div class="container-sm">
   <main>
     <div class="py-5 text-center">
       <img class = "img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnOXF8aYCk5kn17sQVU8TzFsUgQUnhACEDfw&usqp=CAU" alt="" width="200" height="150">
@@ -95,11 +95,11 @@
     </div>
 
     <div class="row g-5">
-      <div class="col-md-7 col-lg-8">
-        <h4 class="mb-3">MBTI 입력</h4>
+      <div class="col-md-0">
+        <h4 class="mb-3">정보 입력</h4>
         <form class="needs-validation" novalidate, method = "post">
-          <div class="row g-3">
-            <div class="col-sm-6">
+          <div class="row">
+            <div class="col">
               <label for="MBTI" class="form-label">MBTI</label>
               <input type="text" name="MBTI" class="form-control" id="MBTI" placeholder="" value="" required>
               
@@ -107,8 +107,8 @@
                 Valid first name is required.
               </div>
             </div>
-            
-            <div class="col-md-5">
+          
+            <div class="col">
               <label for="enneagram" class="form-label">enneagram</label>
               <select class="form-select" name = "enneagram" id="enneagram" required>
                 <option value="">Choose...</option>
