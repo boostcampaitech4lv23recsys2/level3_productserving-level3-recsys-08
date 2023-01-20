@@ -36,24 +36,29 @@ Info = user_info
 Info.movie_list = [1704, 1721, 2021, 72998, 73141, 91500, 164909]
 # templates = Jinja2Templates(directory='./')
 
+# main 페이지
 @app.get('/')
 def main(request: Request):
     return templates.TemplateResponse('main.html', context={'request':request})
 
+# mbti 선택 페이지
 @app.get("/mbti",response_class = HTMLResponse)
 def insert_info_form(request: Request):
     return templates.TemplateResponse('input.html',context = {'request':request})
 
+# enneagram test 페이지1
 @app.post('/enneagram', response_class = HTMLResponse)
 def insert_enneagram(request: Request, MBTI: str = Form(...)):
     print(MBTI)
     Info.MBTI = MBTI
     return templates.TemplateResponse('enneagram.html', context={'request' : request})
 
+# enneagram test 페이지2
 @app.post('/enneagram2', response_class = HTMLResponse)
 def insert_enneagram2(request: Request):
     return templates.TemplateResponse('enneagram2.html', context={'request' : request})
 
+# 결과 페이지
 @app.post("/result")
 def insert_info(request: Request):
     enneagram = '1w9'

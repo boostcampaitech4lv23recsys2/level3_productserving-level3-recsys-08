@@ -1,45 +1,63 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+body {
+  margin: 0;
 }
-.header{
-    text-align: center;
-    margin: 10vh 0;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 92vh;
+  position: relative;
+  padding-bottom: 8vh;
 }
-.header_title{
-    color:#D72E04; 
+.header {
+  text-align: center;
+  padding-top: 10vh;
 }
-.contents{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.header_title {
+  color: #d72e04;
 }
-.img_box{
-    width:80vw;
-    display: flex;
-    justify-content: center;
-    background-color: #C72003;
-    border-radius: 1rem;
+.contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.button{
-    margin-top:10vh;
-    background-color: rgb(246, 54, 54);
-    color:white;
-    width: 30vw;
-    padding: 1rem;
-    border-radius: 2rem;
-    box-shadow: 0 0 40px 40px #C72003 inset, 0 0 0 0 #C72003;
-    text-align: center;
-    transition: all 150ms ease-in-out;
+.img_box {
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  background-color: #c72003;
+  border-radius: 1rem;
 }
-.button:hover{
-    box-shadow: 0 0 10px 0 #C72003 inset, 0 0 10px 4px #C72003;
-    color:black;
-    cursor: pointer;
+.button {
+  margin-top: 10vh;
+  background-color: #c72003;
+  color: white;
+  width: 30vw;
+  padding: 1rem;
+  border-radius: 2rem;
+  text-align: center;
+  transition: all 150ms ease-in-out;
+  box-shadow: 1px 4px 4px rgb(0, 0, 0, 0.5);
+  cursor: pointer;
 }
-.button:active{
-    top:1px;
-    box-shadow: none;
+.button:hover {
+  background-color: rgba(199, 32, 3, 0.8);
+  /* background-color: #923838; */
+}
+.button:active {
+  box-shadow: 1px 1px 0 rgb(0, 0, 0, 0.5);
+  position: relative;
+  top: 2px;
+}
+footer {
+  position: fixed;
+  width: 100vw;
+  height: 8vh;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  background-color: white;
 }
