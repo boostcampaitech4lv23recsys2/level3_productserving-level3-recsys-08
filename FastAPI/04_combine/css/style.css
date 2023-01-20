@@ -39,3 +39,6 @@
     color:black;
     cursor: pointer;
 }
+.button:active{
+    box-shadow: none;
+}
