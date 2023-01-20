@@ -35,5 +35,17 @@ async def show_result(request: Request):
     return templates.TemplateResponse('result_bootstrap.html', {"request": request, "data": results})
 
 
+@app.get("/result/detail{character_id}")
+def show_result_detail(request:Request, character_id:int):
+    character = db[character_id]
+    result = [{'name': character.name,
+                'movie': character.movie,
+                'img_path': character.img_path,
+                'similarity': character.similarity
+                }]
+    return templates.TemplateResponse('result_bootstrap.html', {"request": request, "data": result})
+
+
+
 if __name__=='__main__':
     uvicorn.run(app, host="0.0.0.0", port=8000)
