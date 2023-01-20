@@ -25,5 +25,17 @@
 }
 .button{
     margin-top:10vh;
-
+    background-color: rgb(246, 54, 54);
+    color:white;
+    width: 30vw;
+    padding: 1rem;
+    border-radius: 2rem;
+    box-shadow: 0 0 40px 40px #C72003 inset, 0 0 0 0 #C72003;
+    text-align: center;
+    transition: all 150ms ease-in-out;
+}
+.button:hover{
+    box-shadow: 0 0 10px 0 #C72003 inset, 0 0 10px 4px #C72003;
+    color:black;
+    cursor: pointer;
 }
