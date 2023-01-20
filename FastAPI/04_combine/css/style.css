@@ -40,5 +40,6 @@
     cursor: pointer;
 }
 .button:active{
+    top:1px;
     box-shadow: none;
 }
