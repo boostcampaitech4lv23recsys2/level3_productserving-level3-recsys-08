@@ -36,8 +36,11 @@ Info = user_info
 Info.movie_list = [1704, 1721, 2021, 72998, 73141, 91500, 164909]
 # templates = Jinja2Templates(directory='./')
 
+@app.get('/')
+def main(request: Request):
+    return templates.TemplateResponse('main.html', context={'request':request})
 
-@app.get("/",response_class = HTMLResponse)
+@app.get("/mbti",response_class = HTMLResponse)
 def insert_info_form(request: Request):
     return templates.TemplateResponse('input.html',context = {'request':request})
 
@@ -46,6 +49,10 @@ def insert_enneagram(request: Request, MBTI: str = Form(...)):
     print(MBTI)
     Info.MBTI = MBTI
     return templates.TemplateResponse('enneagram.html', context={'request' : request})
+
+@app.post('/enneagram2', response_class = HTMLResponse)
+def insert_enneagram2(request: Request):
+    return templates.TemplateResponse('enneagram2.html', context={'request' : request})
 
 @app.post("/result")
 def insert_info(request: Request):

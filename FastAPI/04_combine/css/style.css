@@ -1,0 +1,29 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.header{
+    text-align: center;
+    margin: 10vh 0;
+}
+.header_title{
+    color:#D72E04; 
+}
+.contents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.img_box{
+    width:80vw;
+    display: flex;
+    justify-content: center;
+    background-color: #C72003;
+    border-radius: 1rem;
+}
+.button{
+    margin-top:10vh;
+
+}
