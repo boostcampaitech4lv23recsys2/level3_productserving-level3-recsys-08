@@ -18,7 +18,7 @@ def get_en_sim(engram, engram_sim):
     engram_sim.index = engram_sim.columns
     return engram_sim[[engram]].to_dict()[engram]
 
-def model_recommend_movies(mbti, engram, prefer_movie_ids, top_k, model_path='../interaction_model/similarity'):
+def model_recommend_movies(mbti, engram, prefer_movie_ids, top_k, model_path='../interaction_model/ALS_64'):
     """주어진 movie ids로 부터 추천 영화 ids 반환
 
     Args:
@@ -34,7 +34,7 @@ def model_recommend_movies(mbti, engram, prefer_movie_ids, top_k, model_path='..
     ## 사용자가 선호하는 movie id로 부터 모델 추천 받기
     recommend_movie_ids=[]
     for mid in prefer_movie_ids:
-        recommend_movie_ids.extend(Inference(model_path, int(mid), top_k))
+        recommend_movie_ids.extend(Inference(model_path, int(mid), top_k)[0])
     recommend_movie_ids = list(set(recommend_movie_ids)) # 중복제거
     return recommend_movie_ids
 
