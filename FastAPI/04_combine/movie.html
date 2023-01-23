@@ -26,20 +26,22 @@
           action="/result"
           data-movies="{{ length }}"
         >
-          {% for movie in movies %}
-          <input
-            type="checkbox"
-            value="{{ movie }}"
-            name="movies"
-            id="{{ movie }}"
-          />
-          <label
-            for="{{ movie }}"
-            style="background-image: url('static/img/{{movie}}.png'); background-size:cover;"
-          >
-          </label>
+          <div class="movie_box2">
+            {% for movie in movies %}
+            <input
+              type="checkbox"
+              value="{{ movie }}"
+              name="movies"
+              id="{{ movie }}"
+            />
+            <label
+              for="{{ movie }}"
+              style="background-image: url('static/img/{{movie}}.png'); background-size:cover;"
+            >
+            </label>
 
-          {% endfor %}
+            {% endfor %}
+          </div>
           <div class="center_button">
             <input
               class="button mbti_button grid_button"
