@@ -1,0 +1,155 @@
+.test_question {
+  color: rgb(217, 72, 64);
+  margin-bottom: 3vh;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.test_question_subtitle {
+  margin-bottom: 3vh;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.7rem;
+  text-align: center;
+}
+
+.quiz_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60vw;
+}
+
+.button_box {
+  width: 20vw;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(5, minmax(5vh, auto));
+  gap: 20px 10px;
+}
+
+.grid_full {
+  grid-column: 1 / 3;
+  text-align: center;
+  color: rgb(201, 147, 142);
+  font-size: 2rem;
+}
+
+.mbti_bar {
+  width: 2px;
+  height: 33vh;
+  background-color: rgb(156, 156, 156);
+  border-radius: 50%;
+  margin: 0 3vw;
+}
+
+.mbti_button {
+  width: auto;
+  background-color: rgb(201, 147, 142);
+}
+
+.mbti_button:hover {
+  background-color: #c72003;
+}
+
+.engram_box {
+  width: 26vw;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, minmax(5vh, auto));
+  gap: 20px 10px;
+}
+
+.engram_box_3 {
+  width: 35vw;
+}
+
+.engram_box_3 button {
+  margin-bottom: 20px;
+  line-height: 1.7rem;
+  padding: 2rem 3rem;
+}
+
+.span_text {
+  background-color: #c72003;
+  padding: 0.1rem 0.1rem 0.1rem 0.4rem;
+  color: white;
+  border-radius: 3px;
+}
+
+.test_question_example {
+  margin-top: -1vh;
+  margin-bottom: 5vh;
+  text-align: center;
+}
+
+.movie_box {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(198px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(264px, 1fr));
+  grid-auto-flow: dense;
+  /* place-items: center; */
+  /* grid-template-columns: repeat(3, auto); */
+  /* grid-template-rows: repeat(5, minmax(5vh, auto)); */
+  gap: 20px 10px;
+}
+.center_button {
+  display: flex;
+  justify-content: center;
+  align-self: end;
+  grid-column: 1/-1;
+  grid-row: -1;
+}
+.grid_button {
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + label {
+  cursor: pointer;
+  width: 198px;
+  height: 264px;
+  margin: 0 auto;
+  border-radius: 1rem;
+  box-shadow: 7px 7px 15px rgb(0, 0, 0, 0.7);
+  transition: all 50ms ease-in-out;
+}
+
+input[type="checkbox"]:checked + label {
+  box-shadow: 0px 0px 17px rgb(219, 76, 119);
+  border-radius: 1rem;
+  position: relative;
+  top: 6px;
+}
+
+@media (max-width: 1300px) {
+  .quiz_form {
+    width: 70vw;
+  }
+  .button_box {
+    width: 30vw;
+  }
+  .engram_box {
+    width: 40vw;
+  }
+  .engram_box_3 {
+    width: 50vw;
+  }
+}
+@media (max-width: 860px) {
+  .quiz_form {
+    width: 80vw;
+  }
+  .button_box {
+    width: 35vw;
+  }
+  .engram_box {
+    width: 64vw;
+  }
+  .engram_box_3 {
+    width: 80vw;
+  }
+}
