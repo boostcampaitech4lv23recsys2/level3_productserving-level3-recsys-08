@@ -13,6 +13,7 @@ log_tensorboard/
 *.pkl
 *.zip
 README.txt
+*.png
 
 ##
 ## Add custom entries below here.
