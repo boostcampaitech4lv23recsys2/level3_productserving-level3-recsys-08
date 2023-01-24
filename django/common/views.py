@@ -15,3 +15,14 @@ def signup(request):
     else:
         form = UserForm()
     return render(request, 'common/signup.html', {'form':form})
+
+
+from django.shortcuts import render
+
+# Create your views here.
+def index(request):
+    context = {
+        'my_person_list': [],
+        'datetime' : ""
+    }
+    return render(request, 'index.html', context)
