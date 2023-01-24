@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Recsys 8</title>
+    <link rel="stylesheet" href="static/reset.css" />
+    <link rel="stylesheet" href="static/style.css" />
+    <link rel="stylesheet" href="static/test.css" />
+    <link rel="stylesheet" href="static/result_bootstrap.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img class="header_image" src="static/image.png" alt="film" />
+      </div>
+      <div class="contents">
+        <div class="contents_box">
+          <div class="contents_header">
+            <h3 class="test_question_subtitle">MBTI 기반 컨텐츠</h4>
+            <h2 class="test_question">추천 결과</h4>
+            <div class="container_header_bar"></div>
+          </div>
+          <div class="cards_box">
+            
+            {% for character in data %}
+              <div class="card">
+                <img
+                  src="{{ character.img_src }}"
+                  class="card_image"
+                  alt="Responsive image"
+                />
+                <div class="card_body">
+                  <div class="card_title">{{character.Contents}}({{ character.Character }}) | {{ character.MBTI }} </div>
+                  <div class="card_info" data-sim="{{character.Enneagram_sim}}">
+                    <div class="card_info_text_box">
+                      <h6 class="card_info_text">캐릭터와의 유사도</h6>
+                      <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
+                    </div>
+                    <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
+                  </div>
+                  <button class="button mbti_button" onclick="location.href='/character/{{character.Character}}'" >설명 더보기</button>
+                </div>
+              </div>
+            {% endfor %}
+          
+          </div>
+          <button class="center_button"><a href="/" class="button" style="text-decoration: none"
+            >다시 테스트하기</a
+          ></button>
+        </div>
+      </div>
+      <a href="#"><div class="button_top"><i class="fa-solid fa-arrow-up"></i></div></a>
+      <footer>
+        <p>&copy; ITS</p>
+      </footer>
+    </div>
+   
+    <script src="https://kit.fontawesome.com/eb52efc223.js" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -56,15 +56,21 @@
       </footer>
     </div>
     <script>
-      let gridContainer = document.querySelector(".movie_box");
-      let button = document.querySelector(".grid_button");
-      let length = gridContainer.getAttribute("data-movies");
-      button.style.gridColumn = `${Math.ceil(Math.sqrt(length)) + 1} / ${
-        Math.ceil(Math.sqrt(length)) + 2
-      }`;
-      button.style.rowColumn = `${Math.ceil(Math.sqrt(length))} / ${
-        Math.ceil(Math.sqrt(length)) + 1
-      }`;
+      window.onload = () => {
+        checkScreenSize();
+      };
+      window.onresize = () => {
+        checkScreenSize();
+      };
+      checkScreenSize = () => {
+        let width = window.innerWidth;
+        let gridContainer = document.querySelector(".movie_box2");
+        if (width >= 1500) {
+          gridContainer.style.gridTemplateColumns = `repeat({{length}}, minmax(198px, 1fr))`;
+        } else {
+          gridContainer.style.gridTemplateColumns = `repeat(auto-fill, minmax(198px, 1fr))`;
+        }
+      };
     </script>
   </body>
 </html>

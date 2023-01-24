@@ -1,5 +1,6 @@
 import os
 import sys
+import pandas as pd
 from fastapi import FastAPI, Form, Request
 from pydantic import BaseModel, Field
 from typing import List
@@ -11,16 +12,14 @@ from fastapi.staticfiles import StaticFiles
 sys.path.append('../..')
 from Utils import user_input_to_recommend
 from pathlib import Path
-import pandas as pd
 
 
 app = FastAPI()
 app.mount(
     "/static",
-    StaticFiles(directory=Path(__file__).parent.absolute() / "static"),
+    StaticFiles(directory=Path(__file__).parent.absolute()/"static")
 )
 templates = Jinja2Templates(directory='./')
-
 
 class Character(BaseModel):
     name: str
@@ -81,67 +80,32 @@ def insert_engram3(request: Request, enneagram2: str = Form(...)):
 def insert_movie(request:Request, enneagram3: str = Form(...)):
     Info.engram = enneagram3
     print(Info.engram)
-    
     return templates.TemplateResponse('movie.html', context={'request':request, "movies":Info.movie_list, "length":len(Info.movie_list)})
 
 # 결과 페이지
-@app.post("/result")
+@app.post("/result", response_class=HTMLResponse)
 def insert_info(request: Request, movies: List = Form(...)):
-    print(movies)
-    # result = user_input_to_recommend(Info.MBTI, Info.engram_list, Info.movie_list)
-    # cols=['Character','Contents','MBTI','img_src','Enneagram_sim']
-    # result_list = result[cols].to_dict(orient='records')
-    result_list = [{'Character': 'Will Hunting', 
-    'Contents': 'Good Will Hunting (1997)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/6bf8c8864ce546d08b69e039847fb4bd.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Walt Berkman', 
-    'Contents': 'The Squid and the Whale', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/c159ca9253354979a908d5159b92f140.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Yusuf', 
-    'Contents': 'Inception (2010)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/0f9bda83c5ff4ce2807772818e8adc4a.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Brian May', 
-    'Contents': 'Bohemian Rhapsody (2018)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/c53bc6b3b9814b768fe2b070ea0f957e.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Dr. Cornelius', 
-    'Contents': 'Planet of the Apes (1968)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/70b3d8bdccb4460cb43519079a416124.png', 
-    'Enneagram_sim': 0.5097201729093104}, 
-    {'Character': 'Haymitch Abernathy',
-    'Contents': 'The Hunger Games (Franchise)',
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/a5d118d82c0c46a4a573a9bc485a80ae.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'John Nash', 
-     'Contents': 'A Beautiful Mind (2001)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/5cc46e9adfea43459adcc7e3e9687791.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'Dr. Nefario', 
-     'Contents': 'Despicable Me (Franchise)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/f51b68c368e747168775479e44cc0dac.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'Finch Crossley “Foxface”', 
-     'Contents': 'The Hunger Games (Franchise)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/e4f1d9ccf6f845b3a99f7a2155dd6aea.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'Beetee Latier', 
-     'Contents': 'The Hunger Games (Franchise)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/9afe330507b14f5c9f7a95d6678c3f8b.png', 
-     'Enneagram_sim': 0.5097201729093104}]
-    return templates.TemplateResponse('result_bootstrap.html', {"request": request, "data": result_list})
+    movie_list = [int(i.split('_')[0]) for i in movies]
+    result = user_input_to_recommend(Info.MBTI, Info.engram, movie_list)
+    result = result[result.Enneagram_sim.notna()]
+    print(result)
+    result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
+    cols=['Character','Contents','MBTI','img_src','Enneagram_sim']
+    result_list = result[cols].to_dict(orient='records')
+    return templates.TemplateResponse('result.html', context={"request": request, "data": result_list})
+
+@app.get('/character/{character_name}', response_class=HTMLResponse)
+async def character_info(request:Request, character_name):
+    print(request)
+    character ={
+        'name': character_name,
+        'movie' : 'Harry Potter',
+        'img_path' : 'https://www.vintagemovieposters.co.uk/wp-content/uploads/2015/07/hpphilosopherquadlarge1.jpg',
+        'similarity' : 100
+    }
+    print(character)
+    return templates.TemplateResponse('character.html', context={'request':request, 'data': character})
+
 
 # @app.get("/result/detail{character_id}")
 # def show_result_detail(request:Request, character_id:int):
@@ -156,4 +120,4 @@ def insert_info(request: Request, movies: List = Form(...)):
 
 
 if __name__=='__main__':
-    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=30001, reload=True)
