@@ -2,14 +2,6 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 
-# Create your views here.
-def index(request):
-    context = {
-        'my_person_list': [],
-        'datetime' : ""
-    }
-    return render(request, 'index.html', context)
-
 @csrf_exempt
 def start_test(request):
     return render(request, 'test_rec/main.html')

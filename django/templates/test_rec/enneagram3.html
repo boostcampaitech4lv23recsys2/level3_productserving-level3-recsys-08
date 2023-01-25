@@ -21,7 +21,7 @@
         <h1 class="test_question">Q4.</h1>
         <h3 class="test_question_subtitle">어느쪽에 더 가까운 것 같나요?</h3>
 
-        <form class="quiz_form" novalidate method="post" action="./movie_test">
+        <form class="quiz_form" novalidate method="post" action="{% url 'test_rec:movie_test' %}">
           <div class="engram_box_3">
             {% for question in add_quest_list %}
             <button
