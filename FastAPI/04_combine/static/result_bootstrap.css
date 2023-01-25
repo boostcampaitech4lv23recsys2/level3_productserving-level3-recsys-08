@@ -1,6 +1,7 @@
 .container {
   padding-top: 324px;
 }
+
 .header {
   background-color: rgb(199, 32, 3);
   height: auto;
@@ -12,12 +13,13 @@
   width: 100vw;
   padding: 0;
 }
+
 .contents_box {
   border-radius: 3rem;
   background-color: white;
   width: 70vw;
   margin: 2vh 5vw;
-  padding: 10vh;
+  padding: 5vh;
 }
 
 .contents_header {
@@ -26,9 +28,11 @@
   align-items: center;
   text-align: center;
 }
+
 .test_question_subtitle {
   margin-bottom: 1vh;
 }
+
 .test_question {
   margin-bottom: 1vh;
 }
@@ -46,6 +50,7 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px 10px;
 }
+
 .card {
   display: flex;
   flex-direction: column;
@@ -71,36 +76,43 @@
   font-weight: 800;
   margin-bottom: 1vh;
 }
+
 .mbti_button {
   font-size: 0.8rem;
   padding: 0.6rem 3rem;
   margin-top: 2vh;
 }
+
 .card_info {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .card_info_text {
   font-size: 0.8rem;
   /* width: 240px; */
   padding-left: 6px;
   /* text-align: left; */
 }
+
 .card_info_text_box {
   display: flex;
   justify-content: space-between;
 }
+
 #progress {
   appearance: none;
   width: 240px;
   height: 10px;
 }
+
 #progress::-webkit-progress-bar {
   background: #f0f0f0;
   border-radius: 10px;
   box-shadow: inset 3px 3px 10px #ccc;
 }
+
 #progress::-webkit-progress-value {
   border-radius: 10px;
   background: #1d976c;
@@ -111,6 +123,7 @@
 .center_button {
   background-color: inherit;
 }
+
 .button_top {
   position: absolute;
   bottom: 8vh;
@@ -127,36 +140,42 @@
   flex-direction: column;
   align-items: center;
 }
+
 .character {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   width: 70vw;
   margin-top: 5vh;
 }
+
 .character_image {
   border-radius: 2rem;
-  width: 30vw;
+  width: 24vw;
   height: fit-content;
 }
+
 .character_body {
-  width: 40%;
-  margin-left: 5vw;
+  width: 34%;
+  /* margin-left: 5vw; */
   padding: 3vh;
-  border-radius: 2rem;
+  /* border-radius: 1rem; */
   box-shadow: 3px 3px 10px rgb(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
 }
+
 .character_title {
   font-size: 1.5rem;
   margin-bottom: 2vh;
   font-weight: 600;
 }
+
 .character_info {
   line-height: 2rem;
-  font-size: 1.3rem;
-  margin-bottom: 1.5vh;
+  font-size: 1.2rem;
+  margin-bottom: 1.2vh;
 }
+
 .character_button {
   width: 180px;
   background-color: rgb(61, 121, 202);
@@ -164,9 +183,11 @@
   font-size: 1rem;
   padding: 0.8rem;
 }
+
 .character_button:hover {
   background-color: rgb(0, 110, 255);
 }
+
 .back_button {
   margin-top: 5vh;
   padding: 0.8rem;
@@ -175,42 +196,88 @@
   background-color: rgb(159, 56, 43);
 }
 
+.link_box {
+  box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
+  padding: 2vh;
+}
+
+.link_box_title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.link_link {
+  display: flex;
+  align-items: center;
+
+  color: black;
+  padding: 5px;
+}
+
+.link_logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.link_box_info {
+  width: 100px;
+  height: 60px;
+  margin-left: 10px;
+  border-bottom: 1px solid rgb(202, 202, 202);
+  display: flex;
+  align-items: center;
+}
+
+.link_box_name {}
+
 @media (max-width: 1320px) {
   .cards_box {
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   }
+
   .card_image {
     width: 320px;
   }
+
   .character {
     flex-direction: column;
     align-items: center;
   }
+
   .character_image {
-    width: 50vw;
+    width: 20vw;
   }
+
   .character_body {
     margin-left: 0;
     margin-top: 5vh;
   }
+
   .character_body {
     width: 60vw;
   }
 }
+
 @media (max-width: 1157px) {
   .contents {
     background: linear-gradient(rgb(199, 32, 3) 0%, white 6%);
   }
+
   .contents_box {
     padding: 5vh 2vw;
     width: 80vw;
   }
+
   .cards_box {
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   }
+
   .card_image {
     width: 320px;
   }
+
   .character_image {
     width: 60vw;
   }
