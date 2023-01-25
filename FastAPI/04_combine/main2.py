@@ -1,7 +1,6 @@
 import os, sys, pickle, random
 import pandas as pd
 from fastapi import FastAPI, Form, Request
-# from fastapi.session import Session
 from pydantic import BaseModel, Field
 from typing import List
 from PIL import Image
@@ -57,10 +56,8 @@ def insert_info_form(request: Request):
 
 # enneagram test 페이지1
 @app.post('/enneagram', response_class = HTMLResponse)
-def insert_engram( request: Request, MBTI: str = Form(...)):
+def insert_engram(request: Request, MBTI: str = Form(...)):
     print(MBTI)
-    
-    
     Info.MBTI = MBTI
     return templates.TemplateResponse('enneagram.html', context={'request' : request})
 
@@ -69,7 +66,6 @@ def insert_engram( request: Request, MBTI: str = Form(...)):
 def insert_engram2(request: Request, enneagram1: str = Form(...)):
     print(enneagram1)
     Info.engram_list = [enneagram1]
-    
     return templates.TemplateResponse('enneagram2.html', context={'request' : request})
 
 # enneagram test 페이지3
@@ -77,7 +73,6 @@ def insert_engram2(request: Request, enneagram1: str = Form(...)):
 def insert_engram3(request: Request, enneagram2: str = Form(...)):
     # print(enneagram2)
     Info.engram_list.append(enneagram2)
-    
     engram_crite = ''.join(Info.engram_list)
     df = pd.read_pickle('/opt/ml/project/Utils/Pickle/enneagram_question.pickle')
     add_quest = df[df.base==engram_crite][['question','three_letter']].copy()
@@ -108,7 +103,6 @@ def insert_info(request: Request, movies: List = Form(...)):
     result_list = result[cols].to_dict(orient='records')
     return templates.TemplateResponse('result.html', context={"request": request, "data": result_list})
 
-# 캐릭터 상세페이지
 @app.get('/character/{character_id}', response_class=HTMLResponse)
 async def character_info(request:Request, character_id):
     print(character_id)
@@ -134,8 +128,6 @@ async def character_info(request:Request, character_id):
     return templates.TemplateResponse('result_movie.html', context={'request':request, 'data': result_movie, 'links' : links})
 
 
-
-
 # @app.get("/result/detail{character_id}")
 # def show_result_detail(request:Request, character_id:int):
 #     character = db[character_id]
@@ -149,4 +141,4 @@ async def character_info(request:Request, character_id):
 
 
 if __name__=='__main__':
-    uvicorn.run("main:app", host="0.0.0.0", port=30001, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=30003, reload=True)
