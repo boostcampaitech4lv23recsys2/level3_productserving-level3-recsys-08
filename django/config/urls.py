@@ -20,6 +20,7 @@ from common import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test_rec/', include('test_rec.urls'), name='test_rec'),
+    path('common/', include('allauth.urls')),
     path('common/', include('common.urls'), name='common'),
     path('', views.index, name='index'),
 ]
