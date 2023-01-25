@@ -44,7 +44,9 @@ with open(ch2mv_path,'rb') as f:
     characterId_to_movieId = pickle.load(f)
 
 mbti_df = pd.read_pickle('/opt/ml/project/Utils/Pickle/MBTI_merge_movieLens_3229_movie.pickle')
-movie_genre_plot = pd.read_csv('/opt/ml/project/Data/DataProcessing/movie_genre_plot.csv')
+movie_genre_plot = pd.read_pickle('/opt/ml/project/Utils/Pickle/movie_genre_plot.pickle')
+watch_link =  pd.read_pickle('/opt/ml/project/Utils/Pickle/watch_link_3229movie_4462_rows.pickle')
+
 # main 페이지
 @app.get('/')
 def main(request: Request):
@@ -116,7 +118,6 @@ async def character_info(request:Request, character_id):
     character_name, movie_title, movie_id = mbti_df[mbti_df.CharacterId==int(character_id)][need_cols].values[0]
     posterfile_path = movieId_to_posterfile[movie_id]
     genres, plot = movie_genre_plot[movie_genre_plot.movieId==movie_id][['ko_genres','ko_plot']].values[0]
-    print(genres, plot)
     result_movie ={
         'name': character_name,
         'movie' : movie_title,
@@ -125,12 +126,13 @@ async def character_info(request:Request, character_id):
         'plot' : plot
     }
     print(result_movie)
-    # 0:watcha, 1:netflix, 2:disneyplus, 3:tving, 4:wavve
-    links = [
-        {'platform' : '왓챠', 'link':'https://watcha.com/'},
-        {'platform':'넷플릭스', 'link':'https://www.netflix.com/kr/title/81010971'},
-        {'platform' : '디즈니+', 'link':'https://www.disneyplus.com/ko-kr/movies/ad-astra/zjqFJisVky4u?irclickid=3hnWSBRchxyNTxtxlvVXJXseUkA1EO3Km3oryo0&irgwc=1&cid=DSS-Affiliate-Impact--WATCHA-1182069&tgclid=0c010022-3455-4c0a-b000-0ed563d01d6b&dclid=CKH4r6fl4PwCFTLHFgUd2FQLMg'},
-    ]
+    links_df = watch_link[watch_link.movieId==movie_id][['platform','link']]
+    links = links_df.to_dict(orient='records')
+    # links = [
+    #     {'platform' : '왓챠', 'link':'https://watcha.com/'},
+    #     {'platform':'넷플릭스', 'link':'https://www.netflix.com/kr/title/81010971'},
+    #     {'platform' : '디즈니+', 'link':'https://www.disneyplus.com/ko-kr/movies/ad-astra/zjqFJisVky4u?irclickid=3hnWSBRchxyNTxtxlvVXJXseUkA1EO3Km3oryo0&irgwc=1&cid=DSS-Affiliate-Impact--WATCHA-1182069&tgclid=0c010022-3455-4c0a-b000-0ed563d01d6b&dclid=CKH4r6fl4PwCFTLHFgUd2FQLMg'},
+    # ]
     return templates.TemplateResponse('result_movie.html', context={'request':request, 'data': result_movie, 'links' : links})
 
 
