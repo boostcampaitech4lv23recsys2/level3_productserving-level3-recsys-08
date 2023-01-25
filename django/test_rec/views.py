@@ -4,9 +4,7 @@ from django.utils import timezone
 import pandas as pd
 
 from .models import TmpUser
-from .utils import add_data_to_jsonfield
 import simplejson as json
-
 
 
 @csrf_exempt
