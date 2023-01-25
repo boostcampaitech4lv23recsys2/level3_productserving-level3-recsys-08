@@ -1,7 +1,6 @@
 import annoy
 import pandas as pd
 
-length_of_vector = 20  # item_vector의 크기
 
 
 def Inference(file_name: str, movieId: int, topk: int):
@@ -15,11 +14,12 @@ def Inference(file_name: str, movieId: int, topk: int):
     Returns:
        result (list): 유사도 높은 아이템의 movieId topk개를 담고 있는 list 입니다.
     """
+    length_of_vector = int(file_name.split('_')[-1])
+
     loaded_annoy = annoy.AnnoyIndex(length_of_vector, "angular")
     loaded_annoy.load(file_name)  # Annoy load
 
-    neighbour = loaded_annoy.get_nns_by_item(movieId, topk, include_distances=False)[
-        1:
-    ]  # 첫 번째 인덱스는 입력으로 넣은 movieId 이므로 제외합니다.
+    neighbour, dist = loaded_annoy.get_nns_by_item(movieId, topk+1, include_distances=True)
+    # 첫 번째 인덱스는 입력으로 넣은 movieId 이므로 제외합니다.
 
-    return neighbour
+    return neighbour[1:], dist

@@ -18,15 +18,13 @@ def get_en_sim(engram, engram_sim):
     engram_sim.index = engram_sim.columns
     return engram_sim[[engram]].to_dict()[engram]
 
-def model_recommend_movies(mbti, engram, prefer_movie_ids, top_k, model_path='../interaction_model/similarity'):
+def model_recommend_movies(prefer_movie_ids, top_k, model_path='../interaction_model/ALS_64'):
     """주어진 movie ids로 부터 추천 영화 ids 반환
 
     Args:
-        mbti (str): mbti string
-        engram (str): 애니어그램 string
         prefer_movie_ids (list): 선택된 movie id 리스트
         top_k (int): 영화별 추천 영화 Topk
-        model_path (str, optional): annoy model path. Defaults to '../interaction_model/similarity'.
+        model_path (str, optional): annoy model path. Defaults to '../interaction_model/ALS_64'.
 
     Returns:
         list: 추천 영화 리스트
@@ -34,7 +32,7 @@ def model_recommend_movies(mbti, engram, prefer_movie_ids, top_k, model_path='..
     ## 사용자가 선호하는 movie id로 부터 모델 추천 받기
     recommend_movie_ids=[]
     for mid in prefer_movie_ids:
-        recommend_movie_ids.extend(Inference(model_path, int(mid), top_k))
+        recommend_movie_ids.extend(Inference(model_path, int(mid), top_k)[0])
     recommend_movie_ids = list(set(recommend_movie_ids)) # 중복제거
     return recommend_movie_ids
 
@@ -88,8 +86,8 @@ def user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10)->pd.DataFr
     ## mbti movie, 애니어그램 유사도 매트릭스 불러오기
     mbti_movie = pd.read_pickle(cur_filepath('Pickle/MBTI_merge_movieLens_3229_movie.pickle'))
     engram_sim = pd.read_pickle(cur_filepath('Pickle/enneagram_similarity.pickle'))
-    model_path=cur_filepath('../interaction_model/similarity')
-    recommend_movie_ids = model_recommend_movies(mbti, engram, prefer_movie_ids, top_k, model_path=model_path)
+    model_path=cur_filepath('../interaction_model/ALS_64')
+    recommend_movie_ids = model_recommend_movies(prefer_movie_ids, top_k, model_path=model_path)
     mbti_rec = mbti_filtering(mbti, mbti_movie, recommend_movie_ids)
     mbti_rec_sort = engram_sorting(engram, mbti_rec, engram_sim)
     result = mbti_rec_sort.drop_duplicates(subset=['Character', 'Contents'])[:top_k]

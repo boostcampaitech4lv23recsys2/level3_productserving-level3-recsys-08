@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="header_title">MBTI 컨텐츠 추천</h1>
+        <h3 class="header_subtitle">
+          나와 MBTI가 같은 주인공이 나오는 컨텐츠를 추천해드립니다!
+        </h3>
+      </div>
+      <div class="contents">
+        <h1 class="test_question">Q4.</h1>
+        <h3 class="test_question_subtitle">어느쪽에 더 가까운 것 같나요?</h3>
+
+        <form class="quiz_form" novalidate method="post" action="{% url 'test_rec:movie_test' %}">
+          <div class="engram_box_3">
+            {% for question in add_quest_list %}
+            <button
+              class="button mbti_button"
+              value="{{question.three_letter}}"
+              name="enneagram3"
+              type="submit"
+            >
+              {{question.question}}
+            </button>
+            {% endfor %}
+          </div>
+        </form>
+      </div>
+      <footer>
+        <p>&copy; ITS</p>
+      </footer>
+    </div>
+  </body>
+</html>
