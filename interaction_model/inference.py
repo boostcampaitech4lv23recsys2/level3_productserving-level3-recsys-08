@@ -16,6 +16,7 @@ def sorted_Inference(file_name: str, movie_list: list, topk: int):
     length_of_vector = int(file_name.split('_')[-1])
 
     annoy_model = annoy.AnnoyIndex(length_of_vector, "angular")
+    print(file_name)
     annoy_model.load(file_name)  # Annoy load
 
     movie_list_len = len(movie_list)
@@ -63,7 +64,8 @@ def Inference(file_name: str, movieId: int, topk: int):
     return neighbour[1:], dist
 
 
-file_name = './ALS_angular_64'
-movie_list = [1, 32, 50, 110, 150, 193, 296, 318, 356, 380]
-topk = 10
-print(sorted_Inference(file_name, movie_list, topk))
+if __name__=="__main__":
+    file_name = './ALS_angular_64'
+    movie_list = [1, 32, 50, 110, 150, 193, 296, 318, 356, 380]
+    topk = 10
+    print(sorted_Inference(file_name, movie_list, topk))
