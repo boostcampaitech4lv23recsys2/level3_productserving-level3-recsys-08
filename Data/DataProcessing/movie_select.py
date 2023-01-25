@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn import cluster 
 from sklearn import preprocessing
+from pathlib import Path
 
 ### movie_select() 함수에서 필요한 함수들
 def delete_s(sen):
@@ -98,14 +99,15 @@ def movie_select():
     return movieId_list
 
 
-def movie_select_2():
+def movie_select_2(seed):
     """
         위의 movie_select() 함수와 동일한 결과를 얻는 함수입니다.
         다만 연도 처리(2000년 이상 영화), 인터랙션 처리(1000 이상 영화), 클러스터링이 다 끝난 상태로 저장된
         "movie_random_select_3229.csv" 파일을 바로 불러와서 군집별로 추천 결과만 바로 뽑아줍니다.
     """
-    
-    select = pd.read_csv("/opt/ml/.jupyter/lab/workspaces/Data/DataProcessing/movie_random_select_3229.csv")
+
+    np.random.seed(seed)
+    select = pd.read_csv(Path(__file__).parent.absolute() / "movie_random_select_3229.csv")
     
     movieId_list = []
     for i in range(3):
@@ -115,3 +117,6 @@ def movie_select_2():
         movieId_list.extend(list(select[select['cluster1'] == i].sample(n, replace=False)['movieId']))
         
     return movieId_list
+
+if __name__=="__main__":
+    print(movie_select_2(42))
