@@ -18,6 +18,7 @@ def main(args):
 
     Returns:
         Tensor of the embedding matrix. Shape of [n_items+n_users, embedding_dim]
+        행 순서 : user + item
     """
     
     print("start to get embedding!!!")
