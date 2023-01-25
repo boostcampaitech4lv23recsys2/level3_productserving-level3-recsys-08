@@ -1,7 +1,6 @@
 import os, sys, pickle, random
 import pandas as pd
 from fastapi import FastAPI, Form, Request
-# from fastapi.session import Session
 from pydantic import BaseModel, Field
 from typing import List
 from PIL import Image
@@ -10,8 +9,9 @@ from fastapi.templating import Jinja2Templates
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 sys.path.append('../..')
-from Utils import user_input_to_recommend
 from pathlib import Path
+## Custom library
+from Utils import user_input_to_recommend, movie_select_2
 
 
 app = FastAPI()
@@ -92,10 +92,14 @@ def insert_engram3(request: Request, enneagram2: str = Form(...)):
 @app.post('/movie', response_class=HTMLResponse)
 def insert_movie(request:Request, enneagram3: str = Form(...)):
     Info.engram = enneagram3
-    poster_file_list = list(movieId_to_posterfile.values())
-    random.seed(14)
-    random_poster_file_list = random.sample(poster_file_list, 10)
-    return templates.TemplateResponse('movie.html', context={'request':request, "movies":random_poster_file_list, "length":len(random_poster_file_list)})
+    seed = random.randint(0,int(1e6))
+    print(f">>>{seed = }")
+    selec_movie_ids = movie_select_2(seed, 20)
+    poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
+    # print(poster_file_list)
+    # random.seed(14)
+    # random_poster_file_list = random.sample(poster_file_list, 10)
+    return templates.TemplateResponse('movie.html', context={'request':request, "movies":poster_file_list, "length":len(poster_file_list)})
 
 # 결과 페이지
 @app.post("/result", response_class=HTMLResponse)
@@ -128,11 +132,8 @@ async def character_info(request:Request, character_id):
     print(result_movie)
     links_df = watch_link[watch_link.movieId==movie_id][['platform','link']]
     links = links_df.to_dict(orient='records')
-    # links = [
-    #     {'platform' : '왓챠', 'link':'https://watcha.com/'},
-    #     {'platform':'넷플릭스', 'link':'https://www.netflix.com/kr/title/81010971'},
-    #     {'platform' : '디즈니+', 'link':'https://www.disneyplus.com/ko-kr/movies/ad-astra/zjqFJisVky4u?irclickid=3hnWSBRchxyNTxtxlvVXJXseUkA1EO3Km3oryo0&irgwc=1&cid=DSS-Affiliate-Impact--WATCHA-1182069&tgclid=0c010022-3455-4c0a-b000-0ed563d01d6b&dclid=CKH4r6fl4PwCFTLHFgUd2FQLMg'},
-    # ]
+    print(links)
+   
     return templates.TemplateResponse('result_movie.html', context={'request':request, 'data': result_movie, 'links' : links})
 
 

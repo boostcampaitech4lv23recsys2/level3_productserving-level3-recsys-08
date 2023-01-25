@@ -32,8 +32,10 @@
                   alt="Responsive image"
                 />
                 <div class="card_body">
-                  <div class="card_title">{{character.Contents}}({{ character.Character }}) | {{ character.MBTI }} </div>
+                  <div class="card_title">{{ character.Character }}</div>
                   <div class="card_info" data-sim="{{character.Enneagram_sim}}">
+                    {{character.Contents}}
+                    {{ character.MBTI }}
                     <div class="card_info_text_box">
                       <h6 class="card_info_text">캐릭터와의 유사도</h6>
                       <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>

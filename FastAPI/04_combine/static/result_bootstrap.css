@@ -65,7 +65,7 @@
 }
 
 .card_body {
-  margin-top: 2vh;
+  /* margin-top: 2vh; */
   padding: 1vw;
   width: 100%;
   text-align: center;
@@ -133,13 +133,6 @@
 }
 
 /* 캐릭터 상세페이지 */
-.result_contents {
-  /* display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start; */
-  display: block;
-}
 
 .character_box {
   display: flex;
@@ -169,6 +162,7 @@
   box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
   width: 70%;
 }
+
 .character_title {
   font-size: 1.5rem;
   margin-bottom: 2vh;
@@ -197,6 +191,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .back_button {
   margin: 5vh 0;
   padding: 0.8rem;
@@ -208,9 +203,9 @@
 .link_box {
   box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
   border-radius: 1rem;
-  margin-top: 16vh;
+  margin-top: 2vh;
   padding: 18px;
-  width: 12%;
+  width: 164px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -251,6 +246,12 @@
   padding-left: 5px;
 }
 
+.poster_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 @media (max-width: 1320px) {
   .cards_box {
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -259,15 +260,17 @@
   .card_image {
     width: 320px;
   }
+
   .character_box {
     margin: 2vh 2vw;
   }
 
   .character_body_info {
-    width: 70%;
+    width: 60%;
   }
+
   .link_box {
-    width: 14%;
+    width: 80%;
   }
 }
 
@@ -292,37 +295,51 @@
   .result_contents {
     display: flex;
   }
+
   .character {
     flex-direction: column;
     align-items: center;
   }
+
   .character_image {
     width: 30vw;
   }
+
   .character_body {
     margin-top: 5vh;
+    width: 60vw;
   }
+
   .character_body_info {
     width: auto;
   }
+
   .link_box {
     margin-top: 5vh;
     width: auto;
     padding: 40px;
   }
 }
+
 @media (max-width: 1050px) {
   .character_image {
     width: 40vw;
   }
+
   .link_link {
     padding: 0;
   }
+
   .link_logo {
     width: 40px;
     height: 40px;
   }
+
   .link_box_info {
     margin-left: 16px;
+  }
+
+  .character_body {
+    width: 80vw;
   }
 }
