@@ -35,10 +35,42 @@ INSTALLED_APPS = [
     "test_rec.apps.TestRecConfig",
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 장고 소셜 로그인
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    ## 구글
+    'allauth.socialaccount.providers.google',
+]
+
+SITE_ID = 1
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '207335179183-2u3jqcf1ik304qt2qivlqej6b19ic7pc.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 MIDDLEWARE = [
