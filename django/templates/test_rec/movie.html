@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="static/reset.css" />
-    <link rel="stylesheet" href="static/style.css" />
-    <link rel="stylesheet" href="static/test.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
   </head>
   <body>
     <div class="container">
@@ -23,7 +24,7 @@
         <form
           class="movie_box"
           method="post"
-          action="/result"
+          action="./result_page"
           data-movies="{{ length }}"
         >
           <div class="movie_box2">
@@ -36,7 +37,7 @@
             />
             <label
               for="{{ movie }}"
-              style="background-image: url('static/img/{{movie}}'); background-size:cover;"
+              style="background-image: url('static/img/{{movie}}.png'); background-size:cover;"
             >
             </label>
 
@@ -56,21 +57,15 @@
       </footer>
     </div>
     <script>
-      window.onload = () => {
-        checkScreenSize();
-      };
-      window.onresize = () => {
-        checkScreenSize();
-      };
-      checkScreenSize = () => {
-        let width = window.innerWidth;
-        let gridContainer = document.querySelector(".movie_box2");
-        if (width >= 1500) {
-          gridContainer.style.gridTemplateColumns = `repeat({{length}}, minmax(198px, 1fr))`;
-        } else {
-          gridContainer.style.gridTemplateColumns = `repeat(auto-fill, minmax(198px, 1fr))`;
-        }
-      };
+      let gridContainer = document.querySelector(".movie_box");
+      let button = document.querySelector(".grid_button");
+      let length = gridContainer.getAttribute("data-movies");
+      button.style.gridColumn = `${Math.ceil(Math.sqrt(length)) + 1} / ${
+        Math.ceil(Math.sqrt(length)) + 2
+      }`;
+      button.style.rowColumn = `${Math.ceil(Math.sqrt(length))} / ${
+        Math.ceil(Math.sqrt(length)) + 1
+      }`;
     </script>
   </body>
 </html>

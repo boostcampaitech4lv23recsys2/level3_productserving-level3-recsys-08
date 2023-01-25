@@ -97,9 +97,7 @@ header,
 hgroup,
 menu,
 nav,
-span,
-progress,
-section {
+span section {
   display: block;
 }
 body {
@@ -127,7 +125,4 @@ table {
 button,
 input {
   border: none;
-}
-a {
-  text-decoration: none;
 }

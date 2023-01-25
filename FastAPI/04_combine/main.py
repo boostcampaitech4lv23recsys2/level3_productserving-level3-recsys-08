@@ -1,5 +1,5 @@
-import os
-import sys
+import os, sys, pickle, random
+import pandas as pd
 from fastapi import FastAPI, Form, Request
 from pydantic import BaseModel, Field
 from typing import List
@@ -11,16 +11,14 @@ from fastapi.staticfiles import StaticFiles
 sys.path.append('../..')
 from Utils import user_input_to_recommend
 from pathlib import Path
-import pandas as pd
 
 
 app = FastAPI()
 app.mount(
     "/static",
-    StaticFiles(directory=Path(__file__).parent.absolute() / "static"),
+    StaticFiles(directory=Path(__file__).parent.absolute()/"static")
 )
 templates = Jinja2Templates(directory='./')
-
 
 class Character(BaseModel):
     name: str
@@ -35,10 +33,17 @@ class user_info(BaseModel):
     movie_list : List[int]
 
 Info = user_info
-# Info.movie_list = [1704, 1721, 2021, 72998, 73141, 91500, 164909]
-Info.movie_list = ['111_taxi_driver', '253_interview_with_the_vampire', '421_black_beauty', '588_aladdin', '595_beauty_and_the_beast', '628_primal_fear', '4334_yi_yi']
-# templates = Jinja2Templates(directory='./')
 
+movieId2poster_path='/opt/ml/project/Utils/Pickle/movieid_to_poster_file.pickle'
+with open(movieId2poster_path,'rb') as f:
+    movieId_to_posterfile = pickle.load(f)
+
+ch2mv_path='/opt/ml/project/Utils/Pickle/characterId_to_movieId.pickle'
+with open(ch2mv_path,'rb') as f:
+    characterId_to_movieId = pickle.load(f)
+
+mbti_df = pd.read_pickle('/opt/ml/project/Utils/Pickle/MBTI_merge_movieLens_3229_movie.pickle')
+movie_genre_plot = pd.read_csv('/opt/ml/project/Data/DataProcessing/movie_genre_plot.csv')
 # main 페이지
 @app.get('/')
 def main(request: Request):
@@ -66,82 +71,62 @@ def insert_engram2(request: Request, enneagram1: str = Form(...)):
 # enneagram test 페이지3
 @app.post('/enneagram3', response_class = HTMLResponse)
 def insert_engram3(request: Request, enneagram2: str = Form(...)):
-    print(enneagram2)
+    # print(enneagram2)
     Info.engram_list.append(enneagram2)
     engram_crite = ''.join(Info.engram_list)
-    df = pd.read_csv('enn.csv')
+    df = pd.read_pickle('/opt/ml/project/Utils/Pickle/enneagram_question.pickle')
     add_quest = df[df.base==engram_crite][['question','three_letter']].copy()
     add_quest_list = add_quest.to_dict(orient='records')
     print(engram_crite)
-    print('>>>',add_quest_list)
+    # print('>>>',add_quest_list)
     return templates.TemplateResponse('enneagram3.html', context={'request' : request, "add_quest_list":add_quest_list})
 
 # 선호 영화 선택 페이지
 @app.post('/movie', response_class=HTMLResponse)
 def insert_movie(request:Request, enneagram3: str = Form(...)):
     Info.engram = enneagram3
-    print(Info.engram)
-    
-    return templates.TemplateResponse('movie.html', context={'request':request, "movies":Info.movie_list, "length":len(Info.movie_list)})
+    poster_file_list = list(movieId_to_posterfile.values())
+    random.seed(14)
+    random_poster_file_list = random.sample(poster_file_list, 10)
+    return templates.TemplateResponse('movie.html', context={'request':request, "movies":random_poster_file_list, "length":len(random_poster_file_list)})
 
 # 결과 페이지
-@app.post("/result")
+@app.post("/result", response_class=HTMLResponse)
 def insert_info(request: Request, movies: List = Form(...)):
-    print(movies)
-    # result = user_input_to_recommend(Info.MBTI, Info.engram_list, Info.movie_list)
-    # cols=['Character','Contents','MBTI','img_src','Enneagram_sim']
-    # result_list = result[cols].to_dict(orient='records')
-    result_list = [{'Character': 'Will Hunting', 
-    'Contents': 'Good Will Hunting (1997)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/6bf8c8864ce546d08b69e039847fb4bd.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Walt Berkman', 
-    'Contents': 'The Squid and the Whale', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/c159ca9253354979a908d5159b92f140.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Yusuf', 
-    'Contents': 'Inception (2010)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/0f9bda83c5ff4ce2807772818e8adc4a.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Brian May', 
-    'Contents': 'Bohemian Rhapsody (2018)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/c53bc6b3b9814b768fe2b070ea0f957e.png', 
-    'Enneagram_sim': 0.719973601967801}, 
-    {'Character': 'Dr. Cornelius', 
-    'Contents': 'Planet of the Apes (1968)', 
-    'MBTI': 'INTP', 
-    'img_src': 'https://static1.personality-database.com/profile_images/70b3d8bdccb4460cb43519079a416124.png', 
-    'Enneagram_sim': 0.5097201729093104}, 
-    {'Character': 'Haymitch Abernathy',
-    'Contents': 'The Hunger Games (Franchise)',
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/a5d118d82c0c46a4a573a9bc485a80ae.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'John Nash', 
-     'Contents': 'A Beautiful Mind (2001)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/5cc46e9adfea43459adcc7e3e9687791.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'Dr. Nefario', 
-     'Contents': 'Despicable Me (Franchise)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/f51b68c368e747168775479e44cc0dac.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'Finch Crossley “Foxface”', 
-     'Contents': 'The Hunger Games (Franchise)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/e4f1d9ccf6f845b3a99f7a2155dd6aea.png', 
-     'Enneagram_sim': 0.5097201729093104}, 
-     {'Character': 'Beetee Latier', 
-     'Contents': 'The Hunger Games (Franchise)', 
-     'MBTI': 'INTP', 
-     'img_src': 'https://static1.personality-database.com/profile_images/9afe330507b14f5c9f7a95d6678c3f8b.png', 
-     'Enneagram_sim': 0.5097201729093104}]
-    return templates.TemplateResponse('result_bootstrap.html', {"request": request, "data": result_list})
+    movie_list = [int(i.split('_')[0]) for i in movies]
+    print(">>>>>>>",Info.MBTI, Info.engram, movie_list)
+    result = user_input_to_recommend(Info.MBTI, Info.engram, movie_list)
+    result = result[result.Enneagram_sim.notna()]
+    print(">>>>>>>>>>",result)
+    result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
+    cols=['CharacterId','Character','Contents','MBTI','img_src','Enneagram_sim']
+    result_list = result[cols].to_dict(orient='records')
+    return templates.TemplateResponse('result.html', context={"request": request, "data": result_list})
+
+@app.get('/character/{character_id}', response_class=HTMLResponse)
+async def character_info(request:Request, character_id):
+    print(character_id)
+    need_cols=['Character','Contents','movieId']
+    character_name, movie_title, movie_id = mbti_df[mbti_df.CharacterId==int(character_id)][need_cols].values[0]
+    posterfile_path = movieId_to_posterfile[movie_id]
+    genres, plot = movie_genre_plot[movie_genre_plot.movieId==movie_id][['ko_genres','ko_plot']].values[0]
+    print(genres, plot)
+    result_movie ={
+        'name': character_name,
+        'movie' : movie_title,
+        'img_path' : posterfile_path,
+        'genres' : genres,
+        'plot' : plot
+    }
+    print(result_movie)
+    # 0:watcha, 1:netflix, 2:disneyplus, 3:tving, 4:wavve
+    links = [
+        {'platform' : '왓챠', 'link':'https://watcha.com/'},
+        {'platform':'넷플릭스', 'link':'https://www.netflix.com/kr/title/81010971'},
+        {'platform' : '디즈니+', 'link':'https://www.disneyplus.com/ko-kr/movies/ad-astra/zjqFJisVky4u?irclickid=3hnWSBRchxyNTxtxlvVXJXseUkA1EO3Km3oryo0&irgwc=1&cid=DSS-Affiliate-Impact--WATCHA-1182069&tgclid=0c010022-3455-4c0a-b000-0ed563d01d6b&dclid=CKH4r6fl4PwCFTLHFgUd2FQLMg'},
+    ]
+    return templates.TemplateResponse('result_movie.html', context={'request':request, 'data': result_movie, 'links' : links})
+
 
 # @app.get("/result/detail{character_id}")
 # def show_result_detail(request:Request, character_id:int):
@@ -156,4 +141,4 @@ def insert_info(request: Request, movies: List = Form(...)):
 
 
 if __name__=='__main__':
-    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=30001, reload=True)
