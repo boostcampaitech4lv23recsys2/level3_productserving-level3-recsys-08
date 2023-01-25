@@ -14,6 +14,8 @@ log_tensorboard/
 *.zip
 README.txt
 *.png
+*.jpg
+*.jpeg
 
 ##
 ## Add custom entries below here.
