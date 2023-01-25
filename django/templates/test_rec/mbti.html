@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <title>MBTI</title>
-    <link rel="stylesheet" href="static/reset.css" />
-    <link rel="stylesheet" href="static/style.css" />
-    <link rel="stylesheet" href="static/test.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
   </head>
   <body>
     <div class="container">

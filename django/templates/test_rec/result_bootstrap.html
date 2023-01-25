@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -21,7 +22,7 @@
       crossorigin="anonymous"
     />
     <meta name="theme-color" content="#712cf9" />
-    <link href="static/result_bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static 'result_bootstrap.css' %}">
   </head>
   <body>
     <header>
