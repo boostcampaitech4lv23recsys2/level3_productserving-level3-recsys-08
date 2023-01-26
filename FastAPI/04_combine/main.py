@@ -79,7 +79,6 @@ def insert_engram2(request: Request, enneagram1: str = Form(...)):
 def insert_engram3(request: Request, enneagram2: str = Form(...)):
     # print(enneagram2)
     Info.engram_list.append(enneagram2)
-    
     engram_crite = ''.join(Info.engram_list)
     df = pd.read_pickle('/opt/ml/project/Utils/Pickle/enneagram_question.pickle')
     add_quest = df[df.base==engram_crite][['question','three_letter']].copy()

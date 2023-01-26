@@ -57,6 +57,7 @@
   align-items: center;
   padding: 1vw;
   border-radius: 1rem;
+  box-shadow: inset 3px 3px 10px #ccc;
 }
 
 .card_image {
@@ -65,9 +66,9 @@
 }
 
 .card_body {
-  /* margin-top: 2vh; */
-  padding: 1vw;
-  width: 100%;
+  margin-top: 2vh;
+  /* padding: 1vw; */
+  width: 85%;
   text-align: center;
 }
 
@@ -75,10 +76,11 @@
   font-size: 1.3rem;
   font-weight: 800;
   margin-bottom: 1vh;
+  height: 42px;
 }
 
 .mbti_button {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   padding: 0.6rem 3rem;
   margin-top: 2vh;
 }
@@ -86,23 +88,36 @@
 .card_info {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
-
+.card_info_items {
+  height: 80px;
+}
+.card_info_item {
+  text-align: left;
+  font-size: 18px;
+  line-height: 25px;
+}
+.card_info_item_title {
+  display: inline-block;
+  width: 50px;
+  font-weight: 500;
+}
 .card_info_text {
   font-size: 0.8rem;
-  padding-left: 6px;
+  /* padding-left: 6px; */
 }
 
 .card_info_text_box {
   display: flex;
   justify-content: space-between;
+  margin: 10px 10px 5px 10px;
 }
 
 #progress {
   appearance: none;
   width: 240px;
-  height: 10px;
+  height: 15px;
 }
 
 #progress::-webkit-progress-bar {
@@ -114,8 +129,14 @@
 #progress::-webkit-progress-value {
   border-radius: 10px;
   background: #1d976c;
-  background: -webkit-linear-gradient(to right, #93f9b9, #1d976c);
-  background: linear-gradient(to right, #93f9b9, #1d976c);
+  /* background: -webkit-linear-gradient(to right, #93f9b9, #1d976c);
+  background: linear-gradient(to right, #93f9b9, #1d976c); */
+  background: -webkit-linear-gradient(
+    to right,
+    rgb(226, 50, 18),
+    rgb(229, 159, 27)
+  );
+  background: linear-gradient(to right, rgb(226, 50, 18), rgb(229, 159, 27));
 }
 
 .center_button {
@@ -342,4 +363,7 @@
   .character_body {
     width: 80vw;
   }
+}
+
+@media (max-width: 1013px) {
 }

@@ -33,7 +33,6 @@
             </div>
             <div class="character_body_info">
               <div class="character_title">{{ data.movie }}</div>
-              <div class="character_info">개봉년도 : 2001</div>
               <div class="character_info">{{ data.genres }}</div>
               <div class="character_info">{{ data.plot }}</div>
             </div>
@@ -96,7 +95,7 @@
                   </div>
                 </a>
               </div>
-  
+
               {% endif %} {% endfor %}
             </div>
           </div>
@@ -141,8 +140,16 @@
       let links = document
         .querySelector(".link_box")
         .getAttribute("data-links");
-      console.log("links", links.includes('no_link'), links.includes('no_result') );
-      if (links.length === 0 || links.includes('no_link') || links.includes('no_result')) {
+      console.log(
+        "links",
+        links.includes("no_link"),
+        links.includes("no_result")
+      );
+      if (
+        links.length === 0 ||
+        links.includes("no_link") ||
+        links.includes("no_result")
+      ) {
         linkBox.style.display = "none";
         resultContents.style.display = "inherit";
       }
