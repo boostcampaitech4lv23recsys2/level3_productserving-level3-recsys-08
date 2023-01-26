@@ -1,8 +1,10 @@
 from django.db import models
 import simplejson as json
+from django.contrib.auth.models import User
 
 
 class TmpUser(models.Model):
+    LoginUser = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='tmpuser')
     MBTI = models.CharField(max_length=10, null=True, blank=True)
     ennear_ans = models.CharField(max_length=10, null=True, blank=True)
     ennear_res = models.CharField(max_length=10, null=True, blank=True)    
@@ -11,4 +13,4 @@ class TmpUser(models.Model):
     create_time = models.DateTimeField()
 
     def __str__(self):
-        return int(self.id)
+        return str(self.id)
