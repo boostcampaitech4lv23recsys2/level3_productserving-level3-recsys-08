@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import simplejson as json
 import pandas as pd
+import numpy
 import pickle
 import random
 
@@ -12,16 +13,28 @@ sys.path.append('..')
 from Utils import user_input_to_recommend
 
 
+def print_userInfo(user):
+    print(f'userid: {user.id}')
+    print(f'MBTI:{user.MBTI}')
+    print(f'ennear_ans:{user.ennear_ans}')
+    print(f'ennear_res:{user.ennear_res}')
+    print(f'prefer_movie_id:{user.prefer_movie_id}')
+    print(f'recommended_character_id:{user.recommended_character_id}')
+
+
 movieId2poster_path='/opt/ml/input/fighting/Utils/Pickle/movieid_to_poster_file.pickle'
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
+
 
 ch2mv_path='/opt/ml/input/fighting/Utils/Pickle/characterId_to_movieId.pickle'
 with open(ch2mv_path,'rb') as f:
     characterId_to_movieId = pickle.load(f)
 
+
 mbti_df = pd.read_pickle('/opt/ml/input/fighting/Utils/Pickle/MBTI_merge_movieLens_3229_movie.pickle')
 movie_genre_plot = pd.read_csv('/opt/ml/input/fighting/Data/DataProcessing/movie_genre_plot.csv')
+
 
 @csrf_exempt
 def start_test(request):
@@ -57,6 +70,7 @@ def enneagram_test2(request):
         user.save()
     return render(request, 'test_rec/enneagram2.html')
 
+
 @csrf_exempt
 def enneagram_test3(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
@@ -72,6 +86,7 @@ def enneagram_test3(request):
     add_quest_list = add_quest.to_dict(orient='records')
     print(user.ennear_ans)
     return render(request, 'test_rec/enneagram3.html', {'add_quest_list': add_quest_list})
+
 
 @csrf_exempt
 def movie_test(request):
@@ -96,15 +111,21 @@ def result_page(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
     if request.method == 'POST':
         movies = request.POST.getlist('movies')
-        movie_list = [int(i.split('_')[0]) for i in movies]
+        movie_list = [i.split('_')[0] for i in movies]
         user.prefer_movie_id = json.dumps(movie_list)
-
+        
+        movie_list = [int(i) for i in movie_list]
         result = user_input_to_recommend(user.MBTI, user.ennear_res, movie_list)
         result = result[result.Enneagram_sim.notna()]
-        # user.save()
-    # print(f'userid: {user.id}')
-    # print(f'MBTI:{user.MBTI}')
-    # print(f'ennear_ans:{user.ennear_ans}')
-    # print(f'ennear_res:{user.ennear_res}')
-    # print(f'prefer_movie_id:{user.prefer_movie_id}')
-    return render(request, 'test_rec/result_bootstrap.html')
+        result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
+        
+        character_list = result['CharacterId'].values.tolist()
+        character_list = [str(i) for i in character_list]
+        user.recommended_character_id = json.dumps(character_list)
+        user.save()
+
+        cols=['CharacterId','Character','Contents','MBTI','img_src','Enneagram_sim']
+        result_list = result[cols].to_dict(orient='records')
+        context = {"data": result_list}
+
+        return render(request, 'test_rec/result_bootstrap.html', context)
