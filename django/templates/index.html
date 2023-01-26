@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <!doctype html>
 <html lang="ko">
@@ -31,7 +32,7 @@
 
 <main class="container">
   <div class="container">
-    <img src="../static/index_image.png" class="img-fluid my-3">
+    <img src="{% static 'image.png' %}" class="img-fluid my-3">
   </div>
   <div class="row mb-2">
     <div class="col-md-6 mb-3">

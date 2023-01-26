@@ -8,9 +8,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import uvicorn
 from fastapi.staticfiles import StaticFiles
-sys.path.append('../..')
 from pathlib import Path
 ## Custom library
+sys.path.append('../..')
 from Utils import user_input_to_recommend, movie_select_2
 
 
@@ -95,9 +95,6 @@ def insert_movie(request:Request, enneagram3: str = Form(...)):
     print(f">>>{seed = }")
     selec_movie_ids = movie_select_2(seed, 20)
     poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
-    # print(poster_file_list)
-    # random.seed(14)
-    # random_poster_file_list = random.sample(poster_file_list, 10)
     return templates.TemplateResponse('movie.html', context={'request':request, "movies":poster_file_list, "length":len(poster_file_list)})
 
 # 결과 페이지

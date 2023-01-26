@@ -119,4 +119,4 @@ def movie_select_2(seed, N):
     return movieId_list[:N]
 
 if __name__=="__main__":
-    print(movie_select_2(42))
+    print(movie_select_2(42,30))
