@@ -8,9 +8,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import uvicorn
 from fastapi.staticfiles import StaticFiles
-sys.path.append('../..')
 from pathlib import Path
 ## Custom library
+sys.path.append('../..')
 from Utils import user_input_to_recommend, movie_select_2
 
 
