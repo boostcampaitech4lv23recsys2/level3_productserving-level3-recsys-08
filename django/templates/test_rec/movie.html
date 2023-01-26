@@ -23,7 +23,7 @@
 
         <form
           class="movie_box"
-          method="post"
+          method="POST"
           action="{% url 'test_rec:result_page' %}"
           data-movies="{{ length }}"
         >
@@ -69,3 +69,13 @@
     </script>
   </body>
 </html>
+
+<form class="movie_box" method="POST" action="{% url 'test_rec:result_page' %}">
+  {% for movie in movies %}
+      <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"/>
+      <label for="{{ movie }}" style="background-image: url('static/img/{{movie}}.png'); background-size:cover;"></label>
+  {% endfor %}
+  <div class="center_button">
+      <input class="button mbti_button grid_button" type="submit" value="다 선택했어요"/>
+  </div>
+</form>
