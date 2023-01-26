@@ -23,6 +23,7 @@ from django.shortcuts import render
 def index(request):
     context = {
         'my_person_list': [],
-        'datetime' : ""
+        'datetime' : "",
+        'characters' : ['ryuseungryong','wednesday']
     }
     return render(request, 'index.html', context)
