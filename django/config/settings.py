@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
+    ### third apps
+    # bootstrap5
+    'django_bootstrap5',
+
     # 장고 소셜 로그인
     'allauth',
     'allauth.account',
