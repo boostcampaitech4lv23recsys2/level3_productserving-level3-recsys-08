@@ -13,13 +13,14 @@ sys.path.append('..')
 from Utils import user_input_to_recommend
 
 
-def print_userInfo(user):
+def print_TmpUserInfo(user):
     print(f'userid: {user.id}')
     print(f'MBTI:{user.MBTI}')
     print(f'ennear_ans:{user.ennear_ans}')
     print(f'ennear_res:{user.ennear_res}')
     print(f'prefer_movie_id:{user.prefer_movie_id}')
     print(f'recommended_character_id:{user.recommended_character_id}')
+
 
 
 movieId2poster_path='/opt/ml/input/fighting/Utils/Pickle/movieid_to_poster_file.pickle'
@@ -38,14 +39,13 @@ movie_genre_plot = pd.read_csv('/opt/ml/input/fighting/Data/DataProcessing/movie
 
 @csrf_exempt
 def start_test(request):
-    user = TmpUser.objects.create(create_time=timezone.now())
-    request.session['user_id'] = user.id
     return render(request, 'test_rec/main.html')
 
 
 @csrf_exempt
 def mbti_test(request):
-    user = TmpUser.objects.get(id=request.session['user_id'])
+    user = TmpUser.objects.create(create_time=timezone.now())
+    request.session['user_id'] = user.id
     return render(request, 'test_rec/mbti.html')
 
 
@@ -130,5 +130,9 @@ def result_page(request):
         cols=['CharacterId','Character','Contents','MBTI','img_src','Enneagram_sim']
         result_list = result[cols].to_dict(orient='records')
         context = {"data": result_list}
-
         return render(request, 'test_rec/result_bootstrap.html', context)
+
+
+@csrf_exempt
+def result_detail(request):
+    return render(request, 'test_rec/result_movie.html')
