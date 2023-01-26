@@ -32,15 +32,22 @@
                   alt="Responsive image"
                 />
                 <div class="card_body">
-                  <div class="card_title">{{character.Contents}}({{ character.Character }}) | {{ character.MBTI }} </div>
+                  <div class="card_title">{{ character.Character }}</div>
                   <div class="card_info" data-sim="{{character.Enneagram_sim}}">
+                    <div class="card_info_items">
+                      <div class="card_info_item"><span class="card_info_item_title">영화</span> | {{character.Contents}}</div>
+                      <div class="card_info_item"><span class="card_info_item_title">MBTI</span> | {{ character.MBTI }}</div>
+
+                    </div>
+                    
+                    
                     <div class="card_info_text_box">
                       <h6 class="card_info_text">캐릭터와의 유사도</h6>
                       <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
                     </div>
                     <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                   </div>
-                  <button class="button mbti_button" onclick="location.href='/character/{{character.CharacterId}}'" >설명 더보기</button>
+                  <button class="button mbti_button" onclick="location.href='/character/{{character.CharacterId}}'" >더보기</button>
                 </div>
               </div>
             {% endfor %}

@@ -98,6 +98,7 @@
 .movie_box2 {
   width: 100%;
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(198px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(264px, 1fr));
   gap: 20px 10px;
   justify-content: center;
