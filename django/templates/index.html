@@ -29,56 +29,64 @@
     <link href="blog.css" rel="stylesheet">
   </head>
   <body>
-
-<main class="container">
-  <div class="container">
-    <img src="{% static 'image.png' %}" class="img-fluid my-3">
-  </div>
-  <div class="row mb-2">
-    <div class="col-md-6 mb-3">
-      <div class="h-100 p-5 bg-light border rounded-3">
-        <h2 class="block_title">Test</h2>
-        <p>-</p>
-        <a href="{% url 'test_rec:start_test' %}" class="btn btn-outline-success" type="button">Test</a>
+    <div class="banner1" style="display: flex">
+      <div class="banner__content">
+        <style>
+          .banner__content {
+            margin-left: auto;
+            }
+          </style>
+        <div class="test_block">
+          <style>
+          .test_block {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 10px;
+            padding-left: 10px;
+          }
+          </style>
+          <a href="{% url 'test_rec:start_test' %}" class="btn btn-outline-success" type="button">테스트 하러가기</a>
+          <a href="{% url 'common:user_test_history' %}" class="btn btn-outline-success" type="button">테스트 결과보기</a>
+        </div>
       </div>
     </div>
+<main class="container">
+  <div class="container">
     <div class="row mb-2">
-      <div class="col-md-6 mb-3">
-        <div class="h-100 p-5 bg-light border rounded-3">
-          <h2 class="block_title">Test 결과</h2>
-          <p>-</p>
-          <a href="{% url 'common:user_test_history' %}" class="btn btn-outline-success" type="button">Test 결과</a>
-        </div>
-      </div>
-    <div class="col-md-6 mb-3">
-      <div class="h-100 p-5 bg-light border rounded-3">
-        <h2 class="block_title border-bottom">-</h2>
-          <div class="mb-3">
-            {% for p in my_person_list %}
-              {% if p.birthday.month == datetime.month %}
-                {% if p.birthday.day == datetime.day %}
-                  <a href="{% url 'people:person_detail' p.id %}">{{ p }}</a>
-                {% endif %}
-              {% endif %}
+    </div>
+    <div class="h-100 p-5 bg-light border rounded-3">
+      <h2 class="block_title">인기있는 캐릭터 Top 10</h2>
+      <form
+          class="movie_box"
+          method="POST"
+          action="{% url 'test_rec:result_page' %}"
+          data-movies="{{ length }}"
+        >
+          <div class="movie_box2">
+            {% for character in characters %}
+            <input
+              type="checkbox"
+              value="{{ character }}"
+              name="movies"
+              id="{{ character }}"
+            />
+            <label
+              for="{{ character }}"
+              style="background-image: url('static/img/{{character}}.png'); background-size:cover;"
+            >
+            </label>
+
             {% endfor %}
           </div>
-        <p>
-          <a class="btn btn-outline-success" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            -
-          </a>
-        </p>
-        <div class="collapse" id="collapseExample">
-          <div class="card card-body">
-            {% for p in my_person_list %}
-              {% if p.birthday.month == datetime.month %}
-                {% if p.birthday.day == datetime.day %}
-                  <a href="{% url 'people:person_detail' p.id %}">{{ p }}</a>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </div>
+        </form>
+    </div>
+    <div class="row mb-2">
+    </div>
+    <div class="h-100 p-5 bg-light border rounded-3">
+      <h2 class="block_title">나의 테스트 정보가 없습니다!</h2>
+      <p>로그인이나 회원가입을 해주세요.</p>
+      <a href="{% url 'common:login' %}" class="btn btn-outline-success" type="button">Log in</a>
+      <a href="{% url 'common:signup' %}" class="btn btn-outline-success" type="button">Sign up</a>
     </div>
   </div>
 </main>
