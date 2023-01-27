@@ -1,3 +1,4 @@
+/* 전체 테스트 css */
 .test_question {
   color: rgb(217, 72, 64);
   margin-bottom: 3vh;
@@ -13,6 +14,7 @@
   text-align: center;
 }
 
+/* 테스트 form */
 .quiz_form {
   display: flex;
   justify-content: center;
@@ -25,6 +27,7 @@
   display: grid;
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(5, minmax(5vh, auto));
+  grid-auto-flow: column;
   gap: 20px 10px;
 }
 
@@ -61,20 +64,25 @@
 }
 
 .engram_box_3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 35vw;
 }
 
 .engram_box_3 button {
   margin-bottom: 20px;
   line-height: 1.7rem;
-  padding: 2rem 3rem;
+  padding: 2rem;
+  width: 700px;
 }
 
 .span_text {
-  background-color: #c72003;
+  background-color: rgba(199, 32, 3, 0.5);
   padding: 0.1rem 0.1rem 0.1rem 0.4rem;
   color: white;
   border-radius: 3px;
+  display: inline-block;
 }
 
 .test_question_example {
@@ -82,6 +90,8 @@
   margin-bottom: 5vh;
   text-align: center;
 }
+
+/* 영화 선택 페이지 */
 .movie_box {
   width: 100%;
 }
@@ -90,11 +100,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(198px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(264px, 1fr));
-  grid-auto-flow: row dense;
-  /* place-items: center; */
-  /* grid-template-columns: repeat(3, auto); */
-  /* grid-template-rows: repeat(5, minmax(5vh, auto)); */
   gap: 20px 10px;
+  justify-content: center;
+  grid-auto-flow: row dense;
 }
 
 .center_button {
@@ -103,15 +111,6 @@
   display: flex;
   justify-content: center;
   align-self: center;
-}
-@media (max-width: 800px) {
-  .movie_box2 {
-    grid-template-rows: repeat(auto-fit, minmax(264px, 1fr)) 1fr; /* last row will be 1fr */
-  }
-
-  .center_button {
-    grid-row: -1; /* it will be the last row */
-  }
 }
 
 input[type="checkbox"] {
@@ -168,5 +167,21 @@ input[type="checkbox"]:checked + label {
 
   .engram_box_3 {
     width: 80vw;
+  }
+  .engram_box_3 button {
+    width: 75vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .movie_box2 {
+    grid-template-rows: repeat(
+      auto-fit,
+      minmax(264px, 1fr)
+    ); /* last row will be 1fr */
+  }
+
+  .center_button {
+    grid-row: -1; /* it will be the last row */
   }
 }
