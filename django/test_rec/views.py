@@ -13,7 +13,7 @@ sys.path.append('..')
 from Utils import user_input_to_recommend, movie_select_2
 
 
-def print_userInfo(user):
+def print_TmpUserInfo(user):
     print(f'userid: {user.id}')
     print(f'MBTI:{user.MBTI}')
     print(f'ennear_ans:{user.ennear_ans}')
@@ -41,14 +41,13 @@ watch_link =  pd.read_pickle(pickle_path / 'watch_link_3229movie_4462_rows.pickl
 
 @csrf_exempt
 def start_test(request):
-    user = TmpUser.objects.create(create_time=timezone.now())
-    request.session['user_id'] = user.id
     return render(request, 'test_rec/main.html')
 
 
 @csrf_exempt
 def mbti_test(request):
-    user = TmpUser.objects.get(id=request.session['user_id'])
+    user = TmpUser.objects.create(create_time=timezone.now())
+    request.session['user_id'] = user.id
     return render(request, 'test_rec/mbti.html')
 
 

@@ -19,12 +19,6 @@
             {% endif %}
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input type="text" id="search_kw" class="form-control me-2" placeholder="Search" aria-label="Search" value="{{ kw|default_if_none:'' }}">
-          <div class="input-group-append">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </div>
-        </form>
       </div>
     </div>
     <form id="searchForm" method="get" action="http://0.0.0.0:8001/">
