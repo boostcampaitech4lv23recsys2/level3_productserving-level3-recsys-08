@@ -1,82 +1,100 @@
 import pandas as pd
 import pickle
-import random
 
-mbti_all = pd.read_csv('/opt/ml/input/final_project/data/Personality_All_168000_rows.csv')
-data = pd.read_csv('/opt/ml/input/final_project/Crawling/imdb_side_df_EmptyList_to_None.csv') # side information data
-data = data.drop_duplicates('Contents',keep='first') # 중복 제거
-data = data.drop(['produceers', 'composers'], axis=1) # 수집 하나도 안되서 쓸모 없음
+mbti_all = pd.read_csv('/opt/ml/input/final_project/data/Personality_All_168000_rows.csv') # 캐릭터 검색을 위해
+data = pd.read_csv('/opt/ml/input/final_project/Content_based/content_based_4035.csv') # side information data
 
-def remove_list_symbol(row):  # DataFrame 만들때 조금 문제가 있었는듯
-    try:
-        return row['plot'][2:-2]  # 리스트 형태가 아니고 str이다 ex "['Batman ...']" 이런식으로 저장되어있어서 ['와 ']를 제거하는 목적
-    except TypeError:
-        pass
-
-def remove_list_symbol_2(row):  # DataFrame 만들때 조금 문제가 있었는듯
-    try:
-        return row['genres'][1:-1]  # 리스트 형태가 아니고 str이다 ex "['Batman ...']" 이런식으로 저장되어있어서 ['와 ']를 제거하는 목적
-    except TypeError:
-        pass
-
-data['plot'] = data.apply(remove_list_symbol, axis=1)
-data['genres'] = data.apply(remove_list_symbol_2, axis=1)
-data['plot'] = data['plot'].fillna('')
-data['genres'] = data['genres'].fillna('')
-
-# index로 접근하기 위한 처리
-content2idx = {}
-idx2content = {}
-for i, c in enumerate(data['Contents']):
-    content2idx[c] = i
-    idx2content[i] = c
-
-show_idx = []
-for _ in range(10):
-    show_idx.append(random.randint(0,4034))
-for si in show_idx:
-    print((si,idx2content[si]))
-    
 with open('/opt/ml/input/final_project/Content_based/p_sim.pkl', 'rb') as file:
+    '''
+    p_sim이 만들어지는 과정
+    - plot을 TF-IDF를 통해 유사도 측정한것
+    - sklearn의 코사인 유사도 사용
+    '''
     p_sim = pickle.load(file)
-
-### p_sim이 만들어지는 과정
-# plot을 TF-IDF를 통해 유사도 측정한것
-# sklearn의 코사인 유사도 사용
-###
-
+    
 with open('/opt/ml/input/final_project/Content_based/g_sim.pkl', 'rb') as file:
+    '''
+    g_sim이 만들어지는 과정
+
+    with open(file='/opt/ml/input/final_project/Content_based/bert_em_plot_vec_dict_2.pkl', mode='rb') as f: <- BERT를 통한 장르 임베딩
+        genre_em_vec = pickle.load(f)
+
+    list_of_arrays = [t.detach().numpy() for t in genre_em_vec['genre_vec']] <- tensor를 np.array로 변환
+    g_sim = cosine_similarity(list_of_arrays) <- sklearn의 코사인 유사도 이용
+    '''
     g_sim = pickle.load(file)
 
-### g_sim이 만들어지는 과정
 
-# with open(file='/opt/ml/input/final_project/Content_based/bert_em_plot_vec_dict_2.pkl', mode='rb') as f: <- BERT를 통한 장르 임베딩
-#     genre_em_vec = pickle.load(f)
 
-# list_of_arrays = [t.detach().numpy() for t in genre_em_vec['genre_vec']] <- tensor를 np.array로 변환
+def content_based_filtering(checked:list, topk:int):
+    '''
+    user가 선호하는 movie_list를 입력으로 받아 유사도 높은 컨텐츠의 movieId topk개를 반환합니다.
+    - 장르를 pre-train된 BERT모델을 통해 벡터화
+    - 줄거리를 TF-IDF를 통해 벡터화 (구동 환경 여건상 길이가 긴 줄거리를 반복적으로 BERT을 통과 시키는 것이 부담되기 때문이다)
+    위 과정을 통해 만들어진 벡터를 코사인 유사도 기반으로 유사도를 측정한다
 
-# g_sim = cosine_similarity(list_of_arrays) <- sklearn의 코사인 유사도 이용
-###
+    Args:
+        checked (list): 유저가 선택한 영화 리스트입니다.
+        topk (int): 유사도 높은 아이템을 리턴할 개수
 
-total_sim = (p_sim+g_sim)/2
+    Returns:
+       recommended_movie_ids (list): 유사도 높은 아이템의 movieId topk개를 담고 있는 list 입니다.
+    '''
+    # index로 접근하기 위한 처리
+    content2idx = {}
+    idx2content = {}
+    for i, c in enumerate(data['Contents']):
+        content2idx[c] = i
+        idx2content[i] = c
 
-checked = list(map(int,input('영화 인덱스를 공백을 두고 입력하세요').split()))
-candi_list = []
-for k in checked:
-    sim_scores = [(i,c) for i, c in enumerate(total_sim[k]) if i != 0] # 자기 자신을 제외한 영화들의 유사도 및 인덱스를 추출
-    # 유사도가 높은 순서로 정렬
-    sim_scores = sorted(sim_scores, key= lambda x: x[1],reverse=True)
-    sim_scores[0:10] # 상위 10개
-    candi_list += sim_scores
-candi_list = sorted(candi_list, key= lambda x: x[1],reverse=True)
-# candi_list[0:10]
+    total_sim = (p_sim+g_sim)/2
 
-# id를 title로 변환
-top10 = [(idx2content[i], score) for i , score in candi_list[0:10]]
+    
+    def check_latest(idx):
+        '''
+        데이터 프레임에서 해당 인덱스의 영화가 설정한 연도 이후 영화인지 확인한다.
 
-top10_movie_and_charactors = {}
-for t in top10:
-    found_charactors = list(set(mbti_all.loc[mbti_all['Contents'] == t[0]]['Character'].to_list()))
-    top10_movie_and_charactors[t[0]] = found_charactors
+        Args:
+            idx: 데이터프레임의 인덱스
 
-print(top10_movie_and_charactors)
+        Returns:
+            True/False
+        '''
+        content_name = idx2content[idx]
+        if data.loc[data['Contents'] == content_name]['year'].iloc[0] >= '2015':
+            if data.loc[data['Contents'] == content_name]['year'].iloc[0] == 'no_data':
+                return False
+            return True
+        return False
+
+    candi_list = []
+    duplicate_check = []
+    for k in checked:
+        sim_scores = [(i,c) for i, c in enumerate(total_sim[k]) if i != 0] # 자기 자신을 제외한 영화들의 유사도 및 인덱스를 추출
+        sim_scores = sorted(sim_scores, key= lambda x: x[1],reverse=True) # 유사도가 높은 순서로 정렬
+        cnt = 0
+        for idx, sc in sim_scores:
+            if cnt >= 10:  # 하나의 영화 당 10개의 후보를 생성
+                break
+            if idx in checked or not check_latest(idx) or idx in duplicate_check:
+                continue
+            candi_list.append((idx, sc))
+            duplicate_check.append(idx)
+            cnt+=1
+
+    candi_list = sorted(candi_list, key= lambda x: x[1],reverse=True)
+
+
+    # id를 title로 변환
+    top_k = [(idx2content[i], score) for i , score in candi_list[0:topk]] # topk추천
+    # topk는 (영화 제목, 유사도)의 리스트로 이루어져있다
+
+    recommended_movie_ids = []
+    for i,j in top_k:
+        m_id = int(data.loc[data['Contents']==i]['movieId'].values[0])
+        recommended_movie_ids.append(m_id)
+
+    return recommended_movie_ids
+
+if __name__=='__main__':
+    print(content_based_filtering([0,1,2], 10)) # [모아나, 인사이드 아웃, 주토피아]
