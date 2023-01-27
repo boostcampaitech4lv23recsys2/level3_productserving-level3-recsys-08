@@ -1,5 +1,5 @@
 from django.urls import path, include
-from . import views
+from . import views as views
 
 app_name = 'test_rec'
 urlpatterns = [
