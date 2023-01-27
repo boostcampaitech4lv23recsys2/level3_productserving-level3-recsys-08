@@ -11,41 +11,32 @@
     <link rel="stylesheet" href="/static/result_bootstrap.css" />
   </head>
   <body>
-    <div class="container">
+    <div class="container character_container">
       <div class="header">
         <img class="header_image" src="/static/image.png" alt="film" />
       </div>
-      <div class="contents">
+      <div class="contents result_contents">
         <div class="contents_box character_box">
           <div class="contents_header">
             <!-- <h2 class="test_question">{{data.name}}</h2> -->
-            <div class="container_header_bar"></div>
+            <!-- <div class="container_header_bar"></div> -->
           </div>
 
           <div class="character">
-            <img
-              src="/static/img/{{ data.img_path }}"
-              alt="Responsive image"
-              class="character_image"
-            />
-
-            <div class="character_body">
-              <div class="character_body_info">
-                <div class="character_title">{{ data.movie }}</div>
-                <div class="character_info">개봉년도 : 2001</div>
-                <div class="character_info">
-                  {{ data.genres }}
-                </div>
-                <div class="character_info">
-                  {{ data.plot }}
-                </div>
-              </div>
-
-              <!-- <button class="button character_button" onclick="">
-                지금 바로 보러가기
-              </button> -->
+            <div class="poster_box">
+              <img
+                src="/static/img/{{ data.img_path }}"
+                alt="Responsive image"
+                class="character_image"
+              />
+              <div class="temp_box"></div>
             </div>
-            <div class="link_box">
+            <div class="character_body_info">
+              <div class="character_title">{{ data.movie }}</div>
+              <div class="character_info">{{ data.genres }}</div>
+              <div class="character_info">{{ data.plot }}</div>
+            </div>
+            <div class="link_box" data-links="{{links}}">
               <div class="link_box_title">감상 가능한 곳</div>
               {% for link in links %} {% if link.platform == '왓챠' %}
               <div class="link_box_link">
@@ -104,42 +95,65 @@
                   </div>
                 </a>
               </div>
-              <!-- {% elif link.platform == '티빙' %}
-              <div class="link_box_link">
-                <a href="{{link.link}}" target="_blank" title="왓챠">
-                  <div class="link_logo">
-                    <img src="static/watcha_logo.jpg" alt="watcha" />
-                  </div>
-                  <div class="link_box_link_name">
-                    {{link.platform}}
-                  </div>
-                  <i class="fa-sharp fa-solid fa-angle-right"></i>
-                </a>
-              </div>
-              {% elif link.platform == 'wavve' %}
-              <div class="link_box_link">
-                <a href="{{link.link}}" target="_blank" title="왓챠">
-                  <div class="link_logo">
-                    <img src="static/watcha_logo.jpg" alt="watcha" />
-                  </div>
-                  <div class="link_box_link_name">
-                    {{link.platform}}
-                  </div>
-                  <i class="fa-sharp fa-solid fa-angle-right"></i>
-                </a>
-              </div> -->
+
               {% endif %} {% endfor %}
             </div>
           </div>
-          <button class="button back_button" onclick="history.back()">
-            뒤로 가기
-          </button>
         </div>
       </div>
+      <button class="button back_button" onclick="history.back()">
+        뒤로 가기
+      </button>
+
       <footer>
         <p>&copy; ITS</p>
       </footer>
     </div>
+    <script>
+      let characterBody = document.querySelector(".temp_box");
+      let poster_box = document.querySelector(".poster_box");
+      let resultContents = document.querySelector(".result_contents");
+      let character = document.querySelector(".character");
+      let characterBodyInfo = document.querySelector(".character_body_info");
+      let linkBox = document.querySelector(".link_box");
+      window.onload = () => {
+        checkScreenSize();
+      };
+      window.onresize = () => {
+        checkScreenSize();
+      };
+      checkScreenSize = () => {
+        if (window.innerWidth <= 1158) {
+          characterBody.appendChild(characterBodyInfo);
+          characterBody.appendChild(linkBox);
+          characterBody.classList.add("character_body");
+          characterBody.style.display = "flex";
+          characterBody.style.flexDirection = "column";
+          characterBody.style.justifyContent = "space-around";
+        } else {
+          poster_box.appendChild(linkBox);
+          character.appendChild(characterBodyInfo);
+        }
+      };
+
+      // 링크 없으면 안보여주기
+      let links = document
+        .querySelector(".link_box")
+        .getAttribute("data-links");
+      console.log(
+        "links",
+        links.includes("no_link"),
+        links.includes("no_result")
+      );
+      if (
+        links.length === 0 ||
+        links.includes("no_link") ||
+        links.includes("no_result")
+      ) {
+        linkBox.style.display = "none";
+        resultContents.style.display = "inherit";
+      }
+    </script>
     <script
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"

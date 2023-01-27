@@ -1,0 +1,17 @@
+<!DOCTYPE>
+<html>
+    <head>
+    </head>
+    <body>
+        {% for tmpuser in tmpusers %}
+        <ul>
+            <li>{{tmpuser.MBTI}}</li>
+            <li>{{tmpuser.ennear_ans}}</li>
+            <li>{{tmpuser.ennear_res}}</li>
+            <li>{{tmpuser.prefer_movie_id}}</li>
+            <li>{{tmpuser.recommended_character_id}}</li>
+            <li>{{tmpuser.create_time}}</li>
+        </ul>
+        {% endfor %}
+    </body>
+</html>

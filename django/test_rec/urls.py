@@ -1,5 +1,5 @@
 from django.urls import path, include
-from . import views
+from . import views as views
 
 app_name = 'test_rec'
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('enneagram_test3', views.enneagram_test3, name='enneagram_test3'),
     path('movie_test', views.movie_test, name='movie_test'),
     path('result_page', views.result_page, name='result_page'),
+    path('result_detail_<int:movie_id>', views.result_detail, name='result_detail'),
 ]

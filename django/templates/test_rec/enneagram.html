@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,7 +26,7 @@
           나는?
         </h3>
         <h3 class="test_question_example">ex) 학교 교실, 예비군훈련</h3>
-        <form class="quiz_form" novalidate method="post" action="../enneagram_test2">
+        <form class="quiz_form" novalidate method="post" action="{% url 'test_rec:enneagram_test2' %}">
           <div class="engram_box">
             <button
               class="button mbti_button"
@@ -67,3 +69,4 @@
     </div>
   </body>
 </html>
+{% endblock %}

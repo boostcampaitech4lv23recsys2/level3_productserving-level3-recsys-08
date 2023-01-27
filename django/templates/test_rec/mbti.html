@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,7 +23,7 @@
       <div class="contents">
         <h1 class="test_question">Q1.</h1>
         <h3 class="test_question_subtitle">당신의 MBTI는?</h3>
-        <form class="quiz_form" novalidate method="post" action="../enneagram_test/">
+        <form class="quiz_form" novalidate method="post" action="{% url 'test_rec:enneagram_test' %}">
           <!-- <div class="button_box"> -->
           <div class="button_box">
             <h3 class="grid_full">I</h3>
@@ -167,3 +169,4 @@
     </div>
   </body>
 </html>
+{% endblock %}

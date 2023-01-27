@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,8 +25,8 @@
 
         <form
           class="movie_box"
-          method="post"
-          action="./result_page"
+          method="POST"
+          action="{% url 'test_rec:result_page' %}"
           data-movies="{{ length }}"
         >
           <div class="movie_box2">
@@ -37,7 +39,7 @@
             />
             <label
               for="{{ movie }}"
-              style="background-image: url('static/img/{{movie}}.png'); background-size:cover;"
+              style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
             >
             </label>
 
@@ -69,3 +71,4 @@
     </script>
   </body>
 </html>
+{% endblock %}
