@@ -15,15 +15,10 @@ def check_TmpUserInfo(request):
         user = TmpUser.objects.get(id=request.session['user_id'])
     except:
         return False
-    print(1)
     if user == None:
         return False
-    print(2)
     if user.MBTI == None:
         return False
-    print(3)
-    print(user.ennear_res)
-    print(len(user.ennear_res))
     if user.ennear_ans == None:
         return False
     if user.ennear_res == None:
