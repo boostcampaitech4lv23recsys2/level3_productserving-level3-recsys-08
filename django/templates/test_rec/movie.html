@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
-    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
+    <link rel="stylesheet" href="{% static 'reset.css' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'test.css' %}" />
   </head>
   <body>
     <div class="container">
@@ -23,7 +23,7 @@
 
         <form
           class="movie_box"
-          method="POST"
+          method="post"
           action="{% url 'test_rec:result_page' %}"
           data-movies="{{ length }}"
         >
@@ -56,26 +56,5 @@
         <p>&copy; ITS</p>
       </footer>
     </div>
-    <script>
-      let gridContainer = document.querySelector(".movie_box");
-      let button = document.querySelector(".grid_button");
-      let length = gridContainer.getAttribute("data-movies");
-      button.style.gridColumn = `${Math.ceil(Math.sqrt(length)) + 1} / ${
-        Math.ceil(Math.sqrt(length)) + 2
-      }`;
-      button.style.rowColumn = `${Math.ceil(Math.sqrt(length))} / ${
-        Math.ceil(Math.sqrt(length)) + 1
-      }`;
-    </script>
   </body>
 </html>
-
-<form class="movie_box" method="POST" action="{% url 'test_rec:result_page' %}">
-  {% for movie in movies %}
-      <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"/>
-      <label for="{{ movie }}" style="background-image: url('/static/img/{{movie}}'); background-size:cover;"></label>
-  {% endfor %}
-  <div class="center_button">
-      <input class="button mbti_button grid_button" type="submit" value="다 선택했어요"/>
-  </div>
-</form>

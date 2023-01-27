@@ -10,7 +10,7 @@ from pathlib import Path
 from .models import TmpUser
 import sys
 sys.path.append('..')
-from Utils import user_input_to_recommend
+from Utils import user_input_to_recommend, movie_select_2
 
 
 def print_userInfo(user):
@@ -24,6 +24,7 @@ def print_userInfo(user):
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
 movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
 
+
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
@@ -35,6 +36,7 @@ with open(ch2mv_path,'rb') as f:
 
 mbti_df = pd.read_pickle(pickle_path / 'MBTI_merge_movieLens_3229_movie.pickle')
 movie_genre_plot = pd.read_pickle(pickle_path / 'movie_genre_plot.pickle')
+watch_link =  pd.read_pickle(pickle_path / 'watch_link_3229movie_4462_rows.pickle')
 
 
 @csrf_exempt
@@ -99,12 +101,13 @@ def movie_test(request):
         user.ennear_res = ans3
         user.save()
     # 추천할 영화리스트 불러오기
-    poster_file_list = list(movieId_to_posterfile.values())
-    random.seed(14)
-    random_poster_file_list = random.sample(poster_file_list, 10)
+    seed = random.randint(0,int(1e6))
+    print(f">>>{seed = }")
+    selec_movie_ids = movie_select_2(seed, 20)
+    poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
     context = {
-        'movies' : random_poster_file_list,
-        'length' : len(random_poster_file_list)
+        'movies' : poster_file_list,
+        'length' : len(poster_file_list)
     }
     return render(request, 'test_rec/movie.html', context)
 
@@ -132,4 +135,24 @@ def result_page(request):
         result_list = result[cols].to_dict(orient='records')
         context = {"data": result_list}
 
-        return render(request, 'test_rec/result_bootstrap.html', context)
+        return render(request, 'test_rec/result.html', context)
+
+@csrf_exempt
+def result_movie(request, character_id):
+    need_cols=['Character','Contents','movieId']
+    character_name, movie_title, movie_id = mbti_df[mbti_df.CharacterId==int(character_id)][need_cols].values[0]
+    posterfile_path = movieId_to_posterfile[movie_id]
+    genres, plot = movie_genre_plot[movie_genre_plot.movieId==movie_id][['ko_genres','ko_plot']].values[0]
+    result_movie ={
+        'name': character_name,
+        'movie' : movie_title,
+        'img_path' : posterfile_path,
+        'genres' : genres,
+        'plot' : plot
+    }
+    print(result_movie)
+    links_df = watch_link[watch_link.movieId==movie_id][['platform','link']]
+    links = links_df.to_dict(orient='records')
+    print(links)
+    context = {'data': result_movie, 'links': links}
+    return render(request, 'test_rec/result_movie.html', context)
