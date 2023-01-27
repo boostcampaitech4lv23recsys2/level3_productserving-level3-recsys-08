@@ -1,7 +1,9 @@
 from common.forms import UserForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
 
 import sys
 sys.path.append('../test_rec')
@@ -43,23 +45,27 @@ def signup(request):
 
 # Create your views here.
 def index(request):
-    print("인덱스페이지입니당")
-    try:
-        print(f"index페이지 유저id:{request.session['user_id']}")
-    except:
-        pass
-    if request.user.is_authenticated:
+    if request.user.is_authenticated:  #로그인이 되어있는지 확인
         print('로그인 OK')
-        if check_TmpUserInfo(request):
+        if check_TmpUserInfo(request): #테스트를 마쳤는지 확인
             print('TmpUser 객체 OK')
-            user = request.user
+            user = request.user        #로그인한 유저의 정보를 가져옴
             tmpuser = TmpUser.objects.get(id=request.session['user_id'])
-            tmpuser.LoginUser = user
+            tmpuser.LoginUser = user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
             tmpuser.save()
-            # print('User의 새로 추가된 테스트의 MBTI', user.tmpuser.last().MBTI)
 
     context = {
         'my_person_list': [],
         'datetime' : ""
     }
     return render(request, 'index.html', context)
+
+
+@login_required(login_url='common:login')
+def user_test_history(request):
+    user = request.user
+    tmpusers = TmpUser.objects.filter(LoginUser=user)
+    context = {
+        'tmpusers' : tmpusers
+    }
+    return render(request, 'common/user_test_history.html', context)
