@@ -1,5 +1,5 @@
 {% load static %} 
-{% comment %} {% load django_bootstrap5 %} {% endcomment %}
+{% load django_bootstrap5 %}
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -20,12 +20,17 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+  </script>  
+  <script src="{% static 'spinner.js' %}"></script>
     <link rel="stylesheet" href="{% static 'reset.css' %}" />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <link rel="stylesheet" href="{% static 'test.css' %}" />
     <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
   </head>
   <body>
+    {% include "test_rec/loading.html" %}
     {% include 'navbar.html' %}
     <div class="container">
       {% include "test_rec/header.html" %}
