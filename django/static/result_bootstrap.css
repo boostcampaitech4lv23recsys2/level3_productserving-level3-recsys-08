@@ -278,6 +278,233 @@
   align-items: center;
 }
 
+/* Spinner */
+.not_visible{
+  display: none;
+}
+
+#loading {
+  display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top:0;
+	left:0;
+}
+@keyframes spinner {
+  from {transform: rotate(0deg); }
+  to {transform: rotate(360deg);}
+}
+ 
+#loading .spinner {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  margin-top: -32px;
+  margin-left: -32px;
+  border-radius: 50%;
+  border: 8px solid transparent;
+  border-top-color: #f19022;
+  border-bottom-color: #f19022;
+  animation: spinner 0.7s ease-in-out infinite;
+}
+.spinner_text{
+  box-sizing: border-box;
+  position: absolute;
+  top: 59%;
+  left: 50%;
+  margin-top: -32px;
+  margin-left: -43px;
+  font-weight: 900;
+  font-size: 20px;
+  color:#f19022
+}
+
+.success-checkmark{
+  display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+  left: 0;
+}
+
+
+@keyframes start {
+  0% {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  50% {
+    opacity: 1;
+    width: 0;
+    height: 32px;
+  }
+  100% {
+    width: 64px;
+  }
+}
+.check-icon{
+  position: fixed;
+  left: calc(50% + 10px);
+  top: calc(50% + 16px);
+  border: solid 8px #28ac8e;
+  width: 64px;
+  height: 32px;
+  margin: -16px 0 0 -32px;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+  transform-origin: top left;
+  animation: start 0.5s ease both;
+}
+
+.check_text{
+  box-sizing: border-box;
+  position: absolute;
+  top: 59%;
+  left: 50%;
+  margin-top: -32px;
+  margin-left: -40px;
+  font-weight: 900;
+  font-size: 20px;
+  color:#28ac8e;
+}
+
+/* * * Extracted from: SweetAlert * Modified by: Istiak Tridip
+.success-checkmark {
+  width: 80px;
+  height: 115px;
+  margin: 0 auto;
+}
+.success-checkmark .check-icon {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  border-radius: 50%;
+  box-sizing: content-box;
+  border: 4px solid #4caf50;
+}
+.success-checkmark .check-icon::before {
+  top: 3px;
+  left: -2px;
+  width: 30px;
+  transform-origin: 100% 50%;
+  border-radius: 100px 0 0 100px;
+}
+.success-checkmark .check-icon::after {
+  top: 0;
+  left: 30px;
+  width: 60px;
+  transform-origin: 0 50%;
+  border-radius: 0 100px 100px 0;
+}
+.success-checkmark .check-icon::before, .success-checkmark .check-icon::after {
+  content: '';
+  height: 100px;
+  position: absolute;
+  background: #fff;
+  transform: rotate(-45deg);
+}
+.success-checkmark .check-icon .icon-line {
+  height: 5px;
+  background-color: #4caf50;
+  display: block;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 10;
+}
+.success-checkmark .check-icon .icon-line.line-tip {
+  top: 46px;
+  left: 14px;
+  width: 25px;
+  transform: rotate(45deg);
+  animation: icon-line-tip 1s;
+}
+.success-checkmark .check-icon .icon-line.line-long {
+  top: 38px;
+  right: 8px;
+  width: 47px;
+  transform: rotate(-45deg);
+  animation: icon-line-long 1s;
+}
+.success-checkmark .check-icon .icon-circle {
+  top: -4px;
+  left: -4px;
+  z-index: 10;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  position: absolute;
+  box-sizing: content-box;
+  border: 4px solid rgba(76, 175, 80, .5);
+}
+.success-checkmark .check-icon .icon-fix {
+  top: 8px;
+  width: 5px;
+  left: 26px;
+  z-index: 1;
+  height: 85px;
+  position: absolute;
+  transform: rotate(-45deg);
+  background-color: #fff;
+}
+@keyframes icon-line-tip {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+ }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+ }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px;
+ }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px;
+ }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px;
+ }
+}
+@keyframes icon-line-long {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+ }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+ }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px;
+ }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px;
+ }
+} */
+
+
 @media (max-width: 1320px) {
   .cards_box {
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
