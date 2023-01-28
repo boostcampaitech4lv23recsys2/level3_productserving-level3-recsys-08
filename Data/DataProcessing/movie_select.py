@@ -260,4 +260,4 @@ def side_movie_select_2():
         elif i == 2: n = 6; df = data_2
         movieId_list.extend(list(df.sample(n, replace=False)['movieId']))
     
-    return 
+    return movieId_list
