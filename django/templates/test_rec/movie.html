@@ -22,13 +22,22 @@
 
     {% endfor %}
   </div>
+  {% comment %} {% include "test_rec/loading.html" %} {% endcomment %}
+  
   <div class="center_button">
     <input
       class="button mbti_button grid_button"
       type="submit"
       value="다 선택했어요"
+      onclick="submitForm(event)"
     />
   </div>
 </form>
-
+<script>
+  async function submitForm(event){
+    event.preventDefault();
+    await loading();
+    document.querySelector('.movie_box').submit()
+  }
+</script>
 {% endblock %}
