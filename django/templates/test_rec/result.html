@@ -1,4 +1,4 @@
-{% load static %}
+ {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
   </head>
   <body>
-    <div class="container">
-      <div class="header">
+    <div class="container container_result">
+      <div class="header header_result">
         <img class="header_image" src="{% static 'image.png' %}" alt="film" />
       </div>
-      <div class="contents">
+      <div class="contents contents_result">
         <div class="contents_box">
           <div class="contents_header">
             <h3 class="test_question_subtitle">MBTI 기반 컨텐츠</h4>
@@ -48,22 +48,20 @@
                     </div>
                     <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                   </div>
-                  <button class="button mbti_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >더보기</button>
+                  <button class="button mbti_button result_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >더보기</button>
                 </div>
               </div>
             {% endfor %}
           
           </div>
-          <button class="center_button"><a href="/" class="button" style="text-decoration: none"
+          <button class="center_button"><a href="/test_rec/start_test" class="button" style="text-decoration: none"
             >다시 테스트하기</a
           ></button>
         </div>
       </div>
       <a href="#"><div class="button_top"><i class="fa-solid fa-arrow-up"></i></div></a>
-      <footer>
-        <p>&copy; ITS</p>
-      </footer>
     </div>
+    {% include "test_rec/footer.html" %}
    
     <script src="https://kit.fontawesome.com/eb52efc223.js" crossorigin="anonymous"></script>
   </body>

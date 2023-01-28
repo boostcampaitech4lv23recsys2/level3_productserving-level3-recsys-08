@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
   </head>
   <body>
-    <div class="container character_container">
-      <div class="header">
+    <div class="container character_container container_result">
+      <div class="header header_result">
         <img class="header_image" src={% static 'image.png' %} alt="film" />
       </div>
-      <div class="contents result_contents">
+      <div class="contents result_contents contents_result">
         <div class="contents_box character_box">
           <div class="contents_header">
             <!-- <h2 class="test_question">{{data.name}}</h2> -->
@@ -39,7 +39,8 @@
             </div>
             <div class="link_box" data-links="{{links}}">
               <div class="link_box_title">감상 가능한 곳</div>
-              {% for link in links %} {% if link.platform == '왓챠' %}
+              {% for link in links %} 
+              {% if link.platform == '왓챠' %}
               <div class="link_box_link">
                 <a
                   href="{{link.link}}"
@@ -97,7 +98,8 @@
                 </a>
               </div>
 
-              {% endif %} {% endfor %}
+              {% endif %} 
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -105,11 +107,8 @@
       <button class="button back_button" onclick="history.back()">
         뒤로 가기
       </button>
-
-      <footer>
-        <p>&copy; ITS</p>
-      </footer>
     </div>
+    {% include "test_rec/footer.html" %}
     <script>
       let characterBody = document.querySelector(".temp_box");
       let poster_box = document.querySelector(".poster_box");

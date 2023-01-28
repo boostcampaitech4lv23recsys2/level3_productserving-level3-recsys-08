@@ -1,16 +1,21 @@
-.container {
+.container_result {
   padding-top: 324px;
 }
 
-.header {
+.header_result {
   background-color: rgb(199, 32, 3);
   height: auto;
   padding-top: 0;
+  width:100%;
 }
 
-.contents {
-  background: linear-gradient(rgb(199, 32, 3) 0%, white 10%);
+/* .header_full {
   width: 100vw;
+} */
+
+.contents_result {
+  background: linear-gradient(rgb(199, 32, 3) 0%, white 10%);
+  width: 100%;
   padding: 0;
 }
 
@@ -79,7 +84,7 @@
   height: 42px;
 }
 
-.mbti_button {
+.result_button {
   font-size: 1.1rem;
   padding: 0.6rem 3rem;
   margin-top: 2vh;
@@ -296,7 +301,7 @@
 }
 
 @media (max-width: 1157px) {
-  .contents {
+  .contents_result {
     background: linear-gradient(rgb(199, 32, 3) 0%, white 6%);
   }
 

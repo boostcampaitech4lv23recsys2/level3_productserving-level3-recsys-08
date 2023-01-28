@@ -1,80 +1,59 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1 class="header_title">MBTI 컨텐츠 추천</h1>
-        <h3 class="header_subtitle">
-          나와 MBTI가 같은 주인공이 나오는 컨텐츠를 추천해드립니다!
-        </h3>
-      </div>
-      <div class="contents">
-        <h1 class="test_question">Q3.</h1>
-        <h3 class="test_question_subtitle">
-          나에게 어떤 문제가 생겼다. 남들에 비해
-          <span class="span_text"> 상대적으로 나는 어떤 편 </span>
-          인가? 여기서의 문제는
-          <span class="span_text">
-            누구에게나 생길 수 있는 사소한(?) 문제
-          </span>
-          이다.
-        </h3>
-        <h3 class="test_question_example">
-          ex) 친구와 다투거나, 주식이 떨어지거나, 시험을 못보거나, 밤에 잘 때
-          아기가 울어서 깬 경우
-        </h3>
-        <form class="quiz_form" novalidate method="post" action="{% url 'test_rec:enneagram_test3' %}">
-          <div class="engram_box">
-            <button
-              class="button mbti_button"
-              value="A"
-              name="enneagram2"
-              type="submit"
-            >
-              잘 되겠지 뭐..
-            </button>
-            <button
-              class="button mbti_button"
-              value="B"
-              name="enneagram2"
-              type="submit"
-            >
-              해결할 방법을 생각해보자.
-            </button>
-            <button
-              class="button mbti_button"
-              value="C"
-              name="enneagram2"
-              type="submit"
-            >
-              어휴~ 속상해..(짜증나 등등)
-            </button>
-            <button
-              class="button mbti_button"
-              value="D"
-              name="enneagram2"
-              type="submit"
-            >
-              모르겠다.
-            </button>
-          </div>
-        </form>
-      </div>
-      <footer>
-        <p>&copy; ITS</p>
-      </footer>
-    </div>
-  </body>
-</html>
+{% extends 'test_rec/base.html' %}
+{% load static %} 
+{% block contents %}
+
+<h1 class="test_question">Q3.</h1>
+<h3 class="test_question_subtitle">
+  나에게 어떤 문제가 생겼다. 남들에 비해
+  <span class="span_text"> 상대적으로 나는 어떤 편 </span>
+  인가? 여기서의 문제는
+  <span class="span_text"> 누구에게나 생길 수 있는 사소한(?) 문제 </span>
+  이다.
+</h3>
+<h3 class="test_question_example">
+  ex) 친구와 다투거나, 주식이 떨어지거나, 시험을 못보거나, 밤에 잘 때 아기가
+  울어서 깬 경우
+</h3>
+<form
+  class="quiz_form"
+  novalidate
+  method="post"
+  action="{% url 'test_rec:enneagram_test3' %}"
+>
+  <div class="engram_box">
+    <button
+      class="button mbti_button"
+      value="A"
+      name="enneagram2"
+      type="submit"
+    >
+      잘 되겠지 뭐..
+    </button>
+    <button
+      class="button mbti_button"
+      value="B"
+      name="enneagram2"
+      type="submit"
+    >
+      해결할 방법을 생각해보자.
+    </button>
+    <button
+      class="button mbti_button"
+      value="C"
+      name="enneagram2"
+      type="submit"
+    >
+      어휴~ 속상해..(짜증나 등등)
+    </button>
+    <button
+      class="button mbti_button"
+      value="D"
+      name="enneagram2"
+      type="submit"
+    >
+      모르겠다.
+    </button>
+  </div>
+</form>
+
 {% endblock %}
