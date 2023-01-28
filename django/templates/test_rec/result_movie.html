@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Recsys 8</title>
+    <link rel="stylesheet" href="/static/reset.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/static/test.css" />
+    <link rel="stylesheet" href="/static/result_bootstrap.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img class="header_image" src="/static/image.png" alt="film" />
+      </div>
+      <div class="contents">
+        <div class="contents_box character_box">
+          <div class="contents_header">
+            <!-- <h2 class="test_question">{{data.name}}</h2> -->
+            <div class="container_header_bar"></div>
+          </div>
+
+          <div class="character">
+            <img
+              src="/static/img/{{ data.img_path }}"
+              alt="Responsive image"
+              class="character_image"
+            />
+
+            <div class="character_body">
+              <div class="character_body_info">
+                <div class="character_title">{{ data.movie }}</div>
+                <div class="character_info">개봉년도 : 2001</div>
+                <div class="character_info">
+                  {{ data.genres }}
+                </div>
+                <div class="character_info">
+                  {{ data.plot }}
+                </div>
+              </div>
+
+              <!-- <button class="button character_button" onclick="">
+                지금 바로 보러가기
+              </button> -->
+            </div>
+            <div class="link_box">
+              <div class="link_box_title">감상 가능한 곳</div>
+              {% for link in links %} {% if link.platform == '왓챠' %}
+              <div class="link_box_link">
+                <a
+                  href="{{link.link}}"
+                  target="_blank"
+                  title="왓챠"
+                  class="link_link"
+                >
+                  <img
+                    class="link_logo"
+                    src="/static/watcha_logo.jpg"
+                    alt="watcha"
+                  />
+                  <div class="link_box_info">
+                    <div class="link_box_name">{{link.platform}}</div>
+                    <i class="fa-solid fa-angle-right"></i>
+                  </div>
+                </a>
+              </div>
+              {% elif link.platform == '넷플릭스' %}
+              <div class="link_box_link">
+                <a
+                  href="{{link.link}}"
+                  target="_blank"
+                  title="넷플릭스"
+                  class="link_link"
+                >
+                  <img
+                    class="link_logo"
+                    src="/static/netflix_logo.png"
+                    alt="netflix"
+                  />
+                  <div class="link_box_info">
+                    <div class="link_box_name">{{link.platform}}</div>
+                    <i class="fa-solid fa-angle-right"></i>
+                  </div>
+                </a>
+              </div>
+              {% elif link.platform =='디즈니+' %}
+              <div class="link_box_link">
+                <a
+                  href="{{link.link}}"
+                  target="_blank"
+                  title="디즈니+"
+                  class="link_link"
+                >
+                  <img
+                    class="link_logo"
+                    src="/static/disneyplus_logo.jpg"
+                    alt="watcha"
+                  />
+                  <div class="link_box_info">
+                    <div class="link_box_name">{{link.platform}}</div>
+                    <i class="fa-solid fa-angle-right"></i>
+                  </div>
+                </a>
+              </div>
+              <!-- {% elif link.platform == '티빙' %}
+              <div class="link_box_link">
+                <a href="{{link.link}}" target="_blank" title="왓챠">
+                  <div class="link_logo">
+                    <img src="static/watcha_logo.jpg" alt="watcha" />
+                  </div>
+                  <div class="link_box_link_name">
+                    {{link.platform}}
+                  </div>
+                  <i class="fa-sharp fa-solid fa-angle-right"></i>
+                </a>
+              </div>
+              {% elif link.platform == 'wavve' %}
+              <div class="link_box_link">
+                <a href="{{link.link}}" target="_blank" title="왓챠">
+                  <div class="link_logo">
+                    <img src="static/watcha_logo.jpg" alt="watcha" />
+                  </div>
+                  <div class="link_box_link_name">
+                    {{link.platform}}
+                  </div>
+                  <i class="fa-sharp fa-solid fa-angle-right"></i>
+                </a>
+              </div> -->
+              {% endif %} {% endfor %}
+            </div>
+          </div>
+          <button class="button back_button" onclick="history.back()">
+            뒤로 가기
+          </button>
+        </div>
+      </div>
+      <footer>
+        <p>&copy; ITS</p>
+      </footer>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/eb52efc223.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+{% endblock %}

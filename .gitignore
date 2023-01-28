@@ -11,6 +11,11 @@ log_tensorboard/
 *.yaml
 !base.yaml
 *.pkl
+*.zip
+README.txt
+*.png
+*.jpg
+*.jpeg
 
 ##
 ## Add custom entries below here.
