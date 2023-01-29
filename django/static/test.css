@@ -134,6 +134,7 @@ input[type="checkbox"]:checked + label {
   top: 6px;
 }
 
+/* 반응형 */
 @media (max-width: 1300px) {
   .quiz_form {
     width: 70vw;

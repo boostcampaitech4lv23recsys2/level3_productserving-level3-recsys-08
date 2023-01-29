@@ -9,23 +9,32 @@
   class="movie_box"
   method="post"
   action="{% url 'test_rec:result_page' %}"
-  data-movies="{{ length }}"
-  
 >
   <div class="movie_box2 infinite-container">
-    {% for movie in movies %}
-    <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}" class="infinite-item" required/>
-    <label
-      for="{{ movie }}"
-      style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
-    >
-    </label>
+    {% for movie in page_obj %}
+        <div class="infinite-item">
+          <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
+          <label
+            for="{{ movie }}"
+            style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
+          >
+          </label>
+        </div>
     {% endfor %}
     
   </div>
-  {% if page_obj.has_next %}
-      <a class="infinite-more-link" href="?page={{page_obj.next_page_number}}"></a>
-  {% endif %}
+  <div class="pagination">
+    {% comment %} {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+    <span class="page-number">{{ page_obj.number }}</span> {% endcomment %}
+    {% if page_obj.has_next %}
+      <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+    {% endif %}
+  </div>
+  {% comment %} {% if page_obj.has_next %}
+      <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+  {% endif %} {% endcomment %}
   <div class="center_button">
     <input
       class="button mbti_button grid_button"
@@ -38,11 +47,14 @@
 <script>
   function check(e){
     e.preventDefault();
-    const checkedMovies = $('input[type=checkbox][name=movies]:checked').length();
-    if (checkedMovies < 3){
-      Swal.fire({icon:'info',title: '3개 이상 선택해주세요💧'})
+    const checkedMovies = $('input[type=checkbox][name=movies]:checked').length
+    
+    if (checkedMovies < 5){
+      Swal.fire({icon:'info',title: '5개 이상 선택해주세요💧'})
     }
-    // submitForm(event)
+    else{
+      submitForm(event)
+    }
   }
   async function submitForm(e){
     e.preventDefault();

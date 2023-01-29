@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
@@ -90,7 +91,9 @@ def enneagram_test3(request):
 
 @csrf_exempt
 def movie_test(request):
+    
     user = TmpUser.objects.get(id=request.session['user_id'])
+
     # 이전 페이지의 애니어그램 답변3 받아서 유저정보에 저장 (1w2 형식)
     if request.method == 'POST':
         ans3 = request.POST.get('enneagram3')
@@ -99,11 +102,15 @@ def movie_test(request):
     # 추천할 영화리스트 불러오기
     seed = random.randint(0,int(1e6))
     print(f">>>{seed = }")
-    selec_movie_ids = movie_select_2(seed, 20)
+    selec_movie_ids = movie_select_2(seed, 100)
     poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
+    
+    paginator = Paginator(poster_file_list, 20)
+    page_number = request.GET.get('page') or 1
+    page_obj = paginator.get_page(page_number)
     context = {
         'movies' : poster_file_list,
-        'length' : len(poster_file_list)
+        'page_obj': page_obj
     }
     return render(request, 'test_rec/movie.html', context)
 
