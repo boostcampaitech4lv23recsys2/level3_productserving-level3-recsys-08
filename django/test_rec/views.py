@@ -121,7 +121,7 @@ def result_page(request):
         user.prefer_movie_id = json.dumps(movie_list)
         # 유저정보가 선호한 영화리스트를 바탕으로 캐릭터 추천
         movie_list = [int(i) for i in movie_list]
-        result = user_input_to_recommend(user.MBTI, user.ennear_res, movie_list)
+        result = user_input_to_recommend(user.MBTI, user.ennea_res, movie_list, 60)
         result = result[result.Enneagram_sim.notna()]
         result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
         # 추천된 캐릭터 유저정보에 저장
