@@ -128,10 +128,10 @@ DATABASES = {
     # }
     'default': {
 			'ENGINE'    : 'django.db.backends.mysql',
-			'NAME'      : 'django',
-			'USER'      : 'root',
-			'PASSWORD'  : '',
-			'HOST'      : 'cloudsql/django',
+			'NAME'      : env.get_value('GCPDB_NAME'),
+			'USER'      : env.get_value('GCPDB_USER'),
+			'PASSWORD'  : env.get_value('GCPDB_PASSWORD'),
+			'HOST'      : env.get_value('GCPDB_HOST'),
 		}
 }
 
