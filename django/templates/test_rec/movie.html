@@ -1,6 +1,7 @@
 {% extends 'test_rec/base.html' %}
 {% load static %} 
 {% block contents %}
+{% load split_movieId_title %}
 
 <h1 class="test_question">Q5.</h1>
 <h3 class="test_question_subtitle">선호하는 영화를 골라주세요!</h3>
@@ -15,8 +16,10 @@
         <div class="infinite-item">
           <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
           <label
+            class="movie_card"
             for="{{ movie }}"
             style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
+            data-bs-toggle="tooltip" data-bs-title="{{ movie | slice:':-4' | split_movieId_title }}"
           >
           </label>
         </div>
@@ -69,7 +72,14 @@
       console.log('Scrolled!')
     },
     onBeforePageLoad: function(){},
-    onAfterPageLoad: function(){}
+    onAfterPageLoad: function(){
+      const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    }
   })
+  
+  const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
 </script>
 {% endblock %}
