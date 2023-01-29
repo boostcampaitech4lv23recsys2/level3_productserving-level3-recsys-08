@@ -11,10 +11,17 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from environ import Env
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = Env()
+env_path = BASE_DIR / ".env"
+if env_path.exists():
+    with env_path.open("rt", encoding="utf8") as f:
+        env.read_env(f, overwrite=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -25,7 +32,7 @@ SECRET_KEY = 'django-insecure-tc7wa(_vy4#s9=f7!(zq(1degy+ejqy!m2eogyd+n4s@ec248t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    ### third apps
+    ### third apps ###
     # bootstrap5
     'django_bootstrap5',
 
@@ -61,13 +68,16 @@ SOCIALACCOUNT_PROVIDERS = {
         # For each OAuth based provider, either add a ``SocialApp``
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
+        'SCOPE': ['profile','email'],
         'APP': {
-            'client_id': '207335179183-2u3jqcf1ik304qt2qivlqej6b19ic7pc.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': env.get_value('GOOGLE_CLIENT_ID'),
+            'secret': env.get_value('GOOGLE_SECRET'),
             'key': ''
         }
     }
 }
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`

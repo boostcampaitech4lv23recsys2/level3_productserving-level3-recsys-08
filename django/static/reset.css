@@ -97,12 +97,14 @@ header,
 hgroup,
 menu,
 nav,
-span section {
+span,
+progress,
+section {
   display: block;
 }
-body {
+/* body {
   line-height: 1;
-}
+} */
 ol,
 ul {
   list-style: none;
@@ -125,4 +127,7 @@ table {
 button,
 input {
   border: none;
+}
+a {
+  text-decoration: none;
 }

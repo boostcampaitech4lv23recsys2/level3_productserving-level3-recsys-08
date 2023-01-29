@@ -6,14 +6,14 @@ import pandas as pd
 import numpy
 import pickle
 import random
-
+from pathlib import Path
 from .models import TmpUser
 import sys
 sys.path.append('..')
-from Utils import user_input_to_recommend
+from Utils import user_input_to_recommend, movie_select_2
 
 
-def print_userInfo(user):
+def print_TmpUserInfo(user):
     print(f'userid: {user.id}')
     print(f'MBTI:{user.MBTI}')
     print(f'ennear_ans:{user.ennear_ans}')
@@ -21,31 +21,33 @@ def print_userInfo(user):
     print(f'prefer_movie_id:{user.prefer_movie_id}')
     print(f'recommended_character_id:{user.recommended_character_id}')
 
+pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
+movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
 
-movieId2poster_path='/opt/ml/input/fighting/Utils/Pickle/movieid_to_poster_file.pickle'
+
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
 
-ch2mv_path='/opt/ml/input/fighting/Utils/Pickle/characterId_to_movieId.pickle'
+ch2mv_path = pickle_path / 'characterId_to_movieId.pickle'
 with open(ch2mv_path,'rb') as f:
     characterId_to_movieId = pickle.load(f)
 
 
-mbti_df = pd.read_pickle('/opt/ml/input/fighting/Utils/Pickle/MBTI_merge_movieLens_3229_movie.pickle')
-movie_genre_plot = pd.read_csv('/opt/ml/input/fighting/Data/DataProcessing/movie_genre_plot.csv')
+mbti_df = pd.read_pickle(pickle_path / 'MBTI_merge_movieLens_3229_movie.pickle')
+movie_genre_plot = pd.read_pickle(pickle_path / 'movie_genre_plot.pickle')
+watch_link =  pd.read_pickle(pickle_path / 'watch_link_3229movie_4462_rows.pickle')
 
 
 @csrf_exempt
 def start_test(request):
-    user = TmpUser.objects.create(create_time=timezone.now())
-    request.session['user_id'] = user.id
     return render(request, 'test_rec/main.html')
 
 
 @csrf_exempt
 def mbti_test(request):
-    user = TmpUser.objects.get(id=request.session['user_id'])
+    user = TmpUser.objects.create(create_time=timezone.now())
+    request.session['user_id'] = user.id
     return render(request, 'test_rec/mbti.html')
 
 
@@ -83,7 +85,7 @@ def enneagram_test3(request):
         user.save()
     # 유저정보에 저장된 애니어그램 답변을 바탕으로 추가질문 불러오기
     engram_crite = ''.join(ennear_list)
-    df = pd.read_pickle('/opt/ml/input/fighting/Utils/Pickle/enneagram_question.pickle')
+    df = pd.read_pickle(pickle_path / 'enneagram_question.pickle')
     add_quest = df[df.base==engram_crite][['question','three_letter']].copy()
     add_quest_list = add_quest.to_dict(orient='records')
     return render(request, 'test_rec/enneagram3.html', {'add_quest_list': add_quest_list})
@@ -98,12 +100,13 @@ def movie_test(request):
         user.ennear_res = ans3
         user.save()
     # 추천할 영화리스트 불러오기
-    poster_file_list = list(movieId_to_posterfile.values())
-    random.seed(14)
-    random_poster_file_list = random.sample(poster_file_list, 10)
+    seed = random.randint(0,int(1e6))
+    print(f">>>{seed = }")
+    selec_movie_ids = movie_select_2(seed, 20)
+    poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
     context = {
-        'movies' : random_poster_file_list,
-        'length' : len(random_poster_file_list)
+        'movies' : poster_file_list,
+        'length' : len(poster_file_list)
     }
     return render(request, 'test_rec/movie.html', context)
 
@@ -131,4 +134,24 @@ def result_page(request):
         result_list = result[cols].to_dict(orient='records')
         context = {"data": result_list}
 
-        return render(request, 'test_rec/result_bootstrap.html', context)
+        return render(request, 'test_rec/result.html', context)
+
+@csrf_exempt
+def result_movie(request, character_id):
+    need_cols=['Character','Contents','movieId']
+    character_name, movie_title, movie_id = mbti_df[mbti_df.CharacterId==int(character_id)][need_cols].values[0]
+    posterfile_path = movieId_to_posterfile[movie_id]
+    genres, plot = movie_genre_plot[movie_genre_plot.movieId==movie_id][['ko_genres','ko_plot']].values[0]
+    result_movie ={
+        'name': character_name,
+        'movie' : movie_title,
+        'img_path' : posterfile_path,
+        'genres' : genres,
+        'plot' : plot
+    }
+    # print(result_movie)
+    links_df = watch_link[watch_link.movieId==movie_id][['platform','link']]
+    links = links_df.to_dict(orient='records')
+    # print(links)
+    context = {'data': result_movie, 'links': links}
+    return render(request, 'test_rec/result_movie.html', context)
