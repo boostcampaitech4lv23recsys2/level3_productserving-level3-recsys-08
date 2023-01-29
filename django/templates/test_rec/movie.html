@@ -10,34 +10,54 @@
   method="post"
   action="{% url 'test_rec:result_page' %}"
   data-movies="{{ length }}"
+  
 >
-  <div class="movie_box2">
+  <div class="movie_box2 infinite-container">
     {% for movie in movies %}
-    <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}" />
+    <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}" class="infinite-item" required/>
     <label
       for="{{ movie }}"
       style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
     >
     </label>
-
     {% endfor %}
+    
   </div>
-  {% comment %} {% include "test_rec/loading.html" %} {% endcomment %}
-  
+  {% if page_obj.has_next %}
+      <a class="infinite-more-link" href="?page={{page_obj.next_page_number}}"></a>
+  {% endif %}
   <div class="center_button">
     <input
       class="button mbti_button grid_button"
       type="submit"
       value="다 선택했어요"
-      onclick="submitForm(event)"
+      onclick="check(event)"
     />
   </div>
 </form>
 <script>
-  async function submitForm(event){
-    event.preventDefault();
+  function check(e){
+    e.preventDefault();
+    const checkedMovies = $('input[type=checkbox][name=movies]:checked').length();
+    if (checkedMovies < 3){
+      Swal.fire({icon:'info',title: '3개 이상 선택해주세요💧'})
+    }
+    // submitForm(event)
+  }
+  async function submitForm(e){
+    e.preventDefault();
     await loading();
     document.querySelector('.movie_box').submit()
   }
+
+  const infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    offset: 'bottom-in-view',
+    handler: function(direction){
+      console.log('Scrolled!')
+    },
+    onBeforePageLoad: function(){},
+    onAfterPageLoad: function(){}
+  })
 </script>
 {% endblock %}
