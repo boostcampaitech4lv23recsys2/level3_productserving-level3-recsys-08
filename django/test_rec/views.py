@@ -16,8 +16,9 @@ from Utils import user_input_to_recommend, movie_select_2
 def print_TmpUserInfo(user):
     print(f'userid: {user.id}')
     print(f'MBTI:{user.MBTI}')
-    print(f'ennear_ans:{user.ennear_ans}')
-    print(f'ennear_res:{user.ennear_res}')
+    print(f'ennea_ans1:{user.ennea_ans1}')
+    print(f'ennea_ans2:{user.ennea_ans2}')
+    print(f'ennea_res:{user.ennea_res}')
     print(f'prefer_movie_id:{user.prefer_movie_id}')
     print(f'recommended_character_id:{user.recommended_character_id}')
 
@@ -66,9 +67,7 @@ def enneagram_test2(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
     if request.method == 'POST':
         ans1 = request.POST.get('enneagram1')
-        ennear_list = []
-        ennear_list.append(ans1)
-        user.ennear_ans = json.dumps(ennear_list) #리스트로 저장하려면 simplesjon을 사용해야함
+        user.ennea_ans1 = ans1
         user.save()
     return render(request, 'test_rec/enneagram2.html')
 
@@ -79,12 +78,10 @@ def enneagram_test3(request):
     # 이전페이지의 애니어그램 답변2 받아서 유저정보에 저장
     if request.method == 'POST':
         ans2 = request.POST.get('enneagram2')
-        ennear_list = json.loads(user.ennear_ans)
-        ennear_list.append(ans2)
-        user.ennear_ans = json.dumps(ennear_list)
+        user.ennea_ans2 = ans2
         user.save()
     # 유저정보에 저장된 애니어그램 답변을 바탕으로 추가질문 불러오기
-    engram_crite = ''.join(ennear_list)
+    engram_crite = user.ennea_ans1 + user.ennea_ans2
     df = pd.read_pickle(pickle_path / 'enneagram_question.pickle')
     add_quest = df[df.base==engram_crite][['question','three_letter']].copy()
     add_quest_list = add_quest.to_dict(orient='records')
@@ -97,7 +94,7 @@ def movie_test(request):
     # 이전 페이지의 애니어그램 답변3 받아서 유저정보에 저장 (1w2 형식)
     if request.method == 'POST':
         ans3 = request.POST.get('enneagram3')
-        user.ennear_res = ans3
+        user.ennea_res = ans3
         user.save()
     # 추천할 영화리스트 불러오기
     seed = random.randint(0,int(1e6))
@@ -121,7 +118,7 @@ def result_page(request):
         user.prefer_movie_id = json.dumps(movie_list)
         # 유저정보가 선호한 영화리스트를 바탕으로 캐릭터 추천
         movie_list = [int(i) for i in movie_list]
-        result = user_input_to_recommend(user.MBTI, user.ennear_res, movie_list)
+        result = user_input_to_recommend(user.MBTI, user.ennea_res, movie_list, 60)
         result = result[result.Enneagram_sim.notna()]
         result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
         # 추천된 캐릭터 유저정보에 저장
@@ -135,6 +132,7 @@ def result_page(request):
         context = {"data": result_list}
 
         return render(request, 'test_rec/result.html', context)
+
 
 @csrf_exempt
 def result_movie(request, character_id):

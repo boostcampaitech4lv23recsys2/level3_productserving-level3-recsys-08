@@ -19,9 +19,11 @@ def check_TmpUserInfo(request):
         return False
     if user.MBTI == None:
         return False
-    if user.ennear_ans == None:
+    if user.ennea_ans1 == None:
         return False
-    if user.ennear_res == None:
+    if user.ennea_ans2 == None:
+        return False    
+    if user.ennea_res == None:
         return False
     if user.prefer_movie_id == None:
         return False
@@ -72,3 +74,19 @@ def user_test_history(request):
         'tmpusers' : tmpusers
     }
     return render(request, 'common/user_test_history.html', context)
+
+
+@login_required(login_url='common:login')
+def user_profile(request):
+    user = request.user
+    tmpusers = TmpUser.objects.filter(LoginUser=user)
+    mbti = tmpusers[len(tmpusers)-1].MBTI
+    prefer_movie_ids = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
+    recommended_character_ids = [tmpuser.recommended_character_id for tmpuser in tmpusers]
+    context = {
+        'mbti': mbti,
+        'prefer_movie_ids' : prefer_movie_ids,
+        'recommended_character_ids' : recommended_character_ids,
+        'tmpusers' : tmpusers,
+    }
+    return render(request, 'common/user_profile.html', context)
