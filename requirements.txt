@@ -23,4 +23,5 @@ django-allauth==0.52.0
 simplejson==3.18.1
 django-bootstrap5==22.2
 django-environ==0.9.0
+sqlalchemy2-stubs==0.0.2a31
 
