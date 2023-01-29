@@ -149,9 +149,9 @@ def result_movie(request, character_id):
         'genres' : genres,
         'plot' : plot
     }
-    print(result_movie)
+    # print(result_movie)
     links_df = watch_link[watch_link.movieId==movie_id][['platform','link']]
     links = links_df.to_dict(orient='records')
-    print(links)
+    # print(links)
     context = {'data': result_movie, 'links': links}
     return render(request, 'test_rec/result_movie.html', context)

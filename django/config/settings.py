@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    ### third apps
+    ### third apps ###
     # bootstrap5
     'django_bootstrap5',
 
