@@ -42,14 +42,15 @@ body {
   font-weight: 500;
 }
 
-.contents {
+ /* .contents {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
   /* contents 부분 높이 조절 */
-  padding: 8vh;
-  width: 100%;
-}
+  /* padding: 8vh;
+  width: 60%;
+}  */
+
 .img_box {
   width: 60vw;
   display: flex;
@@ -91,9 +92,7 @@ footer {
 }
 
 @media (max-width: 860px) {
-  .contents {
-    padding: 5vh;
-  }
+  
   .button {
     width: 40vw;
   }

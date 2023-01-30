@@ -3,50 +3,54 @@
 {% block contents %}
 {% load split_movieId_title %}
 
-<h1 class="test_question">Q5.</h1>
-<h3 class="test_question_subtitle">선호하는 영화를 골라주세요!</h3>
+<div class="left_header">
+  <h1 class="test_question">Q5.</h1>
+  <h3 class="test_question_subtitle">선호하는 영화를 골라주세요!</h3>  
+</div>
+<div class="contents">
 
-<form
-  class="movie_box"
-  method="post"
-  action="{% url 'test_rec:result_page' %}"
->
-  <div class="movie_box2 infinite-container">
-    {% for movie in page_obj %}
-        <div class="infinite-item">
-          <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
-          <label
-            class="movie_card"
-            for="{{ movie }}"
-            style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
-            data-bs-toggle="tooltip" data-bs-title="{{ movie | slice:':-4' | split_movieId_title }}"
-          >
-          </label>
-        </div>
-    {% endfor %}
-    
-  </div>
-  <div class="pagination">
-    {% comment %} {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-    {% endif %}
-    <span class="page-number">{{ page_obj.number }}</span> {% endcomment %}
-    {% if page_obj.has_next %}
-      <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
-    {% endif %}
-  </div>
-  {% comment %} {% if page_obj.has_next %}
-      <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
-  {% endif %} {% endcomment %}
-  <div class="center_button">
-    <input
-      class="button mbti_button grid_button"
-      type="submit"
-      value="다 선택했어요"
-      onclick="check(event)"
-    />
-  </div>
-</form>
+  <form
+    class="movie_box"
+    method="post"
+    action="{% url 'test_rec:result_page' %}"
+  >
+    <div class="movie_box2 infinite-container">
+      {% for movie in page_obj %}
+          <div class="infinite-item">
+            <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
+            <label
+              for="{{ movie }}"
+              style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
+              data-bs-toggle="tooltip" data-bs-title="{{ movie | slice:':-4' | split_movieId_title }}"
+            >
+            </label>
+          </div>
+      {% endfor %}
+      
+    </div>
+    <div class="pagination">
+      {% comment %} {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+      <span class="page-number">{{ page_obj.number }}</span> {% endcomment %}
+      {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+      {% endif %}
+    </div>
+    {% comment %} {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+    {% endif %} {% endcomment %}
+    <div class="center_button">
+      <input
+        class="button mbti_button grid_button"
+        type="submit"
+        value="다 선택했어요"
+        onclick="check(event)"
+      />
+    </div>
+  </form>
+</div>
+
 <script>
   function check(e){
     e.preventDefault();

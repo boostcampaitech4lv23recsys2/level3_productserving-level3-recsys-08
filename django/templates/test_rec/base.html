@@ -46,18 +46,21 @@
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <link rel="stylesheet" href="{% static 'test.css' %}" />
     <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'netflix.css' %}" />
     
   </head>
   <body>
     {% include "test_rec/loading.html" %}
-    {% include 'navbar.html' %}
-    <div class="container">
-      {% include "test_rec/header.html" %}
-      <div class="contents">
+    {% comment %} {% include 'navbar.html' %} {% endcomment %}
+    {% include "test_rec/nav.html" %}
+    
+    <div class="contents_container">
+      <div class="wrap"> 
         {% block contents %} 
         {% endblock %}
       </div>
     </div>
+    
     {% include "test_rec/footer.html" %}
   </body>
 </html>

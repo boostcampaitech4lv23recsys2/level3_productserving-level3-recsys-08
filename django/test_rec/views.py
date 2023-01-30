@@ -117,7 +117,9 @@ def movie_test(request):
 
 @csrf_exempt
 def result_page(request):
+
     user = TmpUser.objects.get(id=request.session['user_id'])
+    
     if request.method == 'POST':
         # 이전 페이지의 영화선택 받아서 유저정보에 저장
         movies = request.POST.getlist('movies')
@@ -136,7 +138,10 @@ def result_page(request):
         # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
         cols=['CharacterId','Character','Contents','MBTI','img_src','Enneagram_sim']
         result_list = result[cols].to_dict(orient='records')
-        context = {"data": result_list}
+        paginator = Paginator(result_list, 20)
+        page_number = request.GET.get('page') or 1
+        page_obj = paginator.get_page(page_number)
+        context = {"data": result_list, 'page_obj': page_obj}
 
         return render(request, 'test_rec/result.html', context)
 
