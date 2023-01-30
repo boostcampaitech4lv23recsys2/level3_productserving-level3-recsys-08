@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "test_rec.templatetags.split_movieId_title",
     "common.apps.CommonConfig",
     "test_rec.apps.TestRecConfig",
     'django.contrib.admin',

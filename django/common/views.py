@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-
 import sys
 sys.path.append('../test_rec')
 from test_rec.models import TmpUser
@@ -84,9 +83,10 @@ def user_profile(request):
     prefer_movie_ids = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
     recommended_character_ids = [tmpuser.recommended_character_id for tmpuser in tmpusers]
     context = {
+        'user' : user.username,
         'mbti': mbti,
         'prefer_movie_ids' : prefer_movie_ids,
         'recommended_character_ids' : recommended_character_ids,
         'tmpusers' : tmpusers,
     }
-    return render(request, 'common/user_profile.html', context)
+    return render(request, 'common/result_user.html', context)
