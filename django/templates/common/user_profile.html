@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Recsys 8</title>
+    <link rel="stylesheet" href="{% static 'reset.css' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'test.css' %}" />
+    <link rel="stylesheet" href="{% static 'scroll.css' %}" />
+    <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
+  </head>
+  <body>
+    <div class="container character_container container_result">
+      <div class="header header_result">
+        <img class="header_image" src={% static 'image.png' %} alt="film" />
+      </div>
+      <div class="contents result_contents contents_result">
+        <div class="contents_box character_box">
+          <div class="contents_header">
+            <h2 class="test_question" style="color:black">🎬 내 프로필 😎</h2>
+            <div class="container_header_bar"></div>
+          </div>
+          <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: white; align-items: center">
+            <img
+              src="/static/img/18_four_rooms.png"
+              alt="Responsive image"
+              class="character_image"
+              style="grid-column: 1 / 2; margin: auto;"
+            />
+            <div>
+              <div class="character_title" >{{ user }}님의 프로필</div>
+              <div class="character_info" >내 MBTI: {{ mbti }}</div>
+              <div class="character_info" >설문을 통한 내 성격:</div>
+              <ul>
+                <li>- 삶을 이해하는 것이 삶을 사는 것만큼이나 중요하다</li>
+                <li>- 자신만의 아이디어(지식)가 있고 자신만의 통찰을 이야기할 수 있는 사람이 되고 싶다.</li>
+                <li>- 독립성, 비밀스러움을 갖기 위해 은신처를 개발(타인이 모르거나 경험못한 일을 창조)한다.</li>
+                <li>- 안전감과 자존심(스스로의 삶을 통제하고 있다는 느낌)을 갖기 위해 능력있는 사람(전문가)가 되려하고, 독립성(서로 간섭하지 않음)을 추구한다.</li>
+                <li>- 강력한 집중력은 놀라운 발명과 발견이 되지만, 지나치면 실질 문제를 회피하게 되어 사고 과정의 복잡함 속에서 헤매다가 이상한 사람으로 취급되고 고립되기도 한다.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="character">
+            <div style="overflow: auto; padding:0 5.5vw;">
+              <div class="character_title">{{ user }}님이 추천받은 캐릭터 list</div>
+              <div class="scrollMenu">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+              </div>
+            </div>
+          </div>
+          <div class="character">
+            <div style="overflow: auto; padding:0 5.5vw;">
+              <div class="character_title">{{ user }}님이 선호한 영화 list</div>
+              <div class="scrollMenu">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+                <img src="/static/img/18_four_rooms.png">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="button back_button" onclick="history.back()">
+          뒤로 가기
+        </button>
+        </div>
+      </div>
+    {% include "test_rec/footer.html" %}
+    <script>
+      let characterBody = document.querySelector(".temp_box");
+      let poster_box = document.querySelector(".poster_box");
+      let resultContents = document.querySelector(".result_contents");
+      let character = document.querySelector(".character");
+      let characterBodyInfo = document.querySelector(".character_body_info");
+      let linkBox = document.querySelector(".link_box");
+      window.onload = () => {
+        checkScreenSize();
+      };
+      window.onresize = () => {
+        checkScreenSize();
+      };
+      checkScreenSize = () => {
+        if (window.innerWidth <= 1158) {
+          characterBody.appendChild(characterBodyInfo);
+          characterBody.appendChild(linkBox);
+          characterBody.classList.add("character_body");
+          characterBody.style.display = "flex";
+          characterBody.style.flexDirection = "column";
+          characterBody.style.justifyContent = "space-around";
+        } else {
+          poster_box.appendChild(linkBox);
+          character.appendChild(characterBodyInfo);
+        }
+      };
+
+      // 링크 없으면 안보여주기
+      let links = document
+        .querySelector(".link_box")
+        .getAttribute("data-links");
+      console.log(
+        "links",
+        links.includes("no_link"),
+        links.includes("no_result")
+      );
+      if (
+        links.length === 0 ||
+        links.includes("no_link") ||
+        links.includes("no_result")
+      ) {
+        linkBox.style.display = "none";
+        resultContents.style.display = "inherit";
+      }
+    </script>
+    <script
+      src="https://kit.fontawesome.com/eb52efc223.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
