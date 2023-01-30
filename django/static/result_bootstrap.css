@@ -17,6 +17,8 @@
   background: linear-gradient(rgb(199, 32, 3) 0%, white 10%);
   width: 100%;
   padding: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .contents_box {
@@ -34,13 +36,13 @@
   text-align: center;
 }
 
-.test_question_subtitle {
+/* .test_question_subtitle {
   margin-bottom: 1vh;
 }
 
 .test_question {
   margin-bottom: 1vh;
-}
+} */
 
 .container_header_bar {
   width: 25px;
