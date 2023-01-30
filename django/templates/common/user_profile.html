@@ -47,14 +47,9 @@
             <div style="overflow: auto; padding:0 5.5vw;">
               <div class="character_title">{{ user }}님이 추천받은 캐릭터 list</div>
               <div class="scrollMenu">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
+                {% for character_image in character_images %}
+                  <img src="{{ character_image }}", alt="character_img" style="height: auto; width: 15%;">
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -62,23 +57,18 @@
             <div style="overflow: auto; padding:0 5.5vw;">
               <div class="character_title">{{ user }}님이 선호한 영화 list</div>
               <div class="scrollMenu">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
-                <img src="/static/img/18_four_rooms.png">
+                {% for movie in prefer_movie_posters %}
+                  <img src="/static/img/{{ movie }}" style="height: auto; width: 15%;">
+                {% endfor %}
               </div>
             </div>
           </div>
-        </div>
-        <button class="button back_button" onclick="history.back()">
-          뒤로 가기
-        </button>
+          <button class="button back_button" onclick="history.back()">
+            뒤로 가기
+          </button>
         </div>
       </div>
+    </div>
     {% include "test_rec/footer.html" %}
     <script>
       let characterBody = document.querySelector(".temp_box");
