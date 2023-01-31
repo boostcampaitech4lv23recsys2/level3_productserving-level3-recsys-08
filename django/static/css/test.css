@@ -124,16 +124,6 @@ input[type="checkbox"]:checked+label:after {
   display: block;
 }
 
-/* 결과화면 */
-.grid_full_result{
-  grid-column: 1 / 4;
-  text-align: center;
-  font-weight: 500;
-  font-size: 1.4vw;
-  line-height: 1.25vw;
-  vertical-align: bottom;
-  margin-bottom: 20px;
-}
 @media (max-width:1447px) {
   #movie_contents{
     width:70%;

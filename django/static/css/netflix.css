@@ -86,6 +86,7 @@
     flex-direction: column;
     width: 60%;
     margin-top:80px;
+    /* align-items: center; */
 }
 .movie_contents{
     height: 100%;
@@ -115,7 +116,7 @@
     padding: 24px 22%;
     position: fixed;
     width: 100%;
-    z-index: 12;
+    z-index: 21;
     border-radius: 4px;
 }
 
@@ -131,6 +132,9 @@
     }
     .button_box {
         width: 20vw;
+    }
+    .cards_box_container{
+        width:95%;
     }
 }
 @media (max-width: 1200px) {

@@ -18,13 +18,13 @@
       action="{% url 'test_rec:result_page' %}"
     >
       <div class="movie_box2 infinite-container">
-        {% for movie in page_obj %}
+        {% for movie, ko_title in zip_page_obj %}
             <div class="infinite-item">
               <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
               <label
                 for="{{ movie }}"
                 style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
-                data-bs-toggle="tooltip" data-bs-title="{{ movie | slice:':-4' | split_movieId_title }}"
+                data-bs-toggle="tooltip" data-bs-title="{{ ko_title }}"
               >
             </label>
             </div>
