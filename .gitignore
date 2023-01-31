@@ -487,3 +487,4 @@ __pycache__/
 OpenCover/
 junit/
 Recbole/dataset/train_data/train_data.item
+interaction_model/LightGCN_64
