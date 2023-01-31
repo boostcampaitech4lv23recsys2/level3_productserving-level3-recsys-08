@@ -31,9 +31,20 @@ def model_recommend_movies(prefer_movie_ids, top_k, model_path='../interaction_m
     """
     ## 사용자가 선호하는 movie id로 부터 모델 추천 받기
     recommend_movie_ids=[]
+    score = {}
     for mid in prefer_movie_ids:
-        recommend_movie_ids.extend(Inference(model_path, int(mid), top_k)[0])
-    recommend_movie_ids = list(set(recommend_movie_ids)) # 중복제거
+        ids = Inference(model_path, int(mid), top_k)[0]
+        dist = Inference(model_path, int(mid), top_k)[1]
+        for i in range(len(ids)):
+            if ids[i] in score:
+                score[ids[i]] += dist[i]
+            else:
+                score[ids[i]] = dist[i]
+
+    recommend_movie_ids = sorted(score.items(), key=lambda x: x[1], reverse=True)[:top_k]
+    recommend_movie_ids = [i[0] for i in recommend_movie_ids]
+    print(recommend_movie_ids)
+    # recommend_movie_ids = list(set(recommend_movie_ids)) # 중복제거
     return recommend_movie_ids
 
 def mbti_filtering(mbti, mbti_mv, recommend_movie_ids):
@@ -95,8 +106,8 @@ def user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10)->pd.DataFr
 
 if __name__ == "__main__":
     ## Test
-    prefer_movie_ids =  [1704, 1721, 2021, 72998, 73141, 91500, 164909]
+    prefer_movie_ids =  [1704, 1721, 2021, 72998, 73141]#, 91500, 164909]
     mbti="INTJ"
     engram="3w2"
-    print(user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10))
+    print(user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=60))
     # print(os.path.dirname(os.path.abspath(__file__)))
