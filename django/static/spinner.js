@@ -3,8 +3,8 @@ function sleep(ms) {
   }
 
 loading = async () =>{
-    console.log("hello");
-    $(".container").hide();
+    
+    $(".wrap").hide();
     $("#loading").show();
     $(".success-checkmark").hide()
     $.ajax({

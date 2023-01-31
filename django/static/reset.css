@@ -99,7 +99,8 @@ menu,
 nav,
 span,
 progress,
-section {
+section,
+a {
   display: block;
 }
 /* body {
