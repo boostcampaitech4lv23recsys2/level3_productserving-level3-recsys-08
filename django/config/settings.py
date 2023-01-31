@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "test_rec.templatetags.split_movieId_title",
     "common.apps.CommonConfig",
     "test_rec.apps.TestRecConfig",
     'django.contrib.admin',
@@ -122,10 +123,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+			'ENGINE'    : 'django.db.backends.mysql',
+			'NAME'      : env.get_value('GCPDB_NAME'),
+			'USER'      : env.get_value('GCPDB_USER'),
+			'PASSWORD'  : env.get_value('GCPDB_PASSWORD'),
+			'HOST'      : env.get_value('GCPDB_HOST'),
+		}
 }
 
 

@@ -1,27 +1,30 @@
 {% extends 'test_rec/base.html' %}
 {% load static %} 
 {% block contents %}
-<h1 class="test_question">Q4.</h1>
-<h3 class="test_question_subtitle">어느쪽에 더 가까운 것 같나요?</h3>
 
-<form
-  class="quiz_form"
-  novalidate
-  method="post"
-  action="{% url 'test_rec:movie_test' %}"
->
-  <div class="engram_box_3">
-    {% for question in add_quest_list %}
-    <button
-      class="button mbti_button"
-      value="{{question.three_letter}}"
-      name="enneagram3"
-      type="submit"
-    >
-      {{question.question}}
-    </button>
-    {% endfor %}
-  </div>
-</form>
-
+<div class="left_header">
+  <h1 class="test_question">Q4.</h1>
+  <h3 class="test_question_subtitle">어느쪽에 더 가까운 것 같나요?</h3>
+</div>
+<div class="contents">
+  <form
+    class="quiz_form"
+    novalidate
+    method="post"
+    action="{% url 'test_rec:movie_test' %}"
+  >
+    <div class="engram_box_3">
+      {% for question in add_quest_list %}
+      <button
+        class="button mbti_button"
+        value="{{question.three_letter}}"
+        name="enneagram3"
+        type="submit"
+      >
+        {{question.question}}
+      </button>
+      {% endfor %}
+    </div>
+  </form>
+</div>
 {% endblock %}

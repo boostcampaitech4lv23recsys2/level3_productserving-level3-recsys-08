@@ -1,0 +1,118 @@
+/* Nav bar style */
+.nav_box{
+    width:90%;
+    height:10vh;
+    border-bottom: 1px solid #e7e7e7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* position: fixed;
+    top: 0; */
+    margin: 0 5vw;
+    /* background-color: white; */
+}
+.nav_box_logo{
+    color:#d22f27;
+    font-weight: 900;
+    font-size: 32px;
+
+}
+.nav_box_login{
+    color:#383838;
+}
+
+/* start test 페이지 style */
+.main_container{
+    position:absolute;
+    top:10vh;
+    width:100%;
+    height:82vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contents_container{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+.main_header{
+    max-width:70%;
+    margin-bottom: 5%;
+}
+.main_header_h1{
+    font-size: 3.5vw;
+    text-align: center;
+
+}
+
+/* Test 페이지 style */
+.wrap{
+    position:absolute;
+    top:10vh;
+    width:60%;
+    height:82vh;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    padding: 2%;
+}
+
+.left_header{
+    width: 30%;
+    padding:10px;
+}
+.test_question {
+    color: rgb(217, 72, 64);
+    margin-bottom: 3vh;
+    font-size: 2rem;
+    font-weight: 900;
+  }
+.test_question_subtitle {
+    margin-bottom: 3vh;
+    font-size: 25px;
+    font-weight: 500;
+    display: inline-block;
+    line-height: 35px;
+    
+}
+.contents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 70%;
+    margin-top:100px;
+}
+.movie_contents{
+    height: 100%;
+    overflow: scroll;
+}
+.quiz_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.movie_box2{
+    
+}
+
+@media (max-width: 860px){
+    .main_header_h1{
+        font-size:30px
+    }
+    .wrap{
+        flex-direction: column;
+        width:80%;
+    }
+    .contents{
+        width:100%;
+        
+    }
+    .left_header{
+        width: 100%;
+    }
+}
