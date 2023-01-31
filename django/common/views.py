@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-
+import pickle
+import pandas as pd
+from pathlib import Path
 import sys
 sys.path.append('../test_rec')
 from test_rec.models import TmpUser
@@ -19,15 +21,27 @@ def check_TmpUserInfo(request):
         return False
     if user.MBTI == None:
         return False
-    if user.ennear_ans == None:
+    if user.ennea_ans1 == None:
         return False
-    if user.ennear_res == None:
+    if user.ennea_ans2 == None:
+        return False    
+    if user.ennea_res == None:
         return False
     if user.prefer_movie_id == None:
         return False
     if user.recommended_character_id == None:
         return False
     return True
+
+
+pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
+movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
+mbti_df = pd.read_pickle(pickle_path / 'MBTI_merge_movieLens_3229_movie.pickle')
+
+
+with open(movieId2poster_path,'rb') as f:
+    movieId_to_posterfile = pickle.load(f)
+
 
 
 def signup(request):
@@ -72,3 +86,29 @@ def user_test_history(request):
         'tmpusers' : tmpusers
     }
     return render(request, 'common/user_test_history.html', context)
+
+
+@login_required(login_url='common:login')
+def user_profile(request):
+    user = request.user
+    tmpusers = TmpUser.objects.filter(LoginUser=user)
+    mbti = tmpusers[len(tmpusers)-1].MBTI
+    # prefer_movie_ids와 해당 포스터 파일이름 불러오는 과정
+    tmp = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
+    prefer_movie_ids = [eval(tmp[i]) for i in range(len(tmp))]
+    prefer_movie_ids = [item for sublist in prefer_movie_ids for item in sublist]
+    prefer_movie_posters = [movieId_to_posterfile[int(id)] for id in prefer_movie_ids]
+    # recommended_character_ids와 해당 이미지 파일 불러오는 과정
+    tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
+    recommended_character_ids = [eval(tmp[i]) for i in range(len(tmp))]
+    recommended_character_ids = [item for sublist in recommended_character_ids for item in sublist]
+    character_images = [mbti_df[mbti_df['CharacterId']==int(id)]['img_src'].values[0] for id in recommended_character_ids]
+    # 템플릿에 넘겨줄 context
+    context = {
+        'user' : user.username,
+        'mbti': mbti,
+        'prefer_movie_posters' : prefer_movie_posters,
+        'character_images' : character_images,
+        'tmpusers' : tmpusers,
+    }
+    return render(request, 'common/user_profile.html', context)

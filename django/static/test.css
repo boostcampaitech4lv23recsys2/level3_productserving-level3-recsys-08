@@ -1,5 +1,5 @@
 /* 전체 테스트 css */
-.test_question {
+/* .test_question {
   color: rgb(217, 72, 64);
   margin-bottom: 3vh;
   font-size: 2rem;
@@ -12,18 +12,18 @@
   font-weight: 500;
   line-height: 1.7rem;
   text-align: center;
-}
+} */
 
 /* 테스트 form */
-.quiz_form {
+/* .quiz_form {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 60vw;
-}
+} */
 
 .button_box {
-  width: 20vw;
+  width: 18vw;
   display: grid;
   grid-template-columns: repeat(2, auto);
   grid-template-rows: repeat(5, minmax(5vh, auto));
@@ -39,16 +39,18 @@
 }
 
 .mbti_bar {
-  width: 2px;
-  height: 33vh;
+  width: 1.2px;
+  height: 38vh;
   background-color: rgb(156, 156, 156);
   border-radius: 50%;
-  margin: 0 3vw;
+  margin: 0 20px;
 }
 
 .mbti_button {
   width: auto;
   background-color: rgb(201, 147, 142);
+  font-size: 24px;
+    
 }
 
 .mbti_button:hover {
@@ -59,7 +61,7 @@
   width: 26vw;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, minmax(5vh, auto));
+  grid-template-rows: repeat(3, minmax(5vh, auto));
   gap: 20px 10px;
 }
 
@@ -78,17 +80,14 @@
 }
 
 .span_text {
-  background-color: rgba(199, 32, 3, 0.5);
-  padding: 0.1rem 0.1rem 0.1rem 0.4rem;
-  color: white;
-  border-radius: 3px;
-  display: inline-block;
+  display: inline;
+  font-weight: 900;
 }
 
 .test_question_example {
   /* margin-top: -1vh; */
-  margin-bottom: 5vh;
-  text-align: center;
+  /* margin-bottom: 5vh; */
+  
 }
 
 /* 영화 선택 페이지 */
@@ -98,8 +97,8 @@
 .movie_box2 {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(198px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(264px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(160px, 1fr));
   gap: 20px 10px;
   justify-content: center;
   grid-auto-flow: row dense;
@@ -119,8 +118,8 @@ input[type="checkbox"] {
 
 input[type="checkbox"] + label {
   cursor: pointer;
-  width: 198px;
-  height: 264px;
+  width: 120px;
+  height: 160px;
   margin: 0 auto;
   border-radius: 1rem;
   box-shadow: 7px 7px 15px rgb(0, 0, 0, 0.7);
@@ -134,13 +133,14 @@ input[type="checkbox"]:checked + label {
   top: 6px;
 }
 
+/* 반응형 */
 @media (max-width: 1300px) {
-  .quiz_form {
+  /* .quiz_form {
     width: 70vw;
-  }
+  } */
 
   .button_box {
-    width: 30vw;
+    width: 20vw;
   }
 
   .engram_box {

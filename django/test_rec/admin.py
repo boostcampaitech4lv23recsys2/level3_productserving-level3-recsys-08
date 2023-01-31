@@ -4,6 +4,6 @@ from django.contrib import admin
 from .models import TmpUser
 
 class TmpUserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'LoginUser', 'MBTI', 'ennear_res', 'prefer_movie_id']
+    list_display = ['id', 'LoginUser', 'MBTI', 'ennea_res', 'prefer_movie_id']
 
 admin.site.register(TmpUser, TmpUserAdmin)
