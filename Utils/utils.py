@@ -6,6 +6,9 @@ import warnings
 warnings.filterwarnings('ignore')
 from interaction_model import Inference
 
+# 현재 파일 기준 경로잡기
+cur_filepath = lambda path: os.path.join(os.path.abspath(os.path.dirname(__file__)),path)
+
 def get_en_sim(engram, engram_sim):
     """에니어그램 시밀러리티 딕셔너리 생성
 
@@ -43,7 +46,7 @@ def model_recommend_movies(prefer_movie_ids, top_k, model_path='../interaction_m
 
     recommend_movie_ids = sorted(score.items(), key=lambda x: x[1], reverse=True)[:top_k]
     recommend_movie_ids = [i[0] for i in recommend_movie_ids]
-    print(recommend_movie_ids)
+    print(len(recommend_movie_ids))
     # recommend_movie_ids = list(set(recommend_movie_ids)) # 중복제거
     return recommend_movie_ids
 
@@ -91,13 +94,10 @@ def user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10)->pd.DataFr
         pd.DataFrame: 추천 데이터프레임. 결과 df.to_dict(orient='records') 하면 결과 딕셔너리 리스트 생성 가능.
     """
 
-    # 현재 파일 기준 경로잡기
-    cur_filepath = lambda path: os.path.join(os.path.abspath(os.path.dirname(__file__)),path)
-
     ## mbti movie, 애니어그램 유사도 매트릭스 불러오기
-    mbti_movie = pd.read_pickle(cur_filepath('Pickle/MBTI_merge_movieLens_3229_movie.pickle'))
+    mbti_movie = pd.read_pickle(cur_filepath('Pickle/230130_Popular_movie_character_2867_cwj.pickle'))
     engram_sim = pd.read_pickle(cur_filepath('Pickle/enneagram_similarity_075_099.pickle'))
-    model_path=cur_filepath('../interaction_model/ALS_64')
+    model_path=cur_filepath('../interaction_model/LightGCN_64')
     recommend_movie_ids = model_recommend_movies(prefer_movie_ids, top_k, model_path=model_path)
     mbti_rec = mbti_filtering(mbti, mbti_movie, recommend_movie_ids)
     mbti_rec_sort = engram_sorting(engram, mbti_rec, engram_sim)
@@ -106,7 +106,7 @@ def user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10)->pd.DataFr
 
 if __name__ == "__main__":
     ## Test
-    prefer_movie_ids =  [1704, 1721, 2021, 72998, 73141]#, 91500, 164909]
+    prefer_movie_ids =  [1704, 1721, 2021, 72998, 73141] #, 91500, 164909]
     mbti="INTJ"
     engram="3w2"
     print(user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=60))
