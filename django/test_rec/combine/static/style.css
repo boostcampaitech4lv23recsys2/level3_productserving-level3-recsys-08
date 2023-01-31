@@ -1,6 +1,7 @@
 body {
   box-sizing: border-box;
 }
+
 .container {
   height: auto;
   min-height: 72vh;
@@ -23,12 +24,14 @@ body {
   padding-top: 5vh;
   z-index: 1;
 }
+
 .header_title {
   color: #d72e04;
   margin-bottom: 1rem;
   font-size: 2rem;
   font-weight: 700;
 }
+
 .header_subtitle {
   font-size: 1.2rem;
   font-weight: 500;
@@ -41,6 +44,7 @@ body {
   /* contents 부분 높이 조절 */
   padding: 8vh;
 }
+
 .img_box {
   width: 60vw;
   display: flex;
@@ -49,6 +53,7 @@ body {
   border-radius: 1rem;
   margin-bottom: 10vh;
 }
+
 .button {
   background-color: #c72003;
   color: white;
@@ -61,14 +66,17 @@ body {
   cursor: pointer;
   font-size: 1.2rem;
 }
+
 .button:hover {
   background-color: rgba(199, 32, 3, 0.8);
 }
+
 .button:active {
   box-shadow: 1px 1px 0 rgb(0, 0, 0, 0.5);
   position: relative;
   top: 2px;
 }
+
 footer {
   height: 8vh;
   position: absolute;
@@ -85,6 +93,7 @@ footer {
   .contents {
     padding: 5vh;
   }
+
   .button {
     width: 40vw;
   }
