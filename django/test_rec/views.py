@@ -110,6 +110,7 @@ def movie_test(request):
     page_obj = paginator.get_page(page_number)
     context = {
         'movies' : poster_file_list,
+        'length' : len(poster_file_list),
         'page_obj': page_obj
     }
     return render(request, 'test_rec/movie.html', context)

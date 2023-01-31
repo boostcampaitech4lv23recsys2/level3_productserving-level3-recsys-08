@@ -36,6 +36,9 @@
     {% comment %} Spinner {% endcomment %}
     <script src="{% static 'spinner.js' %}"></script>
     
+    {% comment %} Footer {% endcomment %}
+    <script src="{% static 'footer.js' %}" ></script>
+    
     {% comment %} Infinite Scroll {% endcomment %}
     <script src="{% static 'noframework.waypoints.min.js' %}"></script>
     <script src="{% static 'jquery.waypoints.min.js' %}"></script>
@@ -50,12 +53,11 @@
     
   </head>
   <body>
-    {% include "test_rec/loading.html" %}
+   
     {% comment %} {% include 'navbar.html' %} {% endcomment %}
     {% include "test_rec/nav.html" %}
-    
     <div class="contents_container">
-      <div class="wrap"> 
+      <div class="wrap result_wrap"> 
         {% block contents %} 
         {% endblock %}
       </div>

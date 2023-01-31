@@ -74,7 +74,7 @@
 
 .engram_box_3 button {
   margin-bottom: 20px;
-  line-height: 1.7rem;
+  line-height: 35px;
   padding: 2rem;
   width: 700px;
 }
@@ -99,7 +99,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px 10px;
+  gap: 10px 0px;
   justify-content: center;
   grid-auto-flow: row dense;
 }
