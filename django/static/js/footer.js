@@ -4,14 +4,14 @@ $(window).scroll(function () {
   // console.log('window height : ',$(window).height())
   // console.log('document height : ', $(document).height())
 
+  const finalHeight = $('.wrap').outerHeight(true) - ($(window).height() * 0.9);
+  // console.log(finalHeight)
   if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-    console.log('끝')
-    $('footer').css({ 'bottom': '-3000px' });
-    $('footer').css({ 'display': 'flex' });
+    $('footer').css({ 'bottom': `-${finalHeight}px` });
+    $('footer').css({ 'display': 'block' });
 
   } else {
-    console.log('스크롤')
-    $('footer').css({ 'bottom': '-3000px' });
+    // $('footer').css({ 'bottom': `-${outerHeight}px` });
     $('footer').css({ 'display': 'none' });
 
   }

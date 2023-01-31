@@ -17,10 +17,10 @@ body {
 
 body:before {
   /* bottom: 0; */
-  content: "";
+  /* content: ""; */
   /* left: 0; */
-  min-height: 100vh;
-  position: absolute;
+  /* min-height: 100vh;
+  position: absolute; */
   /* right: 0; */
   /* top: 0; */
   /* transition: background-color .15s .2s; */
@@ -28,14 +28,14 @@ body:before {
 
 footer {
   background-color: #f3f3f3;
-  height: 8vh;
+  height: 70px;
   width: 100%;
   color: #737373;
-  /* display: flex; */
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  padding:25px;
   position: absolute;
   bottom: 0px;
+  overflow: hidden;
   /* transition: bottom 0.5s ease-in-out; */
 }
 

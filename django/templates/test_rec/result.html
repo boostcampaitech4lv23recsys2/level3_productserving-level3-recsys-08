@@ -14,9 +14,9 @@
           </div>
           <div class="cards_box_container">
             <div class="cards_box">
-                  
+              <div class="grid_full_result">나와 같은 유형의 캐릭터</div>      
               {% for character in data %}
-                <div class="card" data-character="{{character}}">
+                <div class="card">
                   <img
                     src="{{ character.img_src }}"
                     class="card_image"
@@ -26,8 +26,14 @@
                     <div class="card_title">{{ character.Character }}</div>
                     <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                       <div class="card_info_items">
-                        <div class="card_info_item"><span class="card_info_item_title">영화</span> | {{character.Contents}}</div>
-                        <div class="card_info_item"><span class="card_info_item_title">MBTI</span> | {{ character.MBTI }}</div>
+                        <div class="card_info_item">
+                          <span class="card_info_item_title">영화 {{character.Contents}}</span>
+                          
+                        </div>
+                        <div class="card_info_item">
+                          <span class="card_info_item_title">MBTI {{ character.MBTI }}</span>
+                          
+                        </div>
                       </div>
                       <div class="card_info_text_box">
                         <h6 class="card_info_text">유사도</h6>
@@ -35,14 +41,45 @@
                       </div>
                       <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                     </div>
-                    <button class="button mbti_button result_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >더보기</button>
+                    <button class="result_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button>
                   </div>
                 </div>
               {% endfor %}
             
             </div>
             <div class="cards_box">
-              Hello
+              <div class="grid_full_result">나와 잘맞는 유형의 캐릭터</div>      
+              {% for character in data %}
+              <div class="card">
+                <img
+                  src="{{ character.img_src }}"
+                  class="card_image"
+                  alt="Responsive image"
+                />
+                <div class="card_body">
+                  <div class="card_title">{{ character.Character }}</div>
+                  <div class="card_info" data-sim="{{character.Enneagram_sim}}">
+                    <div class="card_info_items">
+                      <div class="card_info_item">
+                        <span class="card_info_item_title">영화</span>
+                        {{character.Contents}}
+                      </div>
+                      <div class="card_info_item">
+                        <span class="card_info_item_title">MBTI</span>
+                        <p id="mbti"> {{ character.MBTI }}</p>  
+                      </div>
+                    </div>
+                    <div class="card_info_text_box">
+                      <h6 class="card_info_text">유사도</h6>
+                      <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
+                    </div>
+                    <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
+                  </div>
+                  <button class="result_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button>
+                </div>
+              </div>
+            {% endfor %}
+              
             </div>
           </div>
           
@@ -54,8 +91,14 @@
       <a href="#"><div class="button_top"><i class="fa-solid fa-arrow-up"></i></div></a>
     </div>
     <script>
-      let character = $('.card').attr('data-character');
-      let card = $('.card')
-
+      // result page width 100%
+      const wrap = $('.wrap')
+      $.ajax({
+        type:'POST',
+        url:'/test_rec/result_page',
+        success: function(response){
+           wrap.addClass('result_wrap');
+        }
+      })
     </script>
 {% endblock %}

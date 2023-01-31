@@ -1,26 +1,4 @@
 /* 전체 테스트 css */
-/* .test_question {
-  color: rgb(217, 72, 64);
-  margin-bottom: 3vh;
-  font-size: 2rem;
-  font-weight: 900;
-}
-
-.test_question_subtitle {
-  margin-bottom: 3vh;
-  font-size: 1.2rem;
-  font-weight: 500;
-  line-height: 1.7rem;
-  text-align: center;
-} */
-
-/* 테스트 form */
-/* .quiz_form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60vw;
-} */
 
 .button_box {
   width: 18vw;
@@ -50,7 +28,7 @@
   width: auto;
   background-color: rgb(201, 147, 142);
   font-size: 24px;
-    
+
 }
 
 .mbti_button:hover {
@@ -58,7 +36,7 @@
 }
 
 .engram_box {
-  width: 26vw;
+  width: 80%;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, minmax(5vh, auto));
@@ -69,14 +47,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 35vw;
+  width: 90%;
 }
 
 .engram_box_3 button {
   margin-bottom: 20px;
   line-height: 35px;
   padding: 2rem;
-  width: 700px;
+  width: 100%;
 }
 
 .span_text {
@@ -84,16 +62,15 @@
   font-weight: 900;
 }
 
-.test_question_example {
-  /* margin-top: -1vh; */
-  /* margin-bottom: 5vh; */
-  
+/* 영화 선택 페이지 */
+#movie_contents{
+  padding-left:20px;
 }
 
-/* 영화 선택 페이지 */
 .movie_box {
   width: 100%;
 }
+
 .movie_box2 {
   width: 100%;
   display: grid;
@@ -108,7 +85,7 @@
   margin-top: 30px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-self: center;
 }
 
@@ -116,7 +93,7 @@ input[type="checkbox"] {
   display: none;
 }
 
-input[type="checkbox"] + label {
+input[type="checkbox"]+label {
   cursor: pointer;
   width: 120px;
   height: 160px;
@@ -124,64 +101,58 @@ input[type="checkbox"] + label {
   border-radius: 1rem;
   box-shadow: 7px 7px 15px rgb(0, 0, 0, 0.7);
   transition: all 50ms ease-in-out;
-}
-
-input[type="checkbox"]:checked + label {
-  box-shadow: 0px 0px 17px rgb(219, 76, 119);
-  border-radius: 1rem;
   position: relative;
-  top: 6px;
 }
 
-/* 반응형 */
-@media (max-width: 1300px) {
-  /* .quiz_form {
-    width: 70vw;
-  } */
+input[type="checkbox"]+label:after {
+  content: '🤍';
+  display: none;
+  position: absolute;
+  top:0;
+  left:0;
+  padding-top: 67px;
+  padding-left: 47px;
+  font-size: 26px;
+  width:100%;
+  height:100%;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+}
 
-  .button_box {
-    width: 20vw;
+input[type="checkbox"]:checked+label:after {
+  display: block;
+}
+
+/* 결과화면 */
+.grid_full_result{
+  grid-column: 1 / 4;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.4vw;
+  line-height: 1.25vw;
+  vertical-align: bottom;
+  margin-bottom: 20px;
+}
+@media (max-width:1447px) {
+  #movie_contents{
+    width:70%;
   }
-
-  .engram_box {
-    width: 40vw;
-  }
-
-  .engram_box_3 {
-    width: 50vw;
+}
+@media (max-width:1131px){
+  #movie_contents{
+    padding: 0 25px;
+    width:72%;
   }
 }
 
 @media (max-width: 860px) {
-  .quiz_form {
-    width: 80vw;
-  }
-
-  .button_box {
-    width: 35vw;
-  }
-
-  .engram_box {
-    width: 64vw;
-  }
 
   .engram_box_3 {
     width: 80vw;
   }
+
   .engram_box_3 button {
     width: 75vw;
-  }
-}
-
-@media (max-width: 800px) {
-  .movie_box2 {
-    grid-template-rows: repeat(
-      auto-fit,
-      minmax(264px, 1fr)
-    ); /* last row will be 1fr */
-  }
-
-  .center_button {
-    grid-row: -1; /* it will be the last row */
   }
 }
