@@ -50,11 +50,11 @@ def model_recommend_movies(prefer_movie_ids, top_k, model_path='../interaction_m
     # recommend_movie_ids = list(set(recommend_movie_ids)) # 중복제거
     return recommend_movie_ids
 
-def mbti_filtering(mbti, mbti_mv, recommend_movie_ids):
+def mbti_filtering(mbti_list, mbti_mv, recommend_movie_ids):
     """입력받은 mbti로 필터링
 
     Args:
-        mbti (str): mbti string
+        mbti_list (list): mbti_list
         mbti_mv (dataframe): mbti와 movie lens의 movie_id가 결합된 데이터프레임
         recommend_movie_ids (list): 추천된 movie id list
 
@@ -63,7 +63,7 @@ def mbti_filtering(mbti, mbti_mv, recommend_movie_ids):
     """
     ## MBTI 필터링 -> 유사도 내림차순 정렬
     recommend_chars = mbti_mv[mbti_mv.movieId.isin(recommend_movie_ids)]
-    mbti_rec = recommend_chars[recommend_chars.MBTI==mbti]
+    mbti_rec = recommend_chars[recommend_chars.MBTI.isin(mbti_list)]
     return mbti_rec
 
 def engram_sorting(engram, mbti_rec, engram_sim) -> pd.DataFrame:
@@ -81,11 +81,11 @@ def engram_sorting(engram, mbti_rec, engram_sim) -> pd.DataFrame:
     mbti_rec_sort = mbti_rec.sort_values('Enneagram_sim', ascending=False)
     return mbti_rec_sort
 
-def user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10)->pd.DataFrame:
+def user_input_to_recommend(mbti_list, engram, prefer_movie_ids, top_k=10)->pd.DataFrame:
     """Form 으로 입력받은 User Input으로 부터 추천 데이터프레임 반환
 
     Args:
-        mbti (str): mbri string
+        mbti_list (list): mbti_list
         engram (str): 애니어그램 string
         prefer_movie_ids (list): 유저가 선호하는 movie list
         top_k (int, optional): Top K 추천. Defaults to 10.
@@ -99,7 +99,7 @@ def user_input_to_recommend(mbti, engram, prefer_movie_ids, top_k=10)->pd.DataFr
     engram_sim = pd.read_pickle(cur_filepath('Pickle/enneagram_similarity_075_099.pickle'))
     model_path=cur_filepath('../interaction_model/LightGCN_64')
     recommend_movie_ids = model_recommend_movies(prefer_movie_ids, top_k, model_path=model_path)
-    mbti_rec = mbti_filtering(mbti, mbti_movie, recommend_movie_ids)
+    mbti_rec = mbti_filtering(mbti_list, mbti_movie, recommend_movie_ids)
     mbti_rec_sort = engram_sorting(engram, mbti_rec, engram_sim)
     result = mbti_rec_sort.drop_duplicates(subset=['Character', 'Contents'])[:top_k]
     return result
