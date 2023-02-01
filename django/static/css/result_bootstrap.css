@@ -45,14 +45,6 @@
   text-align: center;
 }
 
-/* .test_question_subtitle {
-  margin-bottom: 1vh;
-}
-
-.test_question {
-  margin-bottom: 1vh;
-} */
-
 .container_header_bar {
   width: 25px;
   background-color: rgb(255, 213, 224);
@@ -77,16 +69,6 @@
 }
 .cards_box:first-child{
   margin-bottom: 50px;
-}
-.cards_box:last-child{
-  
-}
-.cards_box:first-child .character_card{
-  
-}
-
-.cards_box:last-child .character_card{
- 
 }
 .grid_full_result{
   align-self: center;
@@ -179,6 +161,7 @@
   text-align: left;
   font-size: 87%;
   line-height: 120%;
+  height: 35%;
   /* overflow:hidden; */
 }
 .card_info_item_title {
@@ -188,6 +171,7 @@
   white-space: nowrap;
   overflow:hidden;
   text-overflow: ellipsis;
+  height: 100%;
 }
 
 .card_info_text {

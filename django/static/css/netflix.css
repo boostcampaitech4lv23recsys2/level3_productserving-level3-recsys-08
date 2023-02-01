@@ -196,4 +196,52 @@
     .button_box{
         width:35vw;
     }
+
+    .cards_box_container{
+        width: 90%;
+    }
+    .cards_box{
+        grid-template-columns: 1fr;
+    }
+    .grid_full_result{
+        text-align: center;
+        font-weight: 600;
+        font-size: 25px;
+        background: none;
+        padding:10px;
+        width: auto;
+        border-radius: 0;
+        text-align: left;
+    }
+    .character_card{
+        width: auto;
+        height:auto;
+        border-radius: 0;
+    }
+    .card_image{
+        width:100%;
+        height: auto;
+        transform:none;
+        border-radius: 0;
+    }
+    .card_body{
+        display: inherit;
+        color:#383838;
+        position: inherit;
+        z-index: 0;
+        height: auto;
+    }
+    .character_card:hover .card_image{
+        transform: none;
+        /* transition: 1s; */
+      }
+    .character_card:hover .card_body{
+    color:#383838;
+    display: inherit;
+    }
+    .character_card:after{
+    content: none;
+    }
+    
+      
 }

@@ -14,8 +14,8 @@
           </div>
           <div class="cards_box_container">
             <div class="cards_box">
-              <div class="grid_full_result">나와 같은 유형의 캐릭터</div>      
-              {% for character in data %}
+              <div class="grid_full_result">나와 비슷한 캐릭터</div>      
+              {% for character in data1 %}
                 <div class="character_card">
                   <img
                     src="{{ character.img_src }}"
@@ -27,11 +27,15 @@
                     <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                       <div class="card_info_items">
                         <div class="card_info_item">
-                          <span class="card_info_item_title">영화 | {{character.Contents}}</span>
+                          <span class="card_info_item_title">영화 | {{character.ko_title}}</span>
                           
                         </div>
                         <div class="card_info_item">
                           <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                          
+                        </div>
+                        <div class="card_info_item">
+                          <span class="card_info_item_title">성격 | {{ character.hashtag }}</span>
                           
                         </div>
                       </div>
@@ -46,8 +50,8 @@
                 </div>
               {% endfor %}
                 
-              <div class="grid_full_result">나와 비슷한 유형의 캐릭터</div>      
-              {% for character in data %}
+              <div class="grid_full_result">매력적인 캐릭터</div>      
+              {% for character in data2 %}
                 <div class="character_card">
                   <img
                     src="{{ character.img_src }}"
@@ -59,11 +63,15 @@
                     <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                       <div class="card_info_items">
                         <div class="card_info_item">
-                          <span class="card_info_item_title">영화 | {{character.Contents}}</span>
+                          <span class="card_info_item_title">영화 | {{character.ko_title}}</span>
                           
                         </div>
                         <div class="card_info_item">
                           <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                          
+                        </div>
+                        <div class="card_info_item">
+                          <span class="card_info_item_title">성격 | {{ character.hashtag }}</span>
                           
                         </div>
                       </div>

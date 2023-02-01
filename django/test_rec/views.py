@@ -103,6 +103,7 @@ def movie_test(request):
 
     print(f">>>>>>>>>>>>>{len(selec_movie_ids)}")
     poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
+    print(f"{len(selec_movie_ids)=},  {len(poster_file_list)=}, {len(set(poster_file_list))=}")
     paginator1 = Paginator(poster_file_list, 20)
     page_number = request.GET.get('page') or 1
     page_obj1 = paginator1.get_page(page_number)
@@ -140,31 +141,46 @@ def result_page(request):
             
             interaction_movie_list = [i for i in movie_list if i < 300_000]
             side_info_movie_list = [i for i in movie_list if i >= 300_000]
+
+            fit_mbti_dict_path = pickle_path / '230201_fit_mbti_dict.pickle'
+            with open(fit_mbti_dict_path, 'rb') as f:
+                 fit_mbti_dict = pickle.load(f)
+            user_fit_MBTI = fit_mbti_dict[user.MBTI]
+            mbti_list=[user.MBTI,user_fit_MBTI]
             result=pd.DataFrame()
             if interaction_movie_list:
-                result1 = user_input_to_recommend(user.MBTI, user.ennea_res, interaction_movie_list, 60)
+                result1 = user_input_to_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
                 result = pd.concat([result, result1])
                 print('>>>>',result1.shape)
             if side_info_movie_list:
-                result2 = user_input_to_side_recommend(user.MBTI, user.ennea_res, interaction_movie_list, 60)
+                result2 = user_input_to_side_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
                 result = pd.concat([result, result2])
                 print('>>>>',result2.shape)
             print(f"{result.shape=}")
             result = result[result.Enneagram_sim.notna()]
             result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
+            characterid_to_hashtag_path = pickle_path / '230201_characterid_to_hashtag.pickle'
+            with open(characterid_to_hashtag_path, 'rb') as f:
+                characterid_to_hashtag = pickle.load(f)
             # 추천된 캐릭터 유저정보에 저장
             character_list = result['CharacterId'].values.tolist()
             character_list = [str(i) for i in character_list]
             user.recommended_character_id = json.dumps(character_list)
             user.save()
             # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
-            cols=['CharacterId','Character','Contents','MBTI','img_src','Enneagram_sim']
-            result_list = result[cols][:20].to_dict(orient='records')
+            cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+            result = result.merge(movie_df[['movieId','ko_title','npop']])
+            result['hashtag'] = result.CharacterId.map(characterid_to_hashtag)
+            print(result[cols][:3])
+            character_df
+            result_list = result[result.MBTI==user.MBTI][cols][:20].to_dict(orient='records')
             paginator = Paginator(result_list, 20)
             page_number = request.GET.get('page') or 1
             page_obj = paginator.get_page(page_number)
-            context = {"data": result_list, 'page_obj': page_obj}
+            
+            result_list2 = result[result.MBTI==user_fit_MBTI][cols][:20].to_dict(orient='records')
 
+            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj}
             return render(request, 'test_rec/result.html', context)
         else:
             return render(request, 'test_rec/result.html')

@@ -77,14 +77,9 @@ footer {
   font-weight: 500;
 }
 
-/* .contents {
-  display: flex;
-  flex-direction: column;
-  align-items: center; */
-/* contents 부분 높이 조절 */
-/* padding: 8vh;
-  width: 60%;
-}  */
+.main_contents{
+  align-items: center;
+}
 
 .img_box {
   width: 60vw;
