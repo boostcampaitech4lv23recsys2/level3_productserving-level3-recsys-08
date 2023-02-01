@@ -1,7 +1,12 @@
 <nav class="navbar navbar-expand-lg bg-light border-bottom">
-    <div class="container-fluid" style="padding-left: 3%; text-align: left;">
+    <div class="container-fluid" style="padding-left: 3%; text-align: left; min-width: 460px;">
       <a class="navbar-brand" href="{% url 'index' %}" style="font-size: 2rem;"><strong>MVTI</strong></a>
       <h2 style="text-align:left; font-size: 15px; padding-bottom: 15px; float: left;">ITS</h2>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% comment %} <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li> {% endcomment %}
+      </ul>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
