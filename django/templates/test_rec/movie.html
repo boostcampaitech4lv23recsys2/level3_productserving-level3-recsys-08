@@ -2,6 +2,8 @@
 {% load static %} 
 {% load split_movieId_title %}
 {% block contents %}
+<div class="wrap"> 
+
   <div class="left_header">
     <h1 class="test_question">Q5.</h1>
     <h3 class="test_question_subtitle">좋아하는 영화를 5개이상 골라주세요!</h3>  
@@ -18,13 +20,13 @@
       action="{% url 'test_rec:result_page' %}"
     >
       <div class="movie_box2 infinite-container">
-        {% for movie in page_obj %}
+        {% for movie, ko_title in zip_page_obj %}
             <div class="infinite-item">
               <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
               <label
                 for="{{ movie }}"
                 style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
-                data-bs-toggle="tooltip" data-bs-title="{{ movie | slice:':-4' | split_movieId_title }}"
+                data-bs-toggle="tooltip" data-bs-title="{{ ko_title }}"
               >
             </label>
             </div>
@@ -48,7 +50,7 @@
       </div>
     </form>
   </div>
-
+</div>
   <script>
 
     function movieClick(){

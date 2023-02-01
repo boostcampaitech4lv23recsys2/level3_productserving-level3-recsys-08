@@ -86,6 +86,7 @@
     flex-direction: column;
     width: 60%;
     margin-top:80px;
+    /* align-items: center; */
 }
 .movie_contents{
     height: 100%;
@@ -115,15 +116,9 @@
     padding: 24px 22%;
     position: fixed;
     width: 100%;
-    z-index: 12;
+    z-index: 21;
     border-radius: 4px;
 }
-
-/* result.html css */
-.result_wrap{
-    width:100%;
-    padding-top:0;
-  }
 
 @media (max-width:1410px){
     .wrap{
@@ -131,6 +126,9 @@
     }
     .button_box {
         width: 20vw;
+    }
+    .cards_box_container{
+        width:95%;
     }
 }
 @media (max-width: 1200px) {
@@ -185,11 +183,99 @@
     }
 }
 
+/* 모바일 */
 @media (max-width: 600px){
     .wrap{
         width:85%;
     }
     .button_box{
         width:35vw;
+    }
+}
+@media (max-width:622px) {
+    .contents_result{
+        width:90%;
+        background-color: white;
+        padding:0;
+    }
+    .cards_box_container{
+        width: 90%;
+        margin-top:10px;
+    }
+    .cards_box{
+        grid-template-columns: 1fr;
+    }
+    .cards_category{
+        text-align: center;
+        font-weight: 600;
+        font-size: 25px;
+        background: none;
+        padding:10px;
+        width: auto;
+        height:100px;
+        border-radius: 0;
+        text-align: left;
+        padding:20px;
+    }
+    .character_card{
+        width: auto;
+        height:auto;
+        border-radius: 0;
+    }
+    .card_image{
+        width:100%;
+        height: auto;
+        transform:none;
+        border-radius: 0;
+    }
+    .card_body{
+        display: inherit;
+        color:#383838;
+        position: inherit;
+        z-index: 0;
+        height: auto;
+    }
+    .character_card:hover .card_image{
+        transform: none;
+        /* transition: 1s; */
+      }
+    .character_card:hover .card_body{
+    color:#383838;
+    display: inherit;
+    }
+    .character_card:after{
+    content: none;
+    }
+    .card_title{
+        font-size:100%;
+        margin-bottom: 5px;
+    }
+    .card_info{
+        padding: 0 10px;
+    }
+    .card_info_items_box{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+    }
+    .card_info_item{
+        height: auto;
+        font-size:inherit
+    }
+    .card_info_item_tag{
+        font-size:80%;
+        color:#767676;
+    }
+    .card_info_text{
+        font-size:12px;
+    }
+    .card_info_text_box{
+        margin: 5px 33px 0px 30px;
+    }
+    #progress{
+        width: 90%;
+        height: 10px;
+        margin-left:5%;
     }
 }

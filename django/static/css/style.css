@@ -32,7 +32,7 @@ footer {
   width: 100%;
   color: #737373;
   text-align: center;
-  padding:25px;
+  padding: 25px;
   position: absolute;
   bottom: 0px;
   overflow: hidden;
@@ -77,14 +77,9 @@ footer {
   font-weight: 500;
 }
 
-/* .contents {
-  display: flex;
-  flex-direction: column;
-  align-items: center; */
-/* contents 부분 높이 조절 */
-/* padding: 8vh;
-  width: 60%;
-}  */
+.main_contents{
+  align-items: center;
+}
 
 .img_box {
   width: 60vw;
@@ -119,23 +114,29 @@ footer {
 }
 
 /* Spinner */
-.not_visible{
+.not_visible {
   display: none;
 }
 
 #loading {
   display: none;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top:0;
-	left:0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
+
 @keyframes spinner {
-  from {transform: rotate(0deg); }
-  to {transform: rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
- 
+
 #loading .spinner {
   box-sizing: border-box;
   position: absolute;
@@ -149,9 +150,10 @@ footer {
   border: 8px solid transparent;
   border-top-color: #f19022;
   border-bottom-color: #f19022;
-  animation: spinner 0.7s ease-in-out infinite;
+  animation: spinner 0.9s ease-in-out infinite;
 }
-.spinner_text{
+
+.spinner_text {
   box-sizing: border-box;
   position: absolute;
   top: 59%;
@@ -160,16 +162,16 @@ footer {
   margin-left: -43px;
   font-weight: 900;
   font-size: 20px;
-  color:#f19022
+  color: #f19022
 }
 
 /* confirm_check */
-.success-checkmark{
+.success-checkmark {
   display: none;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
   left: 0;
 }
 
@@ -179,17 +181,19 @@ footer {
     width: 0;
     height: 0;
   }
-  
+
   50% {
     opacity: 1;
     width: 0;
     height: 32px;
   }
+
   100% {
     width: 64px;
   }
 }
-.check-icon{
+
+.check-icon {
   position: fixed;
   left: calc(50% + 10px);
   top: calc(50% + 16px);
@@ -204,7 +208,7 @@ footer {
   animation: start 0.5s ease both;
 }
 
-.check_text{
+.check_text {
   box-sizing: border-box;
   position: absolute;
   top: 59%;
@@ -213,7 +217,7 @@ footer {
   margin-left: -40px;
   font-weight: 900;
   font-size: 20px;
-  color:#28ac8e;
+  color: #28ac8e;
 }
 
 
