@@ -2,21 +2,29 @@
 {% load static %} 
 {% block contents %}
     <div class="container_result">
-      {% comment %} <div class="header header_result">
-        <img class="header_image" src="https://www.16personalities.com/static/images/system/research/united-states-personalities.svg" alt="film" />
-      </div> {% endcomment %}
+      <div class="nav_result">
+        <div class="nav_result_box">
+          <a href="#mbti" class="nav_result_li">나와 비슷한 캐릭터</a>
+          <a href="#attractive" class="nav_result_li">매력적인 캐릭터</a>
+        </div>
+      </div>
+      <div class="header_result">
+        {% comment %} <img class="header_image" src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="film" /> {% endcomment %}
+      </div>
       <div class="contents_result">
         
-          <div class="contents_header">
+          {% comment %} <div class="contents_header">
             <h3 class="test_question_subtitle">MBTI 기반 컨텐츠</h3>
             <h2 class="test_question">추천 결과</h2>
             <div class="container_header_bar"></div>
-          </div>
+          </div> {% endcomment %}
           <div class="cards_box_container">
             <div class="cards_box">
-              <div class="grid_full_result">나와 비슷한 캐릭터</div>      
+              <div class="cards_category">
+                <div id="mbti" class="cards_caategory_text">나와 비슷한 캐릭터</div>
+              </div>
               {% for character in data1 %}
-                <div class="character_card">
+                <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                   <img
                     src="{{ character.img_src }}"
                     class="card_image"
@@ -26,17 +34,16 @@
                     <div class="card_title">{{ character.Character }}</div>
                     <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                       <div class="card_info_items">
-                        <div class="card_info_item">
-                          <span class="card_info_item_title">영화 | {{character.ko_title}}</span>
-                          
+                        <div class="card_info_items_box">
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">{{character.ko_title}}</span>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                          </div>
                         </div>
                         <div class="card_info_item">
-                          <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
-                          
-                        </div>
-                        <div class="card_info_item">
-                          <span class="card_info_item_title">성격 | {{ character.hashtag }}</span>
-                          
+                          <span class="card_info_item_tag">{{ character.hashtag }}</span>
                         </div>
                       </div>
                       <div class="card_info_text_box">
@@ -45,14 +52,16 @@
                       </div>
                       <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                     </div>
-                    <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button>
+                    {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
                   </div>
                 </div>
               {% endfor %}
                 
-              <div class="grid_full_result">매력적인 캐릭터</div>      
+              <div class="cards_category category_color">
+                <div id="attractive" class="cards_caategory_text">매력적인 캐릭터</div>
+              </div>
               {% for character in data2 %}
-                <div class="character_card">
+                <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                   <img
                     src="{{ character.img_src }}"
                     class="card_image"
@@ -63,7 +72,7 @@
                     <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                       <div class="card_info_items">
                         <div class="card_info_item">
-                          <span class="card_info_item_title">영화 | {{character.ko_title}}</span>
+                          <span class="card_info_item_title">{{character.ko_title}}</span>
                           
                         </div>
                         <div class="card_info_item">
@@ -71,7 +80,7 @@
                           
                         </div>
                         <div class="card_info_item">
-                          <span class="card_info_item_title">성격 | {{ character.hashtag }}</span>
+                          <span class="card_info_item_tag">{{ character.hashtag }}</span>
                           
                         </div>
                       </div>
@@ -81,7 +90,7 @@
                       </div>
                       <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                     </div>
-                    <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button>
+                    {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
                   </div>
                 </div>
               {% endfor %}

@@ -53,8 +53,14 @@ const loading = async () => {
 
 }
 
+async function scrollTop(){
+  $("html").scrollTop(0);
+}
+
 async function submitForm(e) {
   e.preventDefault();
+  // document.documentElement.scrollTop = 0;
+  await scrollTop();
   await loading();
   document.querySelector('.movie_box').submit()
 }

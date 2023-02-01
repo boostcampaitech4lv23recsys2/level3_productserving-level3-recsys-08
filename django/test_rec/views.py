@@ -156,7 +156,7 @@ def result_page(request):
                 result2 = user_input_to_side_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
                 result = pd.concat([result, result2])
                 print('>>>>',result2.shape)
-            print(f"{result.shape=}")
+            print(f"{result.movieId.nunique()=} {result.shape=}")
             result = result[result.Enneagram_sim.notna()]
             result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
             characterid_to_hashtag_path = pickle_path / '230201_characterid_to_hashtag.pickle'
@@ -172,7 +172,6 @@ def result_page(request):
             result = result.merge(movie_df[['movieId','ko_title','npop']])
             result['hashtag'] = result.CharacterId.map(characterid_to_hashtag)
             print(result[cols][:3])
-            character_df
             result_list = result[result.MBTI==user.MBTI][cols][:20].to_dict(orient='records')
             paginator = Paginator(result_list, 20)
             page_number = request.GET.get('page') or 1
