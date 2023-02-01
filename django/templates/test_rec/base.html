@@ -23,7 +23,7 @@
     ></script>
     
     {% comment %} 폰트어썸 {% endcomment %}
-    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script src="https://kit.fontawesome.com/eb52efc223.js" crossorigin="anonymous"></script>
     
     {% comment %} jquery {% endcomment %}
     <script src=
@@ -36,6 +36,8 @@
     {% comment %} Custom {% endcomment %}
     <script src="{% static 'js/footer.js' %}" ></script>
     <script src="{% static 'js/movie.js' %}"></script>
+    <script src="{% static 'js/result.js' %}"></script>
+
     
     {% comment %} Infinite Scroll {% endcomment %}
     <script src="{% static 'js/noframework.waypoints.min.js' %}"></script>
@@ -55,10 +57,8 @@
     {% include "test_rec/loading.html" %}
     {% include "test_rec/nav.html" %}
     <div class="contents_container">
-      <div class="wrap"> 
-        {% block contents %} 
-        {% endblock %}
-      </div>
+    {% block contents %} 
+    {% endblock %}
     </div>
     
     {% include "test_rec/footer.html" %}
