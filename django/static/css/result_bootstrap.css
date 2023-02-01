@@ -1,12 +1,24 @@
-#result_wrap{
+/* result.html css */
+.result_wrap{
   width:100%;
   padding-top:0;
+  position:absolute;
+  top:10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom:10vh;
+  /* background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-position:center; */
 }
 
 .container_result {
   width:100%;
 }
 
+/* 네비게이션 */
 .nav_result{
   background: #fff;
   position: sticky;
@@ -33,37 +45,53 @@
   color:#111;
 }
 
+/* 헤더이미지 */
 .header_result {
   /* background-color: rgb(199, 32, 3); */
-  /* height: auto;
-  padding-top: 0;
-  width:100%; */
-  -webkit-filter: brightness(0.70);filter: brightness(0.70);
+  /* -webkit-filter: brightness(0.70);filter: brightness(0.70); */
   background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80') no-repeat;
+  /* background:url('https://t1.daumcdn.net/cfile/tistory/23244237550DBE651D'); */
+  
   background-size:cover;
   background-position: center;
-  height: 30%;
-  margin-bottom: 40px;
+  height: 400px;
+  /* margin-bottom: 40px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .header_image{
   background-image: center;
 }
+.contents_header_title{
+  font-size:46px;
+  font-weight: 700;
+}
+.contents_header_subtitle{
+  font-size:28px;
+}
 
-
+/* contents */
+.background_wrap{
+  background: linear-gradient(#240405, transparent);
+  /* background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+  background-size:cover; */
+  /* background-position: center; */
+  display: flex;
+  justify-content: center;
+}
 .contents_result {
-  background: linear-gradient(#4c4c4c, 0%, white 20%);
-  background: linear-gradient(#3e0a0f, 0%, white 50%);
-  
-  width: 100%;
+  background-color: #000000;;
+  width: 80%;
   /* margin-top:80px; */
-  /* padding: 0 30px; */
+  padding: 0 30px;
+  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  /* border-radius: 2rem; */
-  /* background-color: black; */
+  margin-top:-40px;
+  padding-top:40px;
 }
 
 .contents_box {
@@ -77,8 +105,10 @@
 .contents_header {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   text-align: center;
+  color:white;
 }
 
 .container_header_bar {
@@ -93,7 +123,7 @@
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
-  width: 80%;
+  width: 100%;
 }
 
 .cards_box {
@@ -104,7 +134,7 @@
   gap: 5px;
 }
 .cards_box:first-child{
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 .cards_category{
   align-self: center;
@@ -288,7 +318,8 @@
 .retest_button {
   margin-top:15px;
   margin-bottom:30px;
-
+  padding: 0;
+  border-radius: 2rem;
 }
 .result_button{
   width: 200px;
@@ -319,6 +350,7 @@
   width: 70%;
   float: left;
   margin: 2vh 4vw;
+  color:white;
 }
 
 .character {
@@ -400,7 +432,7 @@
   display: flex;
   align-items: center;
 
-  color: black;
+  color: white;
   padding: 5px;
 }
 
