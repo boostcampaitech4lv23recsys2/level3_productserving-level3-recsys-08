@@ -257,12 +257,13 @@
                 />               
             </div>                               
             {% else %}
-            <h2 class="block_title" style="padding-bottom: 5px">나의 테스트 정보가 없습니다!</h2>
-            <p>로그인이나 회원가입을 해주세요.</p>
-            <a href="{% url 'common:login' %}" class="btn btn-outline-success" type="button">Log in</a>
-            <a href="{% url 'common:signup' %}" class="btn btn-outline-success" type="button">Sign up</a>
-            {% endif %}
+            <div class="main-box" style="text-align: left; padding-left: 3%">
+              <h2 class="block_title" style="padding-bottom: 5px">나의 테스트 정보가 없습니다!</h2>
+              <p>로그인이나 회원가입을 해주세요.</p>
+              <a href="{% url 'common:login' %}" class="btn btn-outline-success" type="button">Log in</a>
+              <a href="{% url 'common:signup' %}" class="btn btn-outline-success" type="button">Sign up</a>
             </div>
+            {% endif %}
       </section>
     </div>
   </div>
