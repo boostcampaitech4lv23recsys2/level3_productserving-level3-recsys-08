@@ -113,6 +113,6 @@ def user_profile(request):
         'mbti': mbti,
         'prefer_movie_posters' : prefer_movie_posters,
         'character_images' : character_images,
-        'tmpusers' : tmpusers,
+        'tmpusers' : tmpusers[:min(5, len(tmpusers))],
     }
     return render(request, 'common/user_profile.html', context)
