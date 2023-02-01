@@ -11,7 +11,7 @@ from pathlib import Path
 from .models import TmpUser
 import sys
 sys.path.append('..')
-from Utils import user_input_to_recommend, movie_select_2
+from Utils import user_input_to_recommend, final_movie_select, user_input_to_side_recommend
 
 
 def print_TmpUserInfo(user):
@@ -31,14 +31,9 @@ with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
 
-ch2mv_path = pickle_path / 'characterId_to_movieId.pickle'
-with open(ch2mv_path,'rb') as f:
-    characterId_to_movieId = pickle.load(f)
-
-
-mbti_df = pd.read_pickle(pickle_path / 'MBTI_merge_movieLens_3229_movie.pickle')
-movie_genre_plot = pd.read_pickle(pickle_path / 'movie_genre_plot.pickle')
-watch_link =  pd.read_pickle(pickle_path / 'watch_link_3229movie_4462_rows.pickle')
+character_df = pd.read_pickle(pickle_path / '230130_Popular_movie_character_2867_cwj.pickle')
+movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
+watch_link =  pd.read_pickle(pickle_path / '230131_watch_link_4679_rows.pickle')
 
 
 @csrf_exempt
@@ -99,18 +94,32 @@ def movie_test(request):
         ans3 = request.POST.get('enneagram3')
         user.ennea_res = ans3
         user.save()
+
     # 추천할 영화리스트 불러오기
+    N_movies=100
     seed = random.randint(0,int(1e6))
     print(f">>>{seed = }")
-    selec_movie_ids = movie_select_2(seed, 100)
+    selec_movie_ids = list(set(final_movie_select(seed, N_movies)))
+
+    print(f">>>>>>>>>>>>>{len(selec_movie_ids)}")
     poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
-    
-    paginator = Paginator(poster_file_list, 20)
+    print(f"{len(selec_movie_ids)=},  {len(poster_file_list)=}, {len(set(poster_file_list))=}")
+    paginator1 = Paginator(poster_file_list, 20)
     page_number = request.GET.get('page') or 1
-    page_obj = paginator.get_page(page_number)
+    page_obj1 = paginator1.get_page(page_number)
+
+    movieid2kotitle = dict(zip(movie_df.movieId, movie_df.ko_title))
+    ko_title_list = [movieid2kotitle[id] for id in selec_movie_ids]
+    paginator2 = Paginator(ko_title_list, 20)
+    page_number = request.GET.get('page') or 1
+    page_obj2 = paginator2.get_page(page_number)
+
+    ziped_page_obj = zip(page_obj1, page_obj2)
+
     context = {
-        'movies' : poster_file_list,
-        'page_obj': page_obj
+        'length' : len(poster_file_list),
+        'page_obj': page_obj1,
+        'zip_page_obj': ziped_page_obj
     }
     return render(request, 'test_rec/movie.html', context)
 
@@ -124,34 +133,65 @@ def result_page(request):
         # 이전 페이지의 영화선택 받아서 유저정보에 저장
         movies = request.POST.getlist('movies')
         movie_list = [i.split('_')[0] for i in movies]
-        user.prefer_movie_id = json.dumps(movie_list)
-        # 유저정보가 선호한 영화리스트를 바탕으로 캐릭터 추천
-        movie_list = [int(i) for i in movie_list]
-        result = user_input_to_recommend(user.MBTI, user.ennea_res, movie_list, 60)
-        result = result[result.Enneagram_sim.notna()]
-        result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
-        # 추천된 캐릭터 유저정보에 저장
-        character_list = result['CharacterId'].values.tolist()
-        character_list = [str(i) for i in character_list]
-        user.recommended_character_id = json.dumps(character_list)
-        user.save()
-        # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
-        cols=['CharacterId','Character','Contents','MBTI','img_src','Enneagram_sim']
-        result_list = result[cols].to_dict(orient='records')
-        paginator = Paginator(result_list, 20)
-        page_number = request.GET.get('page') or 1
-        page_obj = paginator.get_page(page_number)
-        context = {"data": result_list, 'page_obj': page_obj}
+        print(f"{movie_list=}")
+        if movie_list:
+            user.prefer_movie_id = json.dumps(movie_list)
+            # 유저정보가 선호한 영화리스트를 바탕으로 캐릭터 추천
+            movie_list = [int(i) for i in movie_list]
+            
+            interaction_movie_list = [i for i in movie_list if i < 300_000]
+            side_info_movie_list = [i for i in movie_list if i >= 300_000]
 
-        return render(request, 'test_rec/result.html', context)
+            fit_mbti_dict_path = pickle_path / '230201_fit_mbti_dict.pickle'
+            with open(fit_mbti_dict_path, 'rb') as f:
+                 fit_mbti_dict = pickle.load(f)
+            user_fit_MBTI = fit_mbti_dict[user.MBTI]
+            mbti_list=[user.MBTI,user_fit_MBTI]
+            result=pd.DataFrame()
+            if interaction_movie_list:
+                result1 = user_input_to_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
+                result = pd.concat([result, result1])
+                print('>>>>',result1.shape)
+            if side_info_movie_list:
+                result2 = user_input_to_side_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
+                result = pd.concat([result, result2])
+                print('>>>>',result2.shape)
+            print(f"{result.shape=}")
+            result = result[result.Enneagram_sim.notna()]
+            result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
+            characterid_to_hashtag_path = pickle_path / '230201_characterid_to_hashtag.pickle'
+            with open(characterid_to_hashtag_path, 'rb') as f:
+                characterid_to_hashtag = pickle.load(f)
+            # 추천된 캐릭터 유저정보에 저장
+            character_list = result['CharacterId'].values.tolist()
+            character_list = [str(i) for i in character_list]
+            user.recommended_character_id = json.dumps(character_list)
+            user.save()
+            # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
+            cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+            result = result.merge(movie_df[['movieId','ko_title','npop']])
+            result['hashtag'] = result.CharacterId.map(characterid_to_hashtag)
+            print(result[cols][:3])
+            character_df
+            result_list = result[result.MBTI==user.MBTI][cols][:20].to_dict(orient='records')
+            paginator = Paginator(result_list, 20)
+            page_number = request.GET.get('page') or 1
+            page_obj = paginator.get_page(page_number)
+            
+            result_list2 = result[result.MBTI==user_fit_MBTI][cols][:20].to_dict(orient='records')
+
+            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj}
+            return render(request, 'test_rec/result.html', context)
+        else:
+            return render(request, 'test_rec/result.html')
 
 
 @csrf_exempt
 def result_movie(request, character_id):
-    need_cols=['Character','Contents','movieId']
-    character_name, movie_title, movie_id = mbti_df[mbti_df.CharacterId==int(character_id)][need_cols].values[0]
+    need_cols=['Character','movieId']
+    character_name, movie_id = character_df[character_df.CharacterId==int(character_id)][need_cols].values[0]
     posterfile_path = movieId_to_posterfile[movie_id]
-    genres, plot = movie_genre_plot[movie_genre_plot.movieId==movie_id][['ko_genres','ko_plot']].values[0]
+    movie_title, genres, plot = movie_df[movie_df.movieId==movie_id][['ko_title','ko_genre','ko_plot']].values[0]
     result_movie ={
         'name': character_name,
         'movie' : movie_title,

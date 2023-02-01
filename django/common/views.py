@@ -73,7 +73,7 @@ def index(request):
     context = {
         'my_person_list': [],
         'datetime' : "",
-        'characters' : ['ryuseungryong','wednesday']
+        'characters' : []
     }
     return render(request, 'index.html', context)
 

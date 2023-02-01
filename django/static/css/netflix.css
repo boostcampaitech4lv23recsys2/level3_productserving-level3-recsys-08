@@ -1,0 +1,247 @@
+/* Nav bar style */
+.nav_box{
+    width:90%;
+    height:10vh;
+    border-bottom: 1px solid #e6e6e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 5vw;
+    background-color: transparent;
+    z-index: 2;
+    position: relative;
+}
+.nav_box_logo{
+    color:#d22f27;
+    font-weight: 900;
+    font-size: 32px;
+}
+.nav_box_login{
+    color:#383838;
+}
+
+/* start test 페이지 style */
+.main_container{
+    position:absolute;
+    top:10vh;
+    width:100%;
+    height:82vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.contents_container{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    background-color: transparent;
+    flex-grow:1;
+    margin-bottom:10vh;
+}
+.main_header{
+    max-width:70%;
+}
+.main_header_h1{
+    font-size: 50px;
+    text-align: center;
+}
+
+/* Test 페이지 style */
+.wrap{
+    position:absolute;
+    top:10vh;
+    width:60%;
+    display: flex;
+    justify-content: center;
+    padding-top: 3%;
+    padding-bottom:10vh;
+}
+
+.left_header{
+    width: 40%;
+}
+.test_question {
+    color: rgb(217, 72, 64);
+    margin-bottom: 3vh;
+    font-size: 2rem;
+    font-weight: 900;
+  }
+.test_question_subtitle {
+    margin-bottom: 3vh;
+    font-size: 28px;
+    font-weight: 500;
+    display: inline-block;
+    line-height: 40px;
+    
+}
+.test_question_example{
+    font-size:22px;
+}
+.contents{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin-top:80px;
+    /* align-items: center; */
+}
+.movie_contents{
+    height: 100%;
+    overflow: scroll;
+}
+.quiz_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.movie_box2{
+    margin: 15px -2% 15px -1%;
+}
+
+.movie_button{
+    background-color: #e5e5e5;
+    padding: 12px 74px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.fixed_button{
+    background: linear-gradient(0deg,#fff 80%,hsla(0,0%,100%,0));
+    bottom: 0;
+    left: 0;
+    padding: 24px 22%;
+    position: fixed;
+    width: 100%;
+    z-index: 21;
+    border-radius: 4px;
+}
+
+/* result.html css */
+.result_wrap{
+    width:100%;
+    padding-top:0;
+  }
+
+@media (max-width:1410px){
+    .wrap{
+        width:80%;
+    }
+    .button_box {
+        width: 20vw;
+    }
+    .cards_box_container{
+        width:95%;
+    }
+}
+@media (max-width: 1200px) {
+    .button_box{
+        width:23vw;
+    }
+}
+
+/* 세로로 배치 */
+@media (max-width:954px) {
+    .wrap{
+      flex-direction: column;
+      align-items: center;
+    }
+    .left_header{
+      width:100%;
+      margin-right: 0;
+    }
+    #movie_contents{
+      width:100%;
+    }
+    .contents{
+        width:100%;
+    }
+    .button_box {
+        width: 25vw;
+      }
+  }
+
+@media (max-width: 860px){
+    .main_header{
+        max-width:100%;
+    }
+    .main_header_h1{
+        font-size:30px
+    }
+    .img_box{
+        width:90vw;
+    }
+    .contents{
+        width:100%;
+        
+    }
+    .left_header{
+        width: 100%;
+    }
+    .button_box {
+        width: 32vw;
+      }
+    .engram_box{
+        width:88%;
+    }
+}
+
+@media (max-width: 600px){
+    .wrap{
+        width:85%;
+    }
+    .button_box{
+        width:35vw;
+    }
+
+    .cards_box_container{
+        width: 90%;
+    }
+    .cards_box{
+        grid-template-columns: 1fr;
+    }
+    .grid_full_result{
+        text-align: center;
+        font-weight: 600;
+        font-size: 25px;
+        background: none;
+        padding:10px;
+        width: auto;
+        border-radius: 0;
+        text-align: left;
+    }
+    .character_card{
+        width: auto;
+        height:auto;
+        border-radius: 0;
+    }
+    .card_image{
+        width:100%;
+        height: auto;
+        transform:none;
+        border-radius: 0;
+    }
+    .card_body{
+        display: inherit;
+        color:#383838;
+        position: inherit;
+        z-index: 0;
+        height: auto;
+    }
+    .character_card:hover .card_image{
+        transform: none;
+        /* transition: 1s; */
+      }
+    .character_card:hover .card_body{
+    color:#383838;
+    display: inherit;
+    }
+    .character_card:after{
+    content: none;
+    }
+    
+      
+}
