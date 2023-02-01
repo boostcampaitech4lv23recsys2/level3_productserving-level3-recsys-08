@@ -116,3 +116,9 @@ def user_profile(request):
         'tmpusers' : tmpusers[:min(5, len(tmpusers))],
     }
     return render(request, 'common/user_profile.html', context)
+
+@login_required(login_url='common:login')
+def delete_tmpuser(request, tmpuser_id):
+    tmpuser = TmpUser.objects.get(id=tmpuser_id)
+    tmpuser.delete()
+    return redirect('common:user_profile')

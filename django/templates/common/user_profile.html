@@ -95,9 +95,9 @@
                     <td>{{ tmpuser.MBTI }}</td>
                     <td>{{ tmpuser.create_time }}</td>
                     <td>
-                      <!-- <a href="{% url 'practice:result' %}"> -->
+                      <a href="{% url 'common:delete_tmpuser' tmpuser.id %}">
                         <button class="favorite styled" type="button">삭제하기</button>
-                      <!-- </a> -->
+                      </a>
                     </td>
                   </tr>
                   {% endfor %}
