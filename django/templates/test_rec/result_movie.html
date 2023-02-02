@@ -17,6 +17,19 @@
 
             <div class="character">
               <div class="poster_box">
+                <img src="{{character.img_path}}" alt="character" class="character_image"/>
+              </div>
+              <div class="character_body_info">
+                <div class="character_title">{{ character.name }}</div>
+                <div class="character_info">MBTI, Engram 정보</div>
+                <div class="character_info">#열여덟 #잘생김 #해시태그자리</div>
+                <div class="character_info">{{ character.char_info }}</div>
+              </div>
+            </div>
+
+            <div class="character_title">캐릭터가 등장한 작품</div>
+            <div class="movie">
+              <div class="poster_box">
                 <img
                   src="/static/img/{{ data.img_path }}"
                   alt="Responsive image"
