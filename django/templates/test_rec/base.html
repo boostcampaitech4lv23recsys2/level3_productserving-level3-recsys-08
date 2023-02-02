@@ -23,7 +23,7 @@
     ></script>
     
     {% comment %} 폰트어썸 {% endcomment %}
-    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script src="https://kit.fontawesome.com/eb52efc223.js" crossorigin="anonymous"></script>
     
     {% comment %} jquery {% endcomment %}
     <script src=
@@ -32,33 +32,31 @@
 
     {% comment %} sweetalert {% endcomment %}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    {% comment %} Spinner {% endcomment %}
-    <script src="{% static 'spinner.js' %}"></script>
+    
+    {% comment %} Custom {% endcomment %}
+    <script src="{% static 'js/footer.js' %}" ></script>
+    <script src="{% static 'js/movie.js' %}"></script>
     
     {% comment %} Infinite Scroll {% endcomment %}
-    <script src="{% static 'noframework.waypoints.min.js' %}"></script>
-    <script src="{% static 'jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'infinite.min.js' %}"></script>
+    <script src="{% static 'js/noframework.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
 
     {% comment %} css {% endcomment %}
-    <link rel="stylesheet" href="{% static 'reset.css' %}" />
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <link rel="stylesheet" href="{% static 'test.css' %}" />
-    <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
-    <link rel="stylesheet" href="{% static 'netflix.css' %}" />
-    
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/test.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/result_bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/netflix.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/result_movie.css' %}" />
   </head>
   <body>
-    {% include "test_rec/loading.html" %}
     {% comment %} {% include 'navbar.html' %} {% endcomment %}
+    {% include "test_rec/loading.html" %}
     {% include "test_rec/nav.html" %}
-    
     <div class="contents_container">
-      <div class="wrap"> 
-        {% block contents %} 
-        {% endblock %}
-      </div>
+    {% block contents %} 
+    {% endblock %}
     </div>
     
     {% include "test_rec/footer.html" %}

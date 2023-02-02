@@ -6,21 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <title>Recsys 8</title>
-    <link rel="stylesheet" href="{% static 'reset.css' %}" />
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <link rel="stylesheet" href="{% static 'test.css' %}" />
-    <link rel="stylesheet" href="{% static 'scroll.css' %}" />
-    <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/user_reset.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/user_style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/user_test.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/scroll.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/user_result_bootstrap.css' %}" />
+    <style>
+      table {
+        width: 100%;
+        border-top: 1px solid #444444;
+        border-collapse: collapse;
+        text-align: center;
+      }
+      th, td {
+        border-bottom: 1px solid #444444;
+        padding: 10px;
+      }
+      .character {
+        display: initial;
+      }
+
+      .middle_chr {
+        padding: 0 2vw;
+      }
+
+      @media (max-width: 1050px){
+      .character_image {
+      width: 20vw;}
+
+      .wrap_table{
+        padding: 0;}
+      }
+
+      @media (max-width: 1157px){
+      .character_image {
+      width: 20vw;}
+
+      .wrap_table{
+        padding: 0;}
+      }
+    </style>
+    
   </head>
   <body>
+    {% include "navbar.html" %}
     <div class="container character_container container_result">
-      <div class="header header_result">
+      <div class="header header_result" style="width:100vw;">
         <img class="header_image" src={% static 'image.png' %} alt="film" />
       </div>
-      <div class="contents result_contents contents_result">
-        <div class="contents_box character_box">
-          <div class="contents_header">
-            <h2 class="test_question" style="color:black">🎬 내 프로필 😎</h2>
+      <div class="contents result_contents contents_result" style="width:100vw">
+        <div class="contents_box character_box" style="width:80vw">
+          <div class="contents_header" style="margin-top:1.5vw; margin-bottom:1vw;">
+            <h2 class="test_question" style="color:black; font-size: calc(1.325rem + .7vw);">🎬 내 프로필 😎</h2>
             <div class="container_header_bar"></div>
           </div>
           <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: white; align-items: center">
@@ -30,8 +68,8 @@
               class="character_image"
               style="grid-column: 1 / 2; margin: auto;"
             />
-            <div>
-              <div class="character_title" >{{ user }}님의 프로필</div>
+            <div style="padding-right:2px">
+              <div class="character_title" >{{ user_name }}님의 프로필</div>
               <div class="character_info" >내 MBTI: {{ mbti }}</div>
               <div class="character_info" >설문을 통한 내 성격:</div>
               <ul>
@@ -45,21 +83,52 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
-              <div class="character_title">{{ user }}님이 추천받은 캐릭터 list</div>
+              <div class="character_title">{{ user_name }}님이 추천받은 캐릭터 list</div>
               <div class="scrollMenu">
                 {% for character_image in character_images %}
-                  <img src="{{ character_image }}", alt="character_img" style="height: auto; width: 15%;">
+                  <img src="{{ character_image }}" alt="character_img" style="height: auto; width: 15%;">
                 {% endfor %}
               </div>
             </div>
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
-              <div class="character_title">{{ user }}님이 선호한 영화 list</div>
+              <div class="character_title">{{ user_name }}님이 선호한 영화 list</div>
               <div class="scrollMenu">
                 {% for movie in prefer_movie_posters %}
                   <img src="/static/img/{{ movie }}" style="height: auto; width: 15%;">
                 {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="character" style="align-items:normal">
+            <div style="overflow: auto; padding:0 5.5vw;">
+              <div class="character_title">{{ user_name }}님의 Test 이력 list</div>
+              <div class="wrap_table" style="padding:0 4vw">
+                <table class="table table-hover">
+                  <thead style="background-color:#d1a5a5b3">
+                    <tr>
+                      <th scope="col">Test no.</th>
+                      <th scope="col">MBTI</th>
+                      <th scope="col">Test 시각</th>
+                      <th scope="col">삭제하기</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for tmpuser in tmpusers %}
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>{{ tmpuser.MBTI }}</td>
+                      <td>{{ tmpuser.create_time }}</td>
+                      <td>
+                        <a href="{% url 'common:delete_tmpuser' tmpuser.id %}">
+                          <button class="favorite styled" type="button">삭제하기</button>
+                        </a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -119,5 +188,6 @@
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>
