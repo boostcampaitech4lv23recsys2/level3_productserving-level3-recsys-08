@@ -109,7 +109,8 @@ def user_profile(request):
                         if len(character_df[character_df['CharacterId']==int(id)]['img_src']) > 0 ]
     # 템플릿에 넘겨줄 context
     context = {
-        'user' : user.username,
+        'user' : User,
+        'user_name' : user.username,
         'mbti': mbti,
         'prefer_movie_posters' : prefer_movie_posters,
         'character_images' : character_images,
