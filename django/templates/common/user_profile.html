@@ -118,7 +118,7 @@
                   <tbody>
                     {% for tmpuser in tmpusers %}
                     <tr>
-                      <th scope="row">1</th>
+                      <th scope="row">{{ forloop.counter }}</th>
                       <td>{{ tmpuser.MBTI }}</td>
                       <td>{{ tmpuser.create_time }}</td>
                       <td>
