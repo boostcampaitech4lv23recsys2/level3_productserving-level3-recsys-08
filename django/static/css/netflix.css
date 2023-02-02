@@ -16,6 +16,12 @@
     font-weight: 900;
     font-size: 32px;
 }
+.nav_box_login:hover{
+    color:#383838;
+}
+.nav_box_logo:hover{
+    color:#d22f27;
+}
 .nav_box_login{
     color:#383838;
 }

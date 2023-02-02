@@ -1,116 +1,158 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <title>Recsys 8</title>
-    <link rel="stylesheet" href="{% static 'css/reset.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/test.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/result_bootstrap.css' %}" />
-  </head>
-  <body>
-    <div class="container character_container container_result">
-      {% comment %} <div class="header header_result">
-        <img class="header_image" src="{% static 'image.png'%}" alt="film" />
-      </div> {% endcomment %}
-      <div class="result_movie_contents">
-        <div class="contents_box character_box">
-          <div class="contents_header">
-            <!-- <h2 class="test_question">{{data.name}}</h2> -->
-            <!-- <div class="container_header_bar"></div> -->
-          </div>
+{% extends 'test_rec/base.html' %}
+{% load static %} 
+{% block contents %}
+<div class="result_wrap">
+    <div class="container_result">
+      <div class="header_result">
+        <div class="contents_header">
+          <h3 class="contents_header_title">{{data.movie}}</h3>
+          <h2 class="contents_header_subtitle">{{data.name}}</h2>
+          <div class="container_header_bar"></div>
+        </div>
+      </div>
+      <div class="background_wrap">
+        <div class="contents_result contents_result_movie">
+          <div class="character_box">
+            {% comment %} <div class="character_title">{{ character.name }}</div> {% endcomment %}
 
-          <div class="character">
-            <div class="poster_box">
-              <img
-                src="/static/img/{{ data.img_path }}"
-                alt="Responsive image"
-                class="character_image"
-              />
-              <div class="temp_box"></div>
+            <div class="character">
+              <div class="poster_box">
+                <img src="{{character.img_path}}" alt="character" class="character_image"/>
+              </div>
+              <div class="character_body_info">
+                <div class="character_title">{{ character.name }}</div>
+                <div class="character_info">MBTI, Engram 정보</div>
+                <div class="character_info">#열여덟 #잘생김 #해시태그자리</div>
+                <div class="character_info">{{ character.char_info }}</div>
+              </div>
             </div>
-            <div class="character_body_info">
-              <div class="character_title">{{ data.movie }}</div>
-              <div class="character_info">{{ data.genres }}</div>
-              <div class="character_info">{{ data.plot }}</div>
-            </div>
-            <div class="link_box" data-links="{{links}}">
-              <div class="link_box_title">감상 가능한 곳</div>
-              {% for link in links %} 
-              {% if link.platform == '왓챠' %}
-              <div class="link_box_link">
-                <a
-                  href="{{link.link}}"
-                  target="_blank"
-                  title="왓챠"
-                  class="link_link"
-                >
-                  <img
-                    class="link_logo"
-                    src="{% static 'watcha_logo.jpg' %}"
-                    alt="watcha"
-                  />
-                  <div class="link_box_info">
-                    <div class="link_box_name">{{link.platform}}</div>
-                    <i class="fa-solid fa-angle-right"></i>
-                  </div>
-                </a>
-              </div>
-              {% elif link.platform == '넷플릭스' %}
-              <div class="link_box_link">
-                <a
-                  href="{{link.link}}"
-                  target="_blank"
-                  title="넷플릭스"
-                  class="link_link"
-                >
-                  <img
-                    class="link_logo"
-                    src="{% static 'netflix_logo.png' %}"
-                    alt="netflix"
-                  />
-                  <div class="link_box_info">
-                    <div class="link_box_name">{{link.platform}}</div>
-                    <i class="fa-solid fa-angle-right"></i>
-                  </div>
-                </a>
-              </div>
-              {% elif link.platform == '디즈니+' %}
-              <div class="link_box_link">
-                <a
-                  href="{{link.link}}"
-                  target="_blank"
-                  title="디즈니+"
-                  class="link_link"
-                >
-                  <img
-                    class="link_logo"
-                    src="{% static 'disneyplus_logo.jpg' %}"
-                    alt="watcha"
-                  />
-                  <div class="link_box_info">
-                    <div class="link_box_name">{{link.platform}}</div>
-                    <i class="fa-solid fa-angle-right"></i>
-                  </div>
-                </a>
-              </div>
 
-              {% endif %} 
-              {% endfor %}
+            <div class="character_title">캐릭터가 등장한 작품</div>
+            <div class="movie">
+              <div class="poster_box">
+                <img
+                  src="/static/img/{{ data.img_path }}"
+                  alt="Responsive image"
+                  class="movie_image"
+                />
+                <div class="temp_box"></div>
+              </div>
+              <div class="movie_info_box">
+                <div class="character_title">{{ data.movie }}</div>
+                <div class="character_info">장르 : {{ data.genres }}</div>
+                <div class="character_info">설명 : {{ data.plot }}</div>
+              </div>
+              <div class="link_box" data-links="{{links}}">
+                <div class="link_box_title">감상 가능한 곳</div>
+                {% for link in links %} 
+                {% if link.platform == '왓챠' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="왓챠"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'watcha_logo.jpg' %}"
+                      alt="watcha"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+                {% elif link.platform == '넷플릭스' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="넷플릭스"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'netflix_logo.png' %}"
+                      alt="netflix"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+                {% elif link.platform == '디즈니+' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="디즈니+"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'disneyplus_logo.jpg' %}"
+                      alt="watcha"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+
+                {% endif %} 
+                {% endfor %}
+              </div>
             </div>
+            <div class="other">
+              {% for character in data1 %}
+                  <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                    <img
+                      src="{{ character.img_src }}"
+                      class="card_image"
+                      alt="Responsive image"
+                    />
+                    <div class="card_body">
+                      <div class="card_title">{{ character.Character }}</div>
+                      <div class="card_info" data-sim="{{character.Enneagram_sim}}">
+                        <div class="card_info_items">
+                          <div class="card_info_items_box">
+                            <div class="card_info_item">
+                              <span class="card_info_item_title">{{character.ko_title}}</span>
+                            </div>
+                            <div class="card_info_item">
+                              <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                            </div>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_tag">{{ character.hashtag }}</span>
+                          </div>
+                        </div>
+                        <div class="card_info_text_box">
+                          <h6 class="card_info_text">유사도</h6>
+                          <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
+                        </div>
+                        <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
+                      </div>
+                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+
           </div>
         </div>
       </div>
-      <button class="button back_button" onclick="history.back()">
-        뒤로 가기
-      </button>
     </div>
-    {% include "test_rec/footer.html" %}
+    <button class="button back_button" onclick="history.back()">
+      뒤로 가기
+    </button>
+</div>
     <script>
-      let characterBody = document.querySelector(".temp_box");
+      {% comment %} let characterBody = document.querySelector(".temp_box");
       let poster_box = document.querySelector(".poster_box");
       let resultContents = document.querySelector(".result_contents");
       let character = document.querySelector(".character");
@@ -134,7 +176,7 @@
           poster_box.appendChild(linkBox);
           character.appendChild(characterBodyInfo);
         }
-      };
+      }; {% endcomment %}
 
       // 링크 없으면 안보여주기
       let links = document
@@ -158,5 +200,4 @@
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"
     ></script>
-  </body>
-</html>
+{% endblock %}
