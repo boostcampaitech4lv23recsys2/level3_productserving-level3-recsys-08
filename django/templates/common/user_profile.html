@@ -62,14 +62,14 @@
             <h2 class="test_question" style="color:black; font-size: calc(1.325rem + .7vw);">🎬 내 프로필 😎</h2>
             <div class="container_header_bar"></div>
           </div>
-          <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: white; align-items: center">
+          <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: white; align-items: center; flex-wrap: wrap;">
             <img
               src="/static/img/18_four_rooms.png"
               alt="Responsive image"
               class="character_image"
-              style="grid-column: 1 / 2; margin: auto;"
+              style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
             />
-            <div style="padding-right:2px">
+            <div style="padding-right:4%; padding-left:1%">
               <div class="character_title" >{{ user_name }}님의 프로필</div>
               <div class="character_info" >내 MBTI: {{ mbti }}</div>
               <div class="character_info" >설문을 통한 내 성격:</div>
@@ -87,7 +87,7 @@
               <div class="character_title">{{ user_name }}님이 추천받은 캐릭터 리스트</div>
               <div class="scrollMenu">
                 {% for character_image in character_images %}
-                  <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 15%;">
+                  <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 180px;">
                 {% endfor %}
               </div>
             </div>
@@ -97,7 +97,7 @@
               <div class="character_title">{{ user_name }}님이 선호한 영화 리스트</div>
               <div class="scrollMenu">
                 {% for movie in prefer_movie_posters %}
-                  <img src="/static/img/{{ movie }}" style="height: auto; width: 15%;">
+                  <img src="/static/img/{{ movie }}" style="height: auto; width: 180px;">
                 {% endfor %}
               </div>
             </div>
