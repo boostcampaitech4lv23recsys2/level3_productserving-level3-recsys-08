@@ -181,8 +181,8 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                {% for cha in characters %}
-                <img src="{{ cha }}" class="pop_card_image" alt="No image"/>
+                {% for character in characters %}
+                <img src="{{ character.img_src }}" class="pop_card_image" alt="No image" onclick="location.href='/test_rec/result_movie/{{ character.CharacterId }}'"/>
                 {% endfor %}   
                 </div>                                                                                      
             </div>
@@ -203,8 +203,8 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for cha in characters %}
-                  <img src="{{ cha }}" class="pop_card_image" alt="No image"/>
+                  {% for character in characters %}
+                  <img src="{{ character.img_src }}" class="pop_card_image" alt="No image" onclick="location.href='/test_rec/result_movie/{{ character.CharacterId }}'"/>
                   {% endfor %}   
                 </div>                                                                       
             </div>
@@ -224,10 +224,10 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for cha in characters %}
-                  <img src="{{ cha }}" class="pop_card_image" alt="No image"/>
-                  {% endfor %}   
-                </div>                                                                       
+                  {% for character in characters %}
+                  <img src="{{ character.img_src }}" class="pop_card_image" alt="No image" onclick="location.href='/test_rec/result_movie/{{ character.CharacterId }}'"/>
+                  {% endfor %}    
+                </div>                                                          
             </div>                               
             {% else %}
             <div class="main-box" style="text-align: left; padding: 1%; padding-left: 1%;">
