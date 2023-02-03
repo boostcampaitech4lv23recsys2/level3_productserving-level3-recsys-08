@@ -87,8 +87,8 @@
               <div class="character_title">{{ user_name }}님이 추천받은 캐릭터 리스트</div>
               <div class="scrollMenu2">
                 {% for character_image, character_id in zip_character_info %}
-                  <a href="{% url 'test_rec:result_movie' character_id %}" style="height: auto; width: 180px;">
-                    <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 180px;">
+                  <a href="{% url 'test_rec:result_movie' character_id %}" style="padding:3px" data-bs-toggle="tooltip" data-bs-title="Another tooltip" data-bs-placement="bottom" data-bs-offset="0, -10">
+                    <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
                   </a>
                 {% endfor %}
               </div>
@@ -99,7 +99,7 @@
               <div class="character_title">{{ user_name }}님이 선호한 영화 리스트</div>
               <div class="scrollMenu">
                 {% for movie in prefer_movie_posters %}
-                  <img src="/static/img/{{ movie }}" style="height: auto; width: 180px;">
+                  <img src="/static/img/{{ movie }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Another tooltip">
                 {% endfor %}
               </div>
             </div>
@@ -142,55 +142,18 @@
       </div>
     </div>
     {% include "test_rec/footer.html" %}
-    <script>
-      let characterBody = document.querySelector(".temp_box");
-      let poster_box = document.querySelector(".poster_box");
-      let resultContents = document.querySelector(".result_contents");
-      let character = document.querySelector(".character");
-      let characterBodyInfo = document.querySelector(".character_body_info");
-      let linkBox = document.querySelector(".link_box");
-      window.onload = () => {
-        checkScreenSize();
-      };
-      window.onresize = () => {
-        checkScreenSize();
-      };
-      checkScreenSize = () => {
-        if (window.innerWidth <= 1158) {
-          characterBody.appendChild(characterBodyInfo);
-          characterBody.appendChild(linkBox);
-          characterBody.class리스트.add("character_body");
-          characterBody.style.display = "flex";
-          characterBody.style.flexDirection = "column";
-          characterBody.style.justifyContent = "space-around";
-        } else {
-          poster_box.appendChild(linkBox);
-          character.appendChild(characterBodyInfo);
-        }
-      };
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
-      // 링크 없으면 안보여주기
-      let links = document
-        .querySelector(".link_box")
-        .getAttribute("data-links");
-      console.log(
-        "links",
-        links.includes("no_link"),
-        links.includes("no_result")
-      );
-      if (
-        links.length === 0 ||
-        links.includes("no_link") ||
-        links.includes("no_result")
-      ) {
-        linkBox.style.display = "none";
-        resultContents.style.display = "inherit";
-      }
+    <script>
+      const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      
     </script>
     <script
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>
