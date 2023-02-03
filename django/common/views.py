@@ -36,8 +36,10 @@ def check_TmpUserInfo(request):
 
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
 movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
+movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
 character_df = pd.read_pickle(pickle_path / '230130_Popular_movie_character_2867_cwj.pickle')
 
+cha_df_with_ko_title = pd.read_pickle(pickle_path / 'Popular_movie_character_2867_with_ko_title.pickle')
 
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
@@ -70,10 +72,9 @@ def index(request):
             tmpuser.LoginUser = user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
             tmpuser.save()
 
-    context = {
-        'my_person_list': [],
-        'datetime' : "",
-        'characters' : [
+    movieid = [300114, 300012, 300535, 300637, 300216, 300209, 2021, 143959, 300976, 300364]
+    characterid = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
+    characterimage = [
                         "https://static1.personality-database.com/profile_images/10372ac29c714ea8aa84fdfccfd9ae8e.png",\
                         "https://static1.personality-database.com/profile_images/fc179ba7fe644eaa82a1aca584e16868.png",\
                         "https://static1.personality-database.com/profile_images/ec0fdef9370245c69e9547daf3eff906.png",\
@@ -85,7 +86,17 @@ def index(request):
                         "https://static1.personality-database.com/profile_images/be417e9fdf2e4604a564d6ceaa1b6b28.png",\
                         "https://static1.personality-database.com/profile_images/0087da2072a14eec8d01e541e9d9e98f.png",\
                         ]
+
+    cha_li = []
+    for c in characterid:
+        cha_li.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        
+    context = {
+        'my_person_list': [],
+        'datetime' : "",
+        'characters' : cha_li
     }
+    
     return render(request, 'index.html', context)
 
 
@@ -118,14 +129,20 @@ def user_profile(request):
     character_images = [character_df[character_df['CharacterId']==int(id)]['img_src'].values[0] \
                         for id in recommended_character_ids \
                         if len(character_df[character_df['CharacterId']==int(id)]['img_src']) > 0 ]
+    character_id = [character_df[character_df['CharacterId']==int(id)]['CharacterId'].values[0] \
+                    for id in recommended_character_ids \
+                    if len(character_df[character_df['CharacterId']==int(id)]['CharacterId']) > 0 ]
+    zip_character_info = zip(character_images, character_id)
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
         'user_name' : user.username,
         'mbti': mbti,
         'prefer_movie_posters' : prefer_movie_posters,
-        'character_images' : character_images,
-        'tmpusers' : tmpusers[:min(5, len(tmpusers))],
+        # 'character_images' : character_images,
+        # 'character_id' : character_id,
+        'zip_character_info' : zip_character_info,
+        'tmpusers' : list(tmpusers)[-min(5, len(tmpusers)):][::-1],
     }
     return render(request, 'common/user_profile.html', context)
 
@@ -134,3 +151,12 @@ def delete_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     tmpuser.delete()
     return redirect('common:user_profile')
+
+# MBTI 상세 페이지 함수
+def show_mbti_info(request, mbti):
+    get_mbti = mbti
+    
+    context = {
+        'mbti' : [get_mbti]
+    }
+    return render(request, 'common/mbti_info.html', context)
