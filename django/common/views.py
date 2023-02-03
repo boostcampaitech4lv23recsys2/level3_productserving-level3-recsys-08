@@ -143,13 +143,19 @@ def user_profile(request):
     character_images = [character_df[character_df['CharacterId']==int(id)]['img_src'].values[0] \
                         for id in recommended_character_ids \
                         if len(character_df[character_df['CharacterId']==int(id)]['img_src']) > 0 ]
+    character_id = [character_df[character_df['CharacterId']==int(id)]['CharacterId'].values[0] \
+                    for id in recommended_character_ids \
+                    if len(character_df[character_df['CharacterId']==int(id)]['CharacterId']) > 0 ]
+    zip_character_info = zip(character_images, character_id)
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
         'user_name' : user.username,
         'mbti': mbti,
         'prefer_movie_posters' : prefer_movie_posters,
-        'character_images' : character_images,
+        # 'character_images' : character_images,
+        # 'character_id' : character_id,
+        'zip_character_info' : zip_character_info,
         'tmpusers' : list(tmpusers)[-min(5, len(tmpusers)):][::-1],
     }
     return render(request, 'common/user_profile.html', context)

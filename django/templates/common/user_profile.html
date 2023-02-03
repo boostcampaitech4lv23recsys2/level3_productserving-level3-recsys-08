@@ -85,9 +85,11 @@
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
               <div class="character_title">{{ user_name }}님이 추천받은 캐릭터 리스트</div>
-              <div class="scrollMenu">
-                {% for character_image in character_images %}
-                  <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 180px;">
+              <div class="scrollMenu2">
+                {% for character_image, character_id in zip_character_info %}
+                  <a href="{% url 'test_rec:result_movie' character_id %}" style="height: auto; width: 180px;">
+                    <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 180px;">
+                  </a>
                 {% endfor %}
               </div>
             </div>

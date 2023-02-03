@@ -22,7 +22,8 @@
       .block_title {
         margin-bottom:2;
       }
-    </style>    
+    </style>
+    <script src="{% static 'js/footer.js' %}" ></script>
   </head>
   <body>
     <div class="banner1">
@@ -241,6 +242,7 @@
     </div>
   </div>
 </main>
-  </body>
+{% include "test_rec/footer.html" %}
+</body>
 </html>
 {% endblock %}
