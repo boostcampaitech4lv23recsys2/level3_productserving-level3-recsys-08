@@ -89,11 +89,11 @@
   align-self: center;
 }
 
-input[type="checkbox"] {
+.movie_card {
   display: none;
 }
 
-input[type="checkbox"]+label {
+.movie_card+label {
   cursor: pointer;
   width: 120px;
   height: 160px;
@@ -103,12 +103,12 @@ input[type="checkbox"]+label {
   transition: all 50ms ease-in-out;
   position: relative;
 }
-input[type="checkbox"]+label:hover{
+.movie_card+label:hover{
   transform: scale(1.1);
   transition: 0.4s;
 }
 
-input[type="checkbox"]+label:after {
+.movie_card+label:after {
   content: '🤍';
   display: none;
   position: absolute;
@@ -124,7 +124,7 @@ input[type="checkbox"]+label:after {
   z-index: 10;
 }
 
-input[type="checkbox"]:checked+label:after {
+.movie_card:checked+label:after {
   display: block;
 }
 

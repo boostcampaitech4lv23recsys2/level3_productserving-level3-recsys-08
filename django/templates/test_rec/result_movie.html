@@ -7,14 +7,14 @@
         <div class="contents_header">
           <h3 class="contents_header_title">{{data.movie}}</h3>
           <h2 class="contents_header_subtitle">{{data.name}}</h2>
-          <div class="container_header_bar"></div>
+          {# <div class="container_header_bar"></div>#}
         </div>
       </div>
       <div class="background_wrap">
         <div class="contents_result contents_result_movie">
           <div class="character_box">
-            {% comment %} <div class="character_title">{{ character.name }}</div> {% endcomment %}
-
+            {# <div class="character_title">{{ character.name }}</div> #}
+            <div class="character_title">{{data.name}} 정보</div>
             <div class="character">
               <div class="poster_box">
                 <img src="{{character.img_path}}" alt="character" class="character_image"/>
@@ -22,8 +22,10 @@
               <div class="character_body_info">
                 <div class="character_title">{{ character.name }}</div>
                 <div class="character_info">MBTI, Engram 정보</div>
-                <div class="character_info">#열여덟 #잘생김 #해시태그자리</div>
+                <div class="character_info_tag">#열여덟 #잘생김 #해시태그자리</div>
                 <div class="character_info">{{ character.char_info }}</div>
+                {#<input type="checkbox" id="plus">#}
+                <a href="#", id="plus" class="plus_button">더보기</a>
               </div>
             </div>
 
@@ -38,9 +40,11 @@
                 <div class="temp_box"></div>
               </div>
               <div class="movie_info_box">
-                <div class="character_title">{{ data.movie }}</div>
+                <div class="movie_title">{{ data.movie }}</div>
                 <div class="character_info">장르 : {{ data.genres }}</div>
-                <div class="character_info">설명 : {{ data.plot }}</div>
+                <div class="movie_info">설명 : {{ data.plot }}</div>
+                <a href="#", id="plus_movie" class="plus_button">더보기</a>
+
               </div>
               <div class="link_box" data-links="{{links}}">
                 <div class="link_box_title">감상 가능한 곳</div>
@@ -107,12 +111,14 @@
                 {% endfor %}
               </div>
             </div>
+            <div class="character_title">작품에 등장한 다른 캐릭터</div>
+
             <div class="other">
               {% for character in data1 %}
-                  <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div class="character_card others_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
-                      class="card_image"
+                      class="card_image others_image"
                       alt="Responsive image"
                     />
                     <div class="card_body">
@@ -150,8 +156,40 @@
     <button class="button back_button" onclick="history.back()">
       뒤로 가기
     </button>
+    {% comment %} <button class="retest_button" >
+      <a href="/test_rec/result_page" class="result_button" style="text-decoration: none">뒤로가기</a>
+    </button> {% endcomment %}
 </div>
     <script>
+      
+      // 더보기 버튼
+      $('#plus').click(function(e){
+        e.preventDefault();
+        let txt = $('#plus').text();
+        if(txt == '더보기') {
+          $('.character_info').css({'display':'block'})
+          $('#plus').text('접기');
+        }
+        else {
+          $('.character_info').css({'display':'-webkit-box'})
+          $('#plus').text('더보기');
+        }
+      })
+      // movie 더보기 버튼
+      $('#plus_movie').click(function(e){
+        e.preventDefault();
+        let txt = $('#plus_movie').text();
+        if(txt == '더보기') {
+          $('.movie_info').css({'display':'block'})
+          $('#plus_movie').text('접기');
+        }
+        else {
+          $('.movie_info').css({'display':'-webkit-box'})
+          $('#plus_movie').text('더보기');
+        }
+      })
+      
+
       {% comment %} let characterBody = document.querySelector(".temp_box");
       let poster_box = document.querySelector(".poster_box");
       let resultContents = document.querySelector(".result_contents");

@@ -56,7 +56,6 @@
   background-size:cover;
   background-position: center;
   height: 400px;
-  /* margin-bottom: 40px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,9 +64,25 @@
 .header_image{
   background-image: center;
 }
+.contents_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color:white;
+  height: 100%;
+}
+.container_header_bar {
+  width: 25px;
+  background-color: rgb(255, 213, 224);
+  padding: 2px;
+  margin: 2vh 0;
+}
 .contents_header_title{
   font-size:46px;
   font-weight: 700;
+  margin-bottom: 25px
 }
 .contents_header_subtitle{
   font-size:28px;
@@ -101,22 +116,6 @@
   width: 70%;
   /* margin: 2vh 5vw;
   padding: 5vh; */
-}
-
-.contents_header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color:white;
-}
-
-.container_header_bar {
-  width: 25px;
-  background-color: rgb(255, 213, 224);
-  padding: 2px;
-  margin: 2vh 0;
 }
 
 /* 카드 css */

@@ -22,7 +22,7 @@
       <div class="movie_box2 infinite-container">
         {% for movie, ko_title in zip_page_obj %}
             <div class="infinite-item">
-              <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
+              <input type="checkbox" class="movie_card" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
               <label
                 for="{{ movie }}"
                 style="background-image: url('/static/img/{{movie}}'); background-size:cover;"

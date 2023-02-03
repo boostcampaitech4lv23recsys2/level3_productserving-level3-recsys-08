@@ -9,9 +9,9 @@ window.onscroll = function () {
   if (movie_length == 100) {
     isLoaded = true;
   }
-  console.log('$(document).height()', $(document).height())
-  console.log('$(window).height()', $(window).height())
-  console.log('$(window).scrollTop()', $(window).scrollTop())
+  // console.log('$(document).height()', $(document).height())
+  // console.log('$(window).height()', $(window).height())
+  // console.log('$(window).scrollTop()', $(window).scrollTop())
 
   let scrT = $(window).scrollTop();
   if (scrT == $(document).height() - $(window).height() && isLoaded) {
@@ -27,7 +27,7 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-
+// Spinner
 const loading = async () => {
   console.log('Spinner')
 
@@ -72,6 +72,7 @@ async function submitForm(e) {
   document.querySelector('.movie_box').submit()
 }
 
+// sweet alert
 function check(e) {
   e.preventDefault();
   const checkedMovies = $('input[type=checkbox][name=movies]:checked').length
@@ -82,6 +83,3 @@ function check(e) {
     submitForm(e)
   }
 }
-
-
-
