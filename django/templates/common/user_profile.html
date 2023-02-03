@@ -47,6 +47,12 @@
       .wrap_table{
         padding: 0;}
       }
+
+      .tooltip-inner {
+      white-space:nowrap;
+      max-width:none;
+      }
+
     </style>
     
   </head>
@@ -83,12 +89,12 @@
             </div>
           </div>
           <div class="character">
-            <div style="overflow: auto; padding:0 5.5vw;">
+            <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
               <div class="character_title">{{ user_name }}님이 추천받은 캐릭터 리스트</div>
               <div class="scrollMenu2">
-                {% for character_image, character_id in zip_character_info %}
-                  <a href="{% url 'test_rec:result_movie' character_id %}" style="padding:3px" data-bs-toggle="tooltip" data-bs-title="Another tooltip" data-bs-placement="bottom" data-bs-offset="0, -10">
-                    <img src="{{ character_image }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
+                {% for character in character_data %}
+                  <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.Character}}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                    <img src="{{ character.img_src }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
                   </a>
                 {% endfor %}
               </div>
@@ -98,8 +104,8 @@
             <div style="overflow: auto; padding:0 5.5vw;">
               <div class="character_title">{{ user_name }}님이 선호한 영화 리스트</div>
               <div class="scrollMenu">
-                {% for movie in prefer_movie_posters %}
-                  <img src="/static/img/{{ movie }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Another tooltip">
+                {% for movie in movie_data %}
+                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">
                 {% endfor %}
               </div>
             </div>

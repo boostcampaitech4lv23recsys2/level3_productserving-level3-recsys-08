@@ -114,34 +114,36 @@ def user_test_history(request):
 def user_profile(request):
     user = request.user
     tmpusers = TmpUser.objects.filter(LoginUser=user)
+    tmpusers = list(tmpusers)[::-1]
     if len(tmpusers) == 0:
         return redirect('index')
     mbti = tmpusers[len(tmpusers)-1].MBTI
-    # prefer_movie_ids와 해당 포스터 파일이름 불러오는 과정
+    # prefer_movie_ids와 해당 영화정보 불러오는 과정
     tmp = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
     prefer_movie_ids = [eval(tmp[i]) for i in range(len(tmp))]
     prefer_movie_ids = [item for sublist in prefer_movie_ids for item in sublist]
-    prefer_movie_posters = [movieId_to_posterfile[int(id)] for id in prefer_movie_ids]
-    # recommended_character_ids와 해당 이미지 파일 불러오는 과정
+    movie_data = pd.DataFrame()
+    for id in prefer_movie_ids:
+        movie_data = movie_data.append(movie_df[movie_df['movieId']==int(id)])
+    movie_data['poster'] = movie_data['movieId'].apply(lambda x: movieId_to_posterfile[x])
+    movie_data = movie_data.to_dict(orient='records')
+    # recommended_character_ids와 해당 캐릭터 정보 불러오는 과정
     tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
     recommended_character_ids = [eval(tmp[i]) for i in range(len(tmp))]
     recommended_character_ids = [item for sublist in recommended_character_ids for item in sublist]
-    character_images = [character_df[character_df['CharacterId']==int(id)]['img_src'].values[0] \
-                        for id in recommended_character_ids \
-                        if len(character_df[character_df['CharacterId']==int(id)]['img_src']) > 0 ]
-    character_id = [character_df[character_df['CharacterId']==int(id)]['CharacterId'].values[0] \
-                    for id in recommended_character_ids \
-                    if len(character_df[character_df['CharacterId']==int(id)]['CharacterId']) > 0 ]
-    zip_character_info = zip(character_images, character_id)
+    character_data = pd.DataFrame()
+    for id in recommended_character_ids:
+        character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
+    character_data = character_data.merge(movie_df[['ko_title', 'movieId']], on='movieId', how='left')
+    character_data['CharacterId'] = character_data['CharacterId'].map(int)
+    character_data = character_data.to_dict(orient='records')
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
         'user_name' : user.username,
         'mbti': mbti,
-        'prefer_movie_posters' : prefer_movie_posters,
-        # 'character_images' : character_images,
-        # 'character_id' : character_id,
-        'zip_character_info' : zip_character_info,
+        'character_data' : character_data,
+        'movie_data' : movie_data,
         'tmpusers' : list(tmpusers)[-min(5, len(tmpusers)):][::-1],
     }
     return render(request, 'common/user_profile.html', context)
