@@ -72,29 +72,26 @@ def index(request):
             tmpuser.LoginUser = user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
             tmpuser.save()
 
-    movieid = [300114, 300012, 300535, 300637, 300216, 300209, 2021, 143959, 300976, 300364]
+    # 인기있는 캐릭터 Top 10 CharacterId
     characterid = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
-    characterimage = [
-                        "https://static1.personality-database.com/profile_images/10372ac29c714ea8aa84fdfccfd9ae8e.png",\
-                        "https://static1.personality-database.com/profile_images/fc179ba7fe644eaa82a1aca584e16868.png",\
-                        "https://static1.personality-database.com/profile_images/ec0fdef9370245c69e9547daf3eff906.png",\
-                        "https://static1.personality-database.com/profile_images/1d86aef46ec14549b24000306bc36db9.png",\
-                        "https://static1.personality-database.com/profile_images/3bcb54ca72024d8a9c00dae8712009f0.png",\
-                        "https://static1.personality-database.com/profile_images/f614546e3d5e434c98b695fe7735a98a.png",\
-                        "https://static1.personality-database.com/profile_images/3877aed32c3b4d7185b22eabd80b9939.png",\
-                        "https://static1.personality-database.com/profile_images/c207665f45f14fb2b9ccc78554e68790.png",\
-                        "https://static1.personality-database.com/profile_images/be417e9fdf2e4604a564d6ceaa1b6b28.png",\
-                        "https://static1.personality-database.com/profile_images/0087da2072a14eec8d01e541e9d9e98f.png",\
-                        ]
 
-    cha_li = []
+    # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
+    cha_li1 = []
     for c in characterid:
-        cha_li.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        cha_li1.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
         
+    # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
+    cha_li2 = []
+    
+    # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
+    cha_li3 = []
+    
     context = {
         'my_person_list': [],
         'datetime' : "",
-        'characters' : cha_li
+        'characters1' : cha_li1,
+        'characters2' : cha_li2,
+        'characters3' : cha_li3
     }
     
     return render(request, 'index.html', context)
