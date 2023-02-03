@@ -134,3 +134,12 @@ def delete_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     tmpuser.delete()
     return redirect('common:user_profile')
+
+# MBTI 상세 페이지 함수
+def show_mbti_info(request, mbti):
+    get_mbti = mbti
+    
+    context = {
+        'mbti' : [get_mbti]
+    }
+    return render(request, 'common/mbti_info.html', context)
