@@ -93,7 +93,7 @@ def load_yesterday_summary():
 with DAG(
         dag_id='daily_summary',
         default_args=default_args,
-        schedule_interval='1 0 * * *',
+        schedule_interval='1 9 * * *',
         tags=['summary']
 ) as dag:
     python_task = PythonOperator(
