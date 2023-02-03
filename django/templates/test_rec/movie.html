@@ -1,74 +1,100 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1 class="header_title">MBTI 컨텐츠 추천</h1>
-        <h3 class="header_subtitle">
-          나와 MBTI가 같은 주인공이 나오는 컨텐츠를 추천해드립니다!
-        </h3>
-      </div>
-      <div class="contents">
-        <h1 class="test_question">Q5.</h1>
-        <h3 class="test_question_subtitle">선호하는 영화를 골라주세요!</h3>
+{% extends 'test_rec/base.html' %}
+{% load static %} 
+{% load split_movieId_title %}
+{% block contents %}
+<div class="wrap"> 
 
-        <form
-          class="movie_box"
-          method="POST"
-          action="{% url 'test_rec:result_page' %}"
-          data-movies="{{ length }}"
-        >
-          <div class="movie_box2">
-            {% for movie in movies %}
-            <input
-              type="checkbox"
-              value="{{ movie }}"
-              name="movies"
-              id="{{ movie }}"
-            />
-            <label
-              for="{{ movie }}"
-              style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
-            >
+  <div class="left_header">
+    <h1 class="test_question">Q5.</h1>
+    <h3 class="test_question_subtitle">좋아하는 영화를 5개이상 골라주세요!</h3>  
+    <h3 class="test_question_example">
+      취향에 꼭 맞는 시리즈와 영화를 찾아드리는 데 도움이 됩니다.
+      마음에 드는 콘텐츠를 선택하세요.
+    </h3>
+  </div>
+  <div class="contents" id="movie_contents">
+
+    <form
+      class="movie_box"
+      method="post"
+      action="{% url 'test_rec:result_page' %}"
+    >
+      <div class="movie_box2 infinite-container">
+        {% for movie, ko_title in zip_page_obj %}
+            <div class="infinite-item">
+              <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
+              <label
+                for="{{ movie }}"
+                style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
+                data-bs-toggle="tooltip" data-bs-title="{{ ko_title }}"
+              >
             </label>
-
-            {% endfor %}
-          </div>
-          <div class="center_button">
-            <input
-              class="button mbti_button grid_button"
-              type="submit"
-              value="다 선택했어요"
-            />
-          </div>
-        </form>
+            </div>
+        {% endfor %}
+        
       </div>
-      <footer>
-        <p>&copy; ITS</p>
-      </footer>
-    </div>
-    <script>
-      let gridContainer = document.querySelector(".movie_box");
-      let button = document.querySelector(".grid_button");
-      let length = gridContainer.getAttribute("data-movies");
-      button.style.gridColumn = `${Math.ceil(Math.sqrt(length)) + 1} / ${
-        Math.ceil(Math.sqrt(length)) + 2
-      }`;
-      button.style.rowColumn = `${Math.ceil(Math.sqrt(length))} / ${
-        Math.ceil(Math.sqrt(length)) + 1
-      }`;
-    </script>
-  </body>
-</html>
+      <div class="pagination">
+        {% if page_obj.has_next %}
+          <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+      </div>
+      
+      <div class="center_button fixed_button">
+        <input
+          id="movie_btn"
+          class="movie_button"
+          type="submit"
+          value="5개 선택해 주세요"
+          onclick="check(event)"
+        />
+      </div>
+    </form>
+  </div>
+</div>
+  <script>
+
+    function movieClick(){
+      let checkedMovies = $('input[type=checkbox][name=movies]:checked').length
+      let leftChoice = 5 - checkedMovies
+      
+      $('#movie_btn').val(`${leftChoice}개 선택해주세요`)
+      if(leftChoice == 0){
+        $('#movie_btn').val('완료되었습니다!')
+        $('#movie_btn').css({
+          'background-color' : '#e50914',
+          'color':'#fef7f7'
+        })
+      }else if(leftChoice < 0){
+        $('#movie_btn').val('완료되었습니다!')
+        $('#movie_btn').css({
+          'background-color' : '#e50914',
+          'color':'#fef7f7'
+        })
+      }else{
+        $('#movie_btn').css({
+          'background-color' : '#e5e5e5',
+          'color':'black'
+        })
+      }
+    }
+    const movieBox = $('.movie_box')
+    movieBox.on('click', movieClick)
+
+    const infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      offset: 'bottom-in-view',
+      handler: function(direction){
+        console.log('Scrolled!')
+      },
+      onBeforePageLoad: function(){},
+      onAfterPageLoad: function(){
+        const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      }
+    })
+    
+    const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+  </script>
 {% endblock %}

@@ -32,12 +32,13 @@ SECRET_KEY = 'django-insecure-tc7wa(_vy4#s9=f7!(zq(1degy+ejqy!m2eogyd+n4s@ec248t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "test_rec.templatetags.split_movieId_title",
     "common.apps.CommonConfig",
     "test_rec.apps.TestRecConfig",
     'django.contrib.admin',
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    ### third apps
+    ### third apps ###
     # bootstrap5
     'django_bootstrap5',
 
@@ -122,10 +123,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+			'ENGINE'    : 'django.db.backends.mysql',
+			'NAME'      : env.get_value('GCPDB_NAME'),
+			'USER'      : env.get_value('GCPDB_USER'),
+			'PASSWORD'  : env.get_value('GCPDB_PASSWORD'),
+			'HOST'      : env.get_value('GCPDB_HOST'),
+		}
 }
 
 

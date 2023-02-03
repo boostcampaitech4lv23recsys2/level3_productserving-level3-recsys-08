@@ -13,7 +13,7 @@ wandb==0.13.7
 lightgbm==3.3.3
 xgboost==1.7.2
 IMDbPY==2022.7.9
-fastapi==0.89.1
+fastapi
 uvicorn==0.20.0
 python-multipart==0.0.5
 pynecone-io==0.1.12
@@ -23,4 +23,9 @@ django-allauth==0.52.0
 simplejson==3.18.1
 django-bootstrap5==22.2
 django-environ==0.9.0
-
+sqlalchemy2-stubs==0.0.2a31
+mysqlclient==1.4.6
+annoy
+apache-airflow==2.5.1
+kubernetes==25.3.0
+apache-airflow-providers-ssh==3.4.0
