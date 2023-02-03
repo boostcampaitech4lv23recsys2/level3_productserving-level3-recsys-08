@@ -6,7 +6,7 @@
   <head>
     <link rel="canonical" href="https://getbootstrap.kr/docs/5.1/examples/blog/">
     <!-- Bootstrap core CSS -->
-    
+
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -182,8 +182,8 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                {% for character in characters %}
-                <img src="{{ character.img_src }}" class="pop_card_image" alt="No image" onclick="location.href='/test_rec/result_movie/{{ character.CharacterId }}'"/>
+                {% for cha in characters %}
+                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
                 {% endfor %}   
                 </div>                                                                                      
             </div>
@@ -204,8 +204,8 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for character in characters %}
-                  <img src="{{ character.img_src }}" class="pop_card_image" alt="No image" onclick="location.href='/test_rec/result_movie/{{ character.CharacterId }}'"/>
+                  {% for cha in characters %}
+                  <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
                   {% endfor %}   
                 </div>                                                                       
             </div>
@@ -225,9 +225,9 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for character in characters %}
-                  <img src="{{ character.img_src }}" class="pop_card_image" alt="No image" onclick="location.href='/test_rec/result_movie/{{ character.CharacterId }}'"/>
-                  {% endfor %}    
+                  {% for cha in characters %}
+                  <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+                  {% endfor %}      
                 </div>                                                          
             </div>                               
             {% else %}
