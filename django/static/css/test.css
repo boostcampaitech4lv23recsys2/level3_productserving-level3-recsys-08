@@ -103,6 +103,10 @@ input[type="checkbox"]+label {
   transition: all 50ms ease-in-out;
   position: relative;
 }
+input[type="checkbox"]+label:hover{
+  transform: scale(1.1);
+  transition: 0.4s;
+}
 
 input[type="checkbox"]+label:after {
   content: '🤍';

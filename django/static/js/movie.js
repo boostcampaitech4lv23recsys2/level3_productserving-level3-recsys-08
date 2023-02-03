@@ -1,4 +1,7 @@
+console.log('movie.js')
+
 // 영화 선택 버튼 css 변경
+
 window.onscroll = function () {
   let movie_length = $('.infinite-item').length;
   let isLoaded = false;
@@ -6,6 +9,10 @@ window.onscroll = function () {
   if (movie_length == 100) {
     isLoaded = true;
   }
+  console.log('$(document).height()', $(document).height())
+  console.log('$(window).height()', $(window).height())
+  console.log('$(window).scrollTop()', $(window).scrollTop())
+
   let scrT = $(window).scrollTop();
   if (scrT == $(document).height() - $(window).height() && isLoaded) {
     $('.center_button').removeClass('fixed_button');
@@ -53,8 +60,14 @@ const loading = async () => {
 
 }
 
+async function scrollTop(){
+  $("html").scrollTop(0);
+}
+
 async function submitForm(e) {
   e.preventDefault();
+  // document.documentElement.scrollTop = 0;
+  await scrollTop();
   await loading();
   document.querySelector('.movie_box').submit()
 }

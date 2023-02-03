@@ -1,10 +1,11 @@
 
 $(window).scroll(function () {
-  // console.log('scrollTop : ', $(window).scrollTop())
-  // console.log('window height : ',$(window).height())
-  // console.log('document height : ', $(document).height())
-
-  const finalHeight = $('.wrap').outerHeight(true) - ($(window).height() * 0.9);
+  // console.log($('.wrap').outerHeight(true))
+  // console.log(document.documentElement.scrollHeight)
+  const docHeight = document.documentElement.scrollHeight;
+  const winHeight = $(window).height();
+  // const finalHeight = $('.wrap').outerHeight(true) - ($(window).height() * 0.9);
+  const finalHeight = docHeight - winHeight
   // console.log(finalHeight)
   if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
     $('footer').css({ 'bottom': `-${finalHeight}px` });
