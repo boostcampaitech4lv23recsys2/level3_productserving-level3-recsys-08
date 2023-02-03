@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
 <!doctype html>
@@ -24,6 +25,7 @@
       }
     </style>
     <script src="{% static 'js/footer.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
     <div class="banner1">
@@ -152,7 +154,7 @@
             flex-direction: column;
           }
         </style>
-        <main class="main-container">
+        <main class="main-container" style="flex: 1;">
           <div class="main-container-2" style="padding-top: 0%;">
             <div class="row mb-2">
             </div>
@@ -213,7 +215,7 @@
             <div class="row mb-2" style="padding-bottom: 20px;">
             </div>
             <div class="main-box" style="text-align: left;">
-              <h2 class="block_title" style="padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;">▶️ 나와 잘 맞는 캐릭터 Top 10</h2>
+              <h2 class="block_title" style="padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;">▶️ 나와 궁합이 잘 맞는 캐릭터 Top 10</h2>
                 <style>
                   .pop_card_image {
                     width: 100px;
@@ -243,7 +245,13 @@
     </div>
   </div>
 </main>
-{% include "test_rec/footer.html" %}
+<footer style="height: 85px; display: block; bottom: -350px; padding: 15px;">
+  <p style="margin: 3px;">&copy; ITS</p>
+  <a href="https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08.git">
+  <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png" style="margin-bottom: 3px;" alt="GitHub logo" width="15" height="15">
+  <span style="font-size: 15px;">Github</span>
+  </a>
+</footer>
 </body>
 </html>
 {% endblock %}
