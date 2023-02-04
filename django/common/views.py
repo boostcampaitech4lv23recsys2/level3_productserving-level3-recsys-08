@@ -160,7 +160,7 @@ def user_profile(request):
     return render(request, 'common/user_profile.html', context)
 
 
-@login_required(login_url='common:login')
+
 def detail_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     user = tmpuser.LoginUser
@@ -201,7 +201,6 @@ def detail_tmpuser(request, tmpuser_id):
     context = {
         'user' : user,
         'tmpuser' : tmpuser,
-        'user_name' : user.username,
         'mbti': mbti,
         'data1': data1,
         'data2': data2,
