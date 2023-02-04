@@ -59,7 +59,7 @@
 /* Test 페이지 style */
 .wrap{
     position:absolute;
-    top:10vh;
+    top:18vh;
     width:60%;
     display: flex;
     justify-content: center;
