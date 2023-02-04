@@ -1,6 +1,14 @@
 {% extends 'test_rec/base.html' %}
 {% load static %} 
 {% block contents %}
+<div class="progressbar">
+  <a href="/test_rec/start_test/" class="progressbar_left">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">0%</span>
+  </div>
+</div>
 <div class="wrap"> 
 
   <div class="left_header">
@@ -82,4 +90,5 @@
     </form>
   </div>
 </div>
+
 {% endblock %}

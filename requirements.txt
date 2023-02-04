@@ -26,3 +26,6 @@ django-environ==0.9.0
 sqlalchemy2-stubs==0.0.2a31
 mysqlclient==1.4.6
 annoy
+apache-airflow==2.5.1
+kubernetes==25.3.0
+apache-airflow-providers-ssh==3.4.0

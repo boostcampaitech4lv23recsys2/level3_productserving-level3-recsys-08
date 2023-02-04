@@ -11,7 +11,7 @@ from pathlib import Path
 from .models import TmpUser
 import sys
 sys.path.append('..')
-from Utils import user_input_to_recommend, final_movie_select, user_input_to_side_recommend
+from Utils import *
 
 
 def print_TmpUserInfo(user):
@@ -31,7 +31,7 @@ with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
 
-character_df = pd.read_pickle(pickle_path / '230130_Popular_movie_character_2867_cwj.pickle')
+character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
 movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
 watch_link =  pd.read_pickle(pickle_path / '230131_watch_link_4679_rows.pickle')
 
@@ -128,7 +128,7 @@ def movie_test(request):
 def result_page(request):
 
     user = TmpUser.objects.get(id=request.session['user_id'])
-    
+    print(">>>>>>>>>>>>>>",request.POST.getlist('movies'))
     if request.method == 'POST':
         # 이전 페이지의 영화선택 받아서 유저정보에 저장
         movies = request.POST.getlist('movies')
@@ -160,14 +160,31 @@ def result_page(request):
             result.drop_duplicates('CharacterId',inplace=True)
             result = result[result.Enneagram_sim.notna()]
             result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
-            characterid_to_hashtag_path = pickle_path / '230201_characterid_to_hashtag.pickle'
+            characterid_to_hashtag_path = pickle_path / '230203_characterid_to_hashtag.pickle'
             with open(characterid_to_hashtag_path, 'rb') as f:
                 characterid_to_hashtag = pickle.load(f)
-            # 추천된 캐릭터 유저정보에 저장
-            character_list = result['CharacterId'].values.tolist()
-            character_list = [str(i) for i in character_list]
-            user.recommended_character_id = json.dumps(character_list)
+            
+            # 추천된 캐릭터결과 저장
+            for_save_sim_character_df = result[result['MBTI']==user.MBTI][:20]
+            for_save_fit_character_df = result[result['MBTI']==user_fit_MBTI][:20]
+            # 추천된 캐릭터 결과 저장 - 나와 같은 MBTI 캐릭터 id
+            similar_character_list = for_save_sim_character_df['CharacterId'].values.tolist()
+            similar_character_list = [str(i) for i in similar_character_list]
+            user.recommended_character_id = json.dumps(similar_character_list)
+            # 추천된 캐릭터 결과 저장 - 나와 같은 MBTI 캐릭터 유사도
+            similar_character_sim = for_save_sim_character_df['Enneagram_sim'].values.tolist()
+            similar_character_sim = [str(i) for i in similar_character_sim]
+            user.recommended_character_sim = json.dumps(similar_character_sim)
+            # 추천된 캐릭터 결과 저장 - 나와 잘 맞는 MBTI 캐릭터 id
+            fit_character_list = for_save_fit_character_df['CharacterId'].values.tolist()
+            fit_character_list = [str(i) for i in fit_character_list]
+            user.fit_character_id = json.dumps(fit_character_list)
+            # 추천된 캐릭터 결과 저장 - 나와 잘 맞는 MBTI 캐릭터 유사도
+            fit_character_sim = for_save_fit_character_df['Enneagram_sim'].values.tolist()
+            fit_character_sim = [str(i) for i in fit_character_sim]
+            user.fit_character_sim = json.dumps(fit_character_sim)
             user.save()
+
             # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
             cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
             result = result.merge(movie_df[['movieId','ko_title','npop']])
@@ -193,6 +210,7 @@ def result_movie(request, character_id):
     character_name, movie_id = character_df[character_df.CharacterId==int(character_id)][need_cols].values[0]
     posterfile_path = movieId_to_posterfile[movie_id]
     movie_title, genres, plot = movie_df[movie_df.movieId==movie_id][['ko_title','ko_genre','ko_plot']].values[0]
+    # characters = character_df[character_df.movieId==movie_id]
     result_movie ={
         'name': character_name,
         'movie' : movie_title,

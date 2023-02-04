@@ -25,7 +25,7 @@
                   <div id="mbti" class="cards_caategory_text">나와 비슷한 캐릭터</div>
                 </div>
                 {% for character in data1 %}
-                  <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -62,7 +62,7 @@
                   <div id="attractive" class="cards_caategory_text">매력적인 캐릭터</div>
                 </div>
                 {% for character in data2 %}
-                  <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data2" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -104,6 +104,7 @@
     <button class="retest_button"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none"
       >다시 테스트하기</a
     ></button>
-    <a href="#"><div class="button_top"><i class="fa-solid fa-arrow-up"></i></div></a>
+    <a href="#"><div class="button_top" style="bottom: 115px"><i class="fa-solid fa-arrow-up"></i></div></a>
 </div>
+
 {% endblock %}
