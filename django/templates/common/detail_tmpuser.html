@@ -61,9 +61,13 @@
     {% include "navbar.html" %}
     <div class="container character_container container_result">
       <div class="header header_result" style="width:100vw; z-index: -1;">
-        <!-- <img class="header_image" src={% static 'image.png' %} alt="film" /> -->
+        <div class="contents_header">
+          <h3 class="contents_header_title">MVTI</h3>
+          <h2 class="contents_header_subtitle">어떻노? 추쳔 결과 말이다.</h2>
+          <div class="container_header_bar"></div>
+        </div>
       </div>
-      <div class="contents result_contents contents_result" style="width:100vw">
+      <div class="contents result_contents contents_result" style="width:100vw; background: linear-gradient(#240405, transparent);">
         <div class="contents_box character_box" style="width:80vw">
           <div class="contents_header" style="margin-top:1.5vw; margin-bottom:1vw;">
             <h2 class="test_question" style="color:black; font-size: calc(1.325rem + .7vw);">🎬 추천 결과 😎</h2>
@@ -77,7 +81,7 @@
               style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
             />
             <div style="padding-right:4%; padding-left:1%">
-              <div class="character_title" >{{ user_name }}님의 추천결과</div>
+              <div class="character_title" >{{ user_name }}님의 추천결과 🎉</div>
               <div class="character_info" >MBTI: {{ mbti }}</div>
               <div class="character_info" >설문을 통한 성격:</div>
               <ul>
@@ -91,7 +95,7 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">나와 성격이 비슷한 캐릭터</div>
+              <div class="character_title">{{ user_name }}님과 성격이 비슷한 캐릭터</div>
               <div class="scrollMenu3">
                 {% for character in data1 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
@@ -101,16 +105,16 @@
                       alt="Responsive image"
                       style="border-radius: 2rem;"
                     />
-                    <div class="card_body">
-                      <div class="card_title">{{ character.Character }}</div>
+                    <div class="card_body" style="margin-top: 0">
+                      <div class="card_title" style="margin-top: 0.5vw; text-decoration:none;">{{ character.Character }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_items_box">
                             <div class="card_info_item">
-                              <span class="card_info_item_title">{{character.ko_title}}</span>
+                              <span class="card_info_item_title" style="overflow:inherit">{{character.ko_title}}</span>
                             </div>
                             <div class="card_info_item">
-                              <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                              <span class="card_info_item_title" style="overflow:inherit">MBTI | {{ character.MBTI }}</span>
                             </div>
                           </div>
                           <div class="card_info_item">
@@ -132,9 +136,9 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">나와 성격이 잘맞는 캐릭터</div>
+              <div class="character_title">{{ user_name }}님과 성격이 잘맞는 캐릭터</div>
               <div class="scrollMenu3">
-                {% for character in data1 %}
+                {% for character in data2 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
@@ -142,16 +146,16 @@
                       alt="Responsive image"
                       style="border-radius: 2rem;"
                     />
-                    <div class="card_body">
-                      <div class="card_title">{{ character.Character }}</div>
+                    <div class="card_body" style="margin-top: 0">
+                      <div class="card_title" style="margin-top: 0.5vw; text-decoration:none;">{{ character.Character }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_items_box">
                             <div class="card_info_item">
-                              <span class="card_info_item_title">{{character.ko_title}}</span>
+                              <span class="card_info_item_title" style="overflow:inherit">{{character.ko_title}}</span>
                             </div>
                             <div class="card_info_item">
-                              <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                              <span class="card_info_item_title" style="overflow:inherit">MBTI | {{ character.MBTI }}</span>
                             </div>
                           </div>
                           <div class="card_info_item">
@@ -173,7 +177,7 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
-              <div class="character_title">{{ user_name }}님이 선호한 영화 리스트</div>
+              <div class="character_title">{{ user_name }}님이 고른 영화</div>
               <div class="scrollMenu">
                 {% for movie in movie_data %}
                   <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">

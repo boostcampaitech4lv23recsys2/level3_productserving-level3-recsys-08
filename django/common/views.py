@@ -119,6 +119,7 @@ def user_profile(request):
     if len(tmpusers) == 0:
         return redirect('index')
     mbti = tmpusers[len(tmpusers)-1].MBTI
+
     # prefer_movie_ids와 해당 영화정보 불러오는 과정
     tmp = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
     prefer_movie_ids = [eval(tmp[i]) for i in range(len(tmp))]
@@ -128,6 +129,7 @@ def user_profile(request):
         movie_data = movie_data.append(movie_df[movie_df['movieId']==int(id)])
     movie_data['poster'] = movie_data['movieId'].apply(lambda x: movieId_to_posterfile[x])
     movie_data = movie_data.to_dict(orient='records')
+
     # recommended_character_ids와 해당 캐릭터 정보 불러오는 과정
     tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
     recommended_character_ids = [eval(tmp[i]) for i in range(len(tmp))]
@@ -138,6 +140,7 @@ def user_profile(request):
     character_data = character_data.merge(movie_df[['ko_title', 'movieId']], on='movieId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
     character_data = character_data.to_dict(orient='records')
+    
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
@@ -147,6 +150,7 @@ def user_profile(request):
         'movie_data' : movie_data,
         'tmpusers' : list(tmpusers)[: min(5, len(tmpusers))],
     }
+
     return render(request, 'common/user_profile.html', context)
 
 
@@ -164,20 +168,35 @@ def detail_tmpuser(request, tmpuser_id):
     movie_data = movie_data.to_dict(orient='records')
 
     recommended_character_ids = tmpuser.recommended_character_id
-    character_data = pd.DataFrame()
+    # data1은 나와 같은 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
+    data1 = pd.DataFrame()
     for id in eval(recommended_character_ids):
-        character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
-    character_data = character_data.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
-    character_data['CharacterId'] = character_data['CharacterId'].map(int)
-    character_data['hashtag'] = character_data.CharacterId.map(characterid_to_hashtag)
-    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop']#,'Enneagram_sim']
-    character_data = character_data[cols][:20].to_dict(orient='records')
+        data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+    data1 = data1.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
+    data1['CharacterId'] = data1['CharacterId'].map(int)
+    data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
+    data1['Enneagram_sim'] = eval(tmpuser.recommended_character_sim)
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+    data1 = data1[cols][:20].to_dict(orient='records')
+
+    fit_character_ids = tmpuser.fit_character_id
+    fit_character_data = pd.DataFrame()
+    data2 = pd.DataFrame()
+    for id in eval(fit_character_ids):
+        data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
+    data2 = data2.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
+    data2['CharacterId'] = data2['CharacterId'].map(int)
+    data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
+    data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+    data2 = data2[cols][:20].to_dict(orient='records')
     
     context = {
         'user' : user,
         'user_name' : user.username,
         'mbti': mbti,
-        'data1': character_data,
+        'data1': data1,
+        'data2': data2,
         'movie_data' : movie_data,
     }
     return render(request, 'common/detail_tmpuser.html', context)
