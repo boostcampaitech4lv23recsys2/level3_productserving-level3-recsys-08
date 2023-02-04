@@ -56,12 +56,14 @@
     </style>
     {% comment %} css {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/result_bootstrap.css' %}" />
+    
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
       integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
     <script>
       Kakao.init('a6933f999071cb7128cff80358c1ce88'); // 사용하려는 앱의 JavaScript 키 입력
     </script>
-    </head>
+    
+  </head>
   <body>
     {% include "navbar.html" %}
     <div class="container character_container container_result">
@@ -86,7 +88,12 @@
               style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
             />
             <div style="padding-right:4%; padding-left:1%">
-              <div class="character_title" >{{ user_name }}님의 추천결과 🎉</div>
+              <div class="character_title" >
+                {% if user %}
+                  {{ user.username }}님의 추천결과 🎉
+                {% else %}
+                  임시 유저🌱님의 추천결과
+                {% endif %}</div>
               <div class="character_info" >MBTI: {{ mbti }}</div>
               <div class="character_info" >설문을 통한 성격:</div>
               <ul>
@@ -100,7 +107,13 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">{{ user_name }}님과 성격이 비슷한 캐릭터</div>
+              <div class="character_title">
+                {% if user %}
+                  {{ user.username }}님과 성격이 비슷한 캐릭터
+                {% else %}
+                  임시 유저🌱님과 성격이 비슷한 캐릭터
+                {% endif %}  
+              </div>
               <div class="scrollMenu3">
                 {% for character in data1 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
@@ -141,7 +154,13 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">{{ user_name }}님과 성격이 잘맞는 캐릭터</div>
+              <div class="character_title">
+                {% if user %}
+                  {{ user.username }}님과 성격이 잘맞는 캐릭터
+                {% else %}
+                  임시 유저🌱님과 성격이 잘맞는 캐릭터
+                {% endif %}
+                </div>
               <div class="scrollMenu3">
                 {% for character in data2 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
@@ -182,7 +201,13 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
-              <div class="character_title">{{ user_name }}님이 고른 영화</div>
+              <div class="character_title">
+                {% if user %}
+                  {{ user.username }}님이 고른 영화
+                {% else %}
+                  임시 유저🌱님이 고른 영화
+                {% endif %}
+              </div>
               <div class="scrollMenu">
                 {% for movie in movie_data %}
                   <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">
@@ -196,8 +221,7 @@
             </a>
             <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" onclick="history.back()">뒤로 가기</button>
             <a id="kakaotalk-sharing-btn" href="javascript:;">
-              <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                alt="카카오톡 공유 보내기 버튼" />
+              <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" type="button">카카오톡 공유하기</button>
             </a>
           </div>
         </div>
@@ -218,9 +242,11 @@
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"
     ></script>
-    <script>
-      var variable = document.getElementById('jsvariable');
-      tmpuser_id = variable.getAttribute('tmpuser_id');
+
+    <script> //카카오톡 공유하는 스크립트
+      var variable = document.getElementById('jsvariable'); // 임시로 만든 변수를 담을 div
+      tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
+
       Kakao.Share.createDefaultButton({
         container: '#kakaotalk-sharing-btn',
         objectType: 'feed',
