@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
 <!doctype html>
@@ -24,6 +25,7 @@
       }
     </style>
     <script src="{% static 'js/footer.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
     <div class="banner1">
@@ -152,7 +154,7 @@
             flex-direction: column;
           }
         </style>
-        <main class="main-container">
+        <main class="main-container" style="flex: 1;">
           <div class="main-container-2" style="padding-top: 0%;">
             <div class="row mb-2">
             </div>
@@ -169,8 +171,35 @@
                   padding-left: 10px;
                   padding-right: 10px;
                 }
+
+                .tooltip { position: relative; display: inline-block; }
+                .tooltip .tooltip-content {
+                    visibility: hidden;
+                    width: 250px;
+                    background-color: #f3f3f3;
+                    border-radius: 10px;
+                    padding: 0;
+                    margin-top: 10px;
+                    color: #737373;
+                    text-align: center;
+                    position: absolute;
+                    z-index: 1;
+                    white-space: nowrap;
+                }
+                .tooltip:hover .tooltip-content { visibility: visible; }
+                .tooltip { margin: auto; }
+                .tooltip .tooltip-content { bottom: 100%; left: 50%; margin-left: -125px; }
+
               </style>
-              <h2 class="block_title" style="padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;">▶️ 인기있는 캐릭터 Top 10</h2>
+              <div style="white-space: nowrap;">
+                <p class="block_title" style="white-space: nowrap; width: 350px; margin-bottom: 1%; padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;"><b>▶️ 인기있는 캐릭터 Top 10</b></h2>
+                <div class="tooltip" style="opacity: 1;">
+                  <img src="https://cdn.icon-icons.com/icons2/10/PNG/256/help_question_1566.png" style="margin-left: 1%; margin-bottom: 3px;" alt="question mark" width="20" height="20">
+                  <div class="tooltip-content">
+                    <p>최신 영화(2020~) 중<br>영화와 캐릭터의 인기도를 기반으로 뽑은<br>Top 10 캐릭터입니다.</p>
+                  </div>
+                </div>
+              </div>
                 <style>
                   .pop_card_image {
                     width: 100px;
@@ -182,17 +211,17 @@
                     padding-bottom: 4px;
                   }
                 </style>
-                <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                {% for cha in characters %}
-                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
-                {% endfor %}   
-                </div>                                                                                      
+              <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
+              {% for cha in characters1 %}
+              <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+              {% endfor %}   
+              </div>                                                                                      
             </div>
             <div class="row mb-2" style="padding-bottom: 20px;">
             </div>
             {% if user.is_authenticated %}
             <div class="main-box" style="text-align: left;">
-              <h2 class="block_title" style="padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;">▶️ 나와 성격이 같은 캐릭터 Top 10</h2>
+              <p class="block_title" style="margin-bottom: 1%; padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;"><b>▶️ 나와 성격이 같은 캐릭터 Top 10</b></h2>
                 <style>
                   .pop_card_image {
                     width: 100px;
@@ -205,7 +234,7 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for cha in characters %}
+                  {% for cha in characters1 %}
                   <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
                   {% endfor %}   
                 </div>                                                                       
@@ -213,7 +242,7 @@
             <div class="row mb-2" style="padding-bottom: 20px;">
             </div>
             <div class="main-box" style="text-align: left;">
-              <h2 class="block_title" style="padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;">▶️ 나와 잘 맞는 캐릭터 Top 10</h2>
+              <p class="block_title" style="margin-bottom: 1%; padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;"><b>▶️ 나와 궁합이 잘 맞는 캐릭터 Top 10</b></h2>
                 <style>
                   .pop_card_image {
                     width: 100px;
@@ -226,7 +255,7 @@
                   }
                 </style>
                 <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for cha in characters %}
+                  {% for cha in characters1 %}
                   <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
                   {% endfor %}      
                 </div>                                                          
@@ -243,7 +272,13 @@
     </div>
   </div>
 </main>
-{% include "test_rec/footer.html" %}
+<footer style="height: 85px; display: block; bottom: -380px; padding: 15px;">
+  <p style="margin: 3px;">&copy; ITS</p>
+  <a href="https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08.git">
+  <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png" style="margin-bottom: 3px;" alt="GitHub logo" width="15" height="15">
+  <span style="font-size: 15px;">Github</span>
+  </a>
+</footer>
 </body>
 </html>
 {% endblock %}

@@ -117,8 +117,8 @@ async function submitForm(e){
 function check(e) {
   e.preventDefault();
   const checkedMovies = $('input[type=checkbox][name=movies]:checked').length
-  if (checkedMovies < 5) {
-    Swal.fire({ icon: 'info', title: '5개 이상 선택해주세요💧' })
+  if (checkedMovies < 3) {
+    Swal.fire({ icon: 'info', title: '3개 이상 선택해주세요💧' })
   }
   else {
     submitForm(e)

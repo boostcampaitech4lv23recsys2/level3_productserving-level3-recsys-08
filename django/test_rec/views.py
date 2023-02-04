@@ -163,11 +163,28 @@ def result_page(request):
             characterid_to_hashtag_path = pickle_path / '230203_characterid_to_hashtag.pickle'
             with open(characterid_to_hashtag_path, 'rb') as f:
                 characterid_to_hashtag = pickle.load(f)
-            # 추천된 캐릭터 유저정보에 저장
-            character_list = result['CharacterId'].values.tolist()
-            character_list = [str(i) for i in character_list]
-            user.recommended_character_id = json.dumps(character_list)
+            
+            # 추천된 캐릭터결과 저장
+            for_save_sim_character_df = result[result['MBTI']==user.MBTI][:20]
+            for_save_fit_character_df = result[result['MBTI']==user_fit_MBTI][:20]
+            # 추천된 캐릭터 결과 저장 - 나와 같은 MBTI 캐릭터 id
+            similar_character_list = for_save_sim_character_df['CharacterId'].values.tolist()
+            similar_character_list = [str(i) for i in similar_character_list]
+            user.recommended_character_id = json.dumps(similar_character_list)
+            # 추천된 캐릭터 결과 저장 - 나와 같은 MBTI 캐릭터 유사도
+            similar_character_sim = for_save_sim_character_df['Enneagram_sim'].values.tolist()
+            similar_character_sim = [str(i) for i in similar_character_sim]
+            user.recommended_character_sim = json.dumps(similar_character_sim)
+            # 추천된 캐릭터 결과 저장 - 나와 잘 맞는 MBTI 캐릭터 id
+            fit_character_list = for_save_fit_character_df['CharacterId'].values.tolist()
+            fit_character_list = [str(i) for i in fit_character_list]
+            user.fit_character_id = json.dumps(fit_character_list)
+            # 추천된 캐릭터 결과 저장 - 나와 잘 맞는 MBTI 캐릭터 유사도
+            fit_character_sim = for_save_fit_character_df['Enneagram_sim'].values.tolist()
+            fit_character_sim = [str(i) for i in fit_character_sim]
+            user.fit_character_sim = json.dumps(fit_character_sim)
             user.save()
+
             # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
             cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
             result = result.merge(movie_df[['movieId','ko_title','npop']])
