@@ -50,7 +50,10 @@
     color: #a6a6a6;
     margin-bottom: 10px;
 }
-  
+/* .character_description_container{
+    overflow:hidden;
+    height:fit-content;
+} */
 .character_info {
     line-height: 27px;
     font-size: 17px;
@@ -76,6 +79,15 @@
 .character_container {
     display: flex;
     flex-direction: column;
+}
+
+.plus_button{
+    color: #7b1a21;
+    text-align: right;
+    font-weight: 500;
+}
+.plus_button:hover{
+    color:#a6a6a6;
 }
   /* 영화 */
 .movie{
