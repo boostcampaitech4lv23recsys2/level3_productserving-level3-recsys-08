@@ -35,15 +35,18 @@ def check_TmpUserInfo(request):
 
 
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
-movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
+
 movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
 character_df = pd.read_pickle(pickle_path / '230130_Popular_movie_character_2867_cwj.pickle')
-
 cha_df_with_ko_title = pd.read_pickle(pickle_path / 'Popular_movie_character_2867_with_ko_title.pickle')
 
+movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
+characterid_to_hashtag_path = pickle_path / '230201_characterid_to_hashtag.pickle'
+with open(characterid_to_hashtag_path, 'rb') as f:
+    characterid_to_hashtag = pickle.load(f)
 
 
 def signup(request):
@@ -112,6 +115,7 @@ def user_profile(request):
     user = request.user
     tmpusers = TmpUser.objects.filter(LoginUser=user)
     tmpusers = list(tmpusers)[::-1]
+    print(tmpusers)
     if len(tmpusers) == 0:
         return redirect('index')
     mbti = tmpusers[len(tmpusers)-1].MBTI
@@ -141,15 +145,50 @@ def user_profile(request):
         'mbti': mbti,
         'character_data' : character_data,
         'movie_data' : movie_data,
-        'tmpusers' : list(tmpusers)[-min(5, len(tmpusers)):][::-1],
+        'tmpusers' : list(tmpusers)[: min(5, len(tmpusers))],
     }
     return render(request, 'common/user_profile.html', context)
+
+
+@login_required(login_url='common:login')
+def detail_tmpuser(request, tmpuser_id):
+    tmpuser = TmpUser.objects.get(id=tmpuser_id)
+    user = tmpuser.LoginUser
+    mbti = tmpuser.MBTI
+
+    prefer_movie_ids = tmpuser.prefer_movie_id
+    movie_data = pd.DataFrame()
+    for id in eval(prefer_movie_ids):
+        movie_data = movie_data.append(movie_df[movie_df['movieId']==int(id)])
+    movie_data['poster'] = movie_data['movieId'].apply(lambda x: movieId_to_posterfile[x])
+    movie_data = movie_data.to_dict(orient='records')
+
+    recommended_character_ids = tmpuser.recommended_character_id
+    character_data = pd.DataFrame()
+    for id in eval(recommended_character_ids):
+        character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
+    character_data = character_data.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
+    character_data['CharacterId'] = character_data['CharacterId'].map(int)
+    character_data['hashtag'] = character_data.CharacterId.map(characterid_to_hashtag)
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop']#,'Enneagram_sim']
+    character_data = character_data[cols][:20].to_dict(orient='records')
+    
+    context = {
+        'user' : user,
+        'user_name' : user.username,
+        'mbti': mbti,
+        'data1': character_data,
+        'movie_data' : movie_data,
+    }
+    return render(request, 'common/detail_tmpuser.html', context)
+
 
 @login_required(login_url='common:login')
 def delete_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     tmpuser.delete()
     return redirect('common:user_profile')
+
 
 # MBTI 상세 페이지 함수
 def show_mbti_info(request, mbti):
