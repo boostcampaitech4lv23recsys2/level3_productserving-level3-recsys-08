@@ -185,9 +185,12 @@
               </div>
             </div>
           </div>
-          <button class="button back_button" onclick="history.back()">
-            뒤로 가기
-          </button>
+          <div class="button-group" style="display: flex; justify-content: space-between;">
+            <a href="{% url 'common:delete_tmpuser' tmpuser.id %}">
+              <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" type="button">삭제하기</button>
+            </a>
+            <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" onclick="history.back()">뒤로 가기</button>
+          </div>
         </div>
       </div>
     </div>
