@@ -27,50 +27,91 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-// Spinner
-const loading = async () => {
-  console.log('Spinner')
+// function spinner(ms){
+//   console.log('sadfasdfadsf');
+//   $(".wrap").hide();
+//   $('.progress_container').hide();
+//   $("#loading").show();
+//   $(".success-checkmark").hide()
+//   return new Promise((r) => setTimeout((r, ms) => {
+//   }, ms));
+// }
 
+// Spinner
+// const loading = async () => {
+//   console.log('Spinner')
+
+//   $(".wrap").hide();
+//   $("#loading").show();
+//   $(".success-checkmark").hide()
+//   $.ajax({
+//     type: 'POST',
+//     url: '/test_rec/result_page',
+//     success: function (response) {
+
+//       setTimeout(() => {
+
+//         $("#loading").hide();
+//         $(".success-checkmark").show();
+//       }, 2100)
+//       setTimeout(() => {
+//         $(".success-checkmark").hide();
+//         $('#data_box').show()
+//       }, 3000)
+//     },
+//     error: function (error) {
+//       setTimeout(() => {
+//         spinnerBox.classList.add('not_visible')
+//         dataBox.innerHTML = `failed to load the data`
+//       }, 5000)
+//     }
+//   })
+//   await sleep(3000);
+
+// }
+
+async function submitForm(e){
+  e.preventDefault()
   $(".wrap").hide();
+  $('.progress_container').hide();
   $("#loading").show();
   $(".success-checkmark").hide()
-  $.ajax({
-    type: 'POST',
-    url: '/test_rec/result_page',
-    success: function (response) {
-
-      setTimeout(() => {
-
-        $("#loading").hide();
-        $(".success-checkmark").show();
-      }, 2100)
-      setTimeout(() => {
-        $(".success-checkmark").hide();
-        $('#data_box').show()
-      }, 3000)
-    },
-    error: function (error) {
-      setTimeout(() => {
-        spinnerBox.classList.add('not_visible')
-        dataBox.innerHTML = `failed to load the data`
-      }, 5000)
-    }
+  setTimeout(function(){
+    $.ajax({
+      type: 'POST',
+      url: 'result_page',
+      data:$('.movie_box').serialize(),
+      async:false,
+      success: function (response) {
+          console.log('ajax 요청 보냄!')
+          $("#loading").hide();
+          $(".success-checkmark").show();
+          $('.result_wrap').hide();
+          setTimeout(() => {
+            document.querySelector('.movie_box').submit()
+          }, 1200)
+      },
+      error: function (error) {
+          setTimeout(() => {
+              $('.wrap').innerHTML = `failed to load the data`
+          }, 5000)
+      }
   })
-  await sleep(3000);
-
+  },2000)
+  
 }
 
-async function scrollTop(){
-  $("html").scrollTop(0);
-}
+// async function scrollTop(){
+//   $("html").scrollTop(0);
+// }
 
-async function submitForm(e) {
-  e.preventDefault();
+// async function submitForm(e) {
+  // e.preventDefault();
   // document.documentElement.scrollTop = 0;
-  await scrollTop();
-  await loading();
-  document.querySelector('.movie_box').submit()
-}
+  // await scrollTop();
+  // await loading();
+  // document.querySelector('.movie_box').submit()
+// }
 
 // sweet alert
 function check(e) {
