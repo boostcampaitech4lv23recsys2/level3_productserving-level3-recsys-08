@@ -52,6 +52,14 @@
     <link rel="stylesheet" href="{% static 'css/netflix.css' %}" />
     <link rel="stylesheet" href="{% static 'css/result_movie.css' %}" />
 
+    
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+      integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
+    <script>
+      //kakaotalk share
+      Kakao.init('a6933f999071cb7128cff80358c1ce88'); // 사용하려는 앱의 JavaScript 키 입력
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1350QFW977"></script>
     <script>
@@ -73,5 +81,44 @@
     </div>
     
     {% include "test_rec/footer.html" %}
+    
+    
+    <script>
+      // kakaotalk share
+      var variable = document.getElementById('jsvariable'); // 임시로 만든 변수를 담을 div
+      tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
+                                                        // 따라서 body에는 <div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div> 이 코드가 있어야함.
+      
+      Kakao.Share.createDefaultButton({
+        container: '#kakaotalk-sharing-btn',
+        objectType: 'feed',
+        content: {
+          title: '인생캐릭터 테스트 결과',
+          description: '#MBTI #인생캐릭터 #영화추천 #내 최애캐릭터',
+          imageUrl:
+            '',
+          link: {
+            // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+            mobileWebUrl: 'https://인생캐릭터.com',
+            webUrl: 'https://인생캐릭터.com',
+          },
+        },
+        social: {
+          likeCount: 286,
+          commentCount: 45,
+          sharedCount: 845,
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id,
+              webUrl: 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id,
+            },
+          },
+        ],
+      });
+    </script>
+
   </body>
 </html>

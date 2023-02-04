@@ -101,10 +101,18 @@
         </div>
       </div>
     </div>
-    <button class="retest_button"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none"
-      >다시 테스트하기</a
-    ></button>
+    <div class="button-group" style="display: flex; justify-content: space-between;">
+      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none;" 
+        >다시 테스트하기</a
+      ></button>
+      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none;" 
+        >카카오톡 공유하기</a
+      ></button>
+    </div>
+    
     <a href="#"><div class="button_top" style="bottom: 115px"><i class="fa-solid fa-arrow-up"></i></div></a>
 </div>
+
+<div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
 
 {% endblock %}
