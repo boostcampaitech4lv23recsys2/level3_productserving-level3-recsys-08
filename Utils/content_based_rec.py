@@ -78,7 +78,7 @@ def content_based_filtering(movieIds:list, topk:int):
     위 과정을 통해 만들어진 벡터를 코사인 유사도 기반으로 유사도를 측정한다
 
     Args:
-        checked (list): 유저가 선택한 영화 리스트입니다.
+        movieIds (list): 유저가 선택한 영화 리스트입니다.
         topk (int): 유사도 높은 아이템을 리턴할 개수
 
     Returns:
