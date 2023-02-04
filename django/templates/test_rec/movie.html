@@ -2,6 +2,15 @@
 {% load static %} 
 {% load split_movieId_title %}
 {% block contents %}
+<div class="progressbar">
+  <a class="progressbar_left" href="/test_rec/enneagram_test3/">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">80%</span>
+  </div>
+</div>
+
 <div class="wrap"> 
 
   <div class="left_header">
@@ -52,24 +61,24 @@
   </div>
 </div>
   <script>
+    $(document).ready(function(){
+      $('.progress_container').addClass('progress4')
+    })
+    
 
     function movieClick(){
       let checkedMovies = $('input[type=checkbox][name=movies]:checked').length
       let leftChoice = 5 - checkedMovies
       
       $('#movie_btn').val(`${leftChoice}개 선택해주세요`)
-      if(leftChoice == 0){
+      if(leftChoice <= 0){
         $('#movie_btn').val('완료되었습니다!')
         $('#movie_btn').css({
           'background-color' : '#e50914',
           'color':'#fef7f7'
         })
-      }else if(leftChoice < 0){
-        $('#movie_btn').val('완료되었습니다!')
-        $('#movie_btn').css({
-          'background-color' : '#e50914',
-          'color':'#fef7f7'
-        })
+        $('.progress_container').addClass('progress5')
+        $('.test_progress_bar').text('100%')
       }else{
         $('#movie_btn').css({
           'background-color' : '#e5e5e5',
