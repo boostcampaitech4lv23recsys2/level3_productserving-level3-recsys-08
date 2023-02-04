@@ -70,35 +70,36 @@ function sleep(ms) {
 
 // }
 
-async function submitForm(e){
+async function submitForm(e) {
   e.preventDefault()
   $(".wrap").hide();
   $('.progress_container').hide();
+  $('.progressbar_left').hide();
   $("#loading").show();
   $(".success-checkmark").hide()
-  setTimeout(function(){
+  setTimeout(function () {
     $.ajax({
       type: 'POST',
-      url: 'result_page',
-      data:$('.movie_box').serialize(),
-      async:false,
+      url: '/test_rec/result_page/',
+      data: $('.movie_box').serialize(),
+      async: false,
       success: function (response) {
-          console.log('ajax 요청 보냄!')
-          $("#loading").hide();
-          $(".success-checkmark").show();
-          $('.result_wrap').hide();
-          setTimeout(() => {
-            document.querySelector('.movie_box').submit()
-          }, 1200)
+        console.log('ajax 요청 보냄!')
+        $("#loading").hide();
+        $(".success-checkmark").show();
+        $('.result_wrap').hide();
+        setTimeout(() => {
+          document.querySelector('.movie_box').submit()
+        }, 1200)
       },
       error: function (error) {
-          setTimeout(() => {
-              $('.wrap').innerHTML = `failed to load the data`
-          }, 5000)
+        setTimeout(() => {
+          $('.wrap').innerHTML = `failed to load the data`
+        }, 5000)
       }
-  })
-  },2000)
-  
+    })
+  }, 2000)
+
 }
 
 // async function scrollTop(){
@@ -106,11 +107,11 @@ async function submitForm(e){
 // }
 
 // async function submitForm(e) {
-  // e.preventDefault();
-  // document.documentElement.scrollTop = 0;
-  // await scrollTop();
-  // await loading();
-  // document.querySelector('.movie_box').submit()
+// e.preventDefault();
+// document.documentElement.scrollTop = 0;
+// await scrollTop();
+// await loading();
+// document.querySelector('.movie_box').submit()
 // }
 
 // sweet alert
