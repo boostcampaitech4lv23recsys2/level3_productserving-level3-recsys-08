@@ -82,18 +82,24 @@ def index(request):
             tmpuser.save()
 
     # 인기있는 캐릭터 Top 10 CharacterId
-    characterid = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
+    characterid1 = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
 
     # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
     cha_li1 = []
-    for c in characterid:
+    for c in characterid1:
         cha_li1.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
         
     # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
+    characterid2 = [1274, 1284, 1281, 1293, 1297, 1304, 1313, 1321, 1352, 1391]
     cha_li2 = []
-    
+    for c in characterid2:
+        cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        
     # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
+    characterid3 = [8153, 8136, 8140, 8144, 8177, 8134, 8158, 8146, 8189, 8303]
     cha_li3 = []
+    for c in characterid3:
+        cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
     
     context = {
         'my_person_list': [],

@@ -64,7 +64,7 @@
                 나와 성격이 같은 캐릭터 Top 10
               </div>
               <div class="inner_block">
-                {% for cha in characters1 %}
+                {% for cha in characters2 %}
                 <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
                 {% endfor %}   
               </div>                                                                       
@@ -74,7 +74,7 @@
                 나와 궁합이 잘 맞는 캐릭터 Top 10
               </div>
               <div class="inner_block">
-                {% for cha in characters1 %}
+                {% for cha in characters3 %}
                 <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
                 {% endfor %}      
               </div>                                                          
