@@ -71,6 +71,7 @@ function sleep(ms) {
 // }
 
 async function submitForm(e) {
+  document.documentElement.scrollTop = 0;
   e.preventDefault()
   $(".wrap").hide();
   $('.progress_container').hide();

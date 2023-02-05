@@ -2,197 +2,49 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-<!doctype html>
-<html lang="ko">
-  <head>
-    <link rel="canonical" href="https://getbootstrap.kr/docs/5.1/examples/blog/">
-    <!-- Bootstrap core CSS -->
 
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#7952b3">
-    <style>
-      p {
-        margin-bottom:0.5;
-      }
-      .block_title {
-        margin-bottom:2;
-      }
-    </style>
-    <script src="{% static 'js/footer.js' %}" ></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  </head>
-  <body>
-    <div class="banner1">
-      <style>
-        .banner1 {
-          display: flex;
-          background: #CD0404;
-          border-radius: 15px 15px 15px 15px / 15px 15px 15px 15px;
-          margin-left: 1%;
-          margin-right: 1%;
-          margin-bottom: 1%;
-          margin-top: 1%;
-        }
-      </style>
-        <div class="banner-title" style="min-width: 450px;">
-          <h2 style="color: white; margin-top: 80px; margin-left: 30px; margin-right: 10px;">MoVie + mbTI = MVTI</h2>
-          <h2 style="color: white; margin-left: 30px; margin-right: 10px;">주인공이 되어 영화에 몰입해보세요!</h2>
-        </div>
-      <div class="banner__content">
-        <style>
-          .banner__content {
-            margin-left: auto;
-            height: 250px;
-            }
-          </style>
-        <div class="test_block">
-          <style>
-          .test_block {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-right: 10px;
-            padding-left: 10px;
-          }
-          .banner-button {
-            justify-content: center;
-            align-items: center;
-          } 
-          </style>
-          <a href="{% url 'test_rec:start_test' %}" class="btn banner-button" type="button" style="color: white">테스트 하러가기</a>
-          <a href="{% url 'common:user_profile' %}" class="btn banner-button" type="button" style="color: white">내 정보보기</a>
-        </div>
+    <div class="banner">
+      <div class="banner_content">
+        <h1 class="banner_title">MoVie + mbTI = MVTI</h1>
+        <h2 class="banner_subtitle">주인공이 되어 영화에 몰입해보세요!</h2>
+        <a href="{% url 'test_rec:start_test' %}" class="banner_testlink" type="button">
+          <div class="testlink_box">
+              테스트 하러가기
+          </div>
+        </a>
       </div>
     </div>
-    <div style="display: flex">
-      <section style="padding-left: 1%; padding-right: 1%; padding-top: 2%;">
-        <ul class="nav flex-column">
-          <div style="border: 3px solid #CD0404; background: #CD0404; border-radius: 15px 15px 15px 15px / 15px 15px 15px 15px; padding-top: 10px; padding-bottom: 10px;">
-          <style>
-            .test_block {
-              padding-top: 10px;
-              padding-bottom: 10px;
-              padding-right: 10px;
-              padding-left: 10px;
-            }
-            .banner-button {
-              justify-content: center;
-              align-items: center;
-            } 
-            .nav-button {
-              width: 80px;
-              height: 40px;
-              margin-left: 5px;
-              margin-right: 5px;
-            }
-            </style>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISTJ" style="color: white;">ISTJ</a>
-            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESTJ" style="color: white;">ESTJ</a>
-          </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISFJ" style="color: white;">ISFJ</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESFJ" style="color: white;">ESFJ</a>
-          </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESFP" style="color: white;">ESFP</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISFP" style="color: white;">ISFP</a>
-          </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESTP" style="color: white;">ESTP</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISTP" style="color: white;">ISTP</a>          
-            </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/INFJ" style="color: white;">INFJ</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENFJ" style="color: white;">ENFJ</a>
-          </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/INFP" style="color: white;">INFP</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENFP" style="color: white;">ENFP</a>
-          </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/INTP" style="color: white;">INTP</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENTP" style="color: white;">ENTP</a>
-          </li>
-          <li class="nav-item" style="white-space: nowrap; text-align: center;">
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/INTJ" style="color: white;">INTJ</a>
-              <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENTJ" style="color: white;">ENTJ</a>
-          </li>
+    <div class="index_contents">
+      <div class="index_contents_box">
+        <section class="mbti_section">
+          <div class="mbti_section_title">MBTI 선택하기</div>
+          <div class="mbti_nav_box">
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISTJ">ISTJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESTJ">ESTJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISFJ">ISFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESFJ">ESFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESFP">ESFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISFP">ISFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESTP">ESTP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISTP">ISTP</a>          
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INFJ">INFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENFJ">ENFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INFP">INFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENFP">ENFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INTP">INTP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENTP">ENTP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INTJ">INTJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENTJ">ENTJ</a>
           </div>
-        </ul>
-      </section>
-      <section>
-        <style>
-          .main-container {
-            width: auto;
-            height: auto;
-            min-width: 500px;
-            min-height: 72px;
-            margin-right: auto;
-            padding-bottom: 20px;
-            padding-top: 2%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          }
-          .main-container-2 {
-            width: auto;
-            height: auto;
-            min-width: 400px;
-            min-height: 80px;
-            margin: 5px;
-            padding-bottom: 8px;
-            padding-top: 10px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-          }
-        </style>
-        <main class="main-container" style="flex: 1;">
-          <div class="main-container-2" style="padding-top: 0%;">
-            <div class="row mb-2">
-            </div>
-            <div class="main-box" style="text-align: left;">
-              <style>
-                .main-box {
-                  width: 100%;
-                  box-shadow: 5px 5px 5px grey;
-                  border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-                  padding: 5px;
-                  background-color: #fff;
-                  border: #3C4048;
-                  border-width: thick;
-                  padding-left: 10px;
-                  padding-right: 10px;
-                }
-
-                .tooltip { position: relative; display: inline-block; }
-                .tooltip .tooltip-content {
-                    visibility: hidden;
-                    width: 250px;
-                    background-color: #f3f3f3;
-                    border-radius: 10px;
-                    padding: 0;
-                    margin-top: 10px;
-                    color: #737373;
-                    text-align: center;
-                    position: absolute;
-                    z-index: 1;
-                    white-space: nowrap;
-                }
-                .tooltip:hover .tooltip-content { visibility: visible; }
-                .tooltip { margin: auto; }
-                .tooltip .tooltip-content { bottom: 100%; left: 50%; margin-left: -125px; }
-
-              </style>
-              <div style="white-space: nowrap;">
-                <p class="block_title" style="white-space: nowrap; width: 350px; margin-bottom: 1%; padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;"><b>▶️ 인기있는 캐릭터 Top 10</b></h2>
+          
+        </section>
+        <section class="character_section">
+          <div class="character_section_container">
+            <div class="main_box">
+              <div class="tooltip_box">
+                <div class="block_title">
+                  ▶️ 인기있는 캐릭터 Top 10
+                </div>
                 <div class="tooltip" style="opacity: 1;">
                   <img src="https://cdn.icon-icons.com/icons2/10/PNG/256/help_question_1566.png" style="margin-left: 1%; margin-bottom: 3px;" alt="question mark" width="20" height="20">
                   <div class="tooltip-content">
@@ -200,85 +52,53 @@
                   </div>
                 </div>
               </div>
-                <style>
-                  .pop_card_image {
-                    width: 100px;
-                    height: 140px;
-                    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-                    padding-left: 4px;
-                    padding-right: 4px;
-                    padding-top: 4px;
-                    padding-bottom: 4px;
-                  }
-                </style>
-              <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
+              <div class="inner_block">
               {% for cha in characters1 %}
-              <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
               {% endfor %}   
               </div>                                                                                      
             </div>
-            <div class="row mb-2" style="padding-bottom: 20px;">
-            </div>
             {% if user.is_authenticated %}
-            <div class="main-box" style="text-align: left;">
-              <p class="block_title" style="margin-bottom: 1%; padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;"><b>▶️ 나와 성격이 같은 캐릭터 Top 10</b></h2>
-                <style>
-                  .pop_card_image {
-                    width: 100px;
-                    height: 140px;
-                    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-                    padding-left: 2px;
-                    padding-right: 2px;
-                    padding-top: 4px;
-                    padding-bottom: 4px;
-                  }
-                </style>
-                <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for cha in characters1 %}
-                  <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
-                  {% endfor %}   
-                </div>                                                                       
+            <div class="main_box">
+              <div class="block_title" >
+                ▶️ 나와 성격이 같은 캐릭터 Top 10
+              </div>
+              <div class="inner_block">
+                {% for cha in characters1 %}
+                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+                {% endfor %}   
+              </div>                                                                       
             </div>
-            <div class="row mb-2" style="padding-bottom: 20px;">
-            </div>
-            <div class="main-box" style="text-align: left;">
-              <p class="block_title" style="margin-bottom: 1%; padding-bottom: 5px; font-size: 28px; text-align: left; padding-left: 1%;"><b>▶️ 나와 궁합이 잘 맞는 캐릭터 Top 10</b></h2>
-                <style>
-                  .pop_card_image {
-                    width: 100px;
-                    height: 140px;
-                    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-                    padding-left: 2px;
-                    padding-right: 2px;
-                    padding-top: 4px;
-                    padding-bottom: 4px;
-                  }
-                </style>
-                <div class="inner-block" style="white-space: nowrap; width: calc(100vw - 250px); overflow: scroll;">
-                  {% for cha in characters1 %}
-                  <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
-                  {% endfor %}      
-                </div>                                                          
+            <div class="main_box">
+              <div class="block_title">
+                ▶️ 나와 궁합이 잘 맞는 캐릭터 Top 10
+              </div>
+              <div class="inner_block">
+                {% for cha in characters1 %}
+                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+                {% endfor %}      
+              </div>                                                          
             </div>                               
             {% else %}
-            <div class="main-box" style="text-align: left; padding: 1%; padding-left: 1%;">
-              <h2 class="block_title" style="padding-bottom: 5px; font-size: 28px; text-align: left;">🤖 나의 테스트 정보가 없습니다!</h2>
-              <p>로그인이나 회원가입을 해주세요.</p>
-              <a href="{% url 'common:login' %}" class="btn btn-outline-success" type="button">Log in</a>
-              <a href="{% url 'common:signup' %}" class="btn btn-outline-success" type="button">Sign up</a>
+            <div class="main_box">
+              <h2 class="block_title">🤖 나의 테스트 정보가 없습니다!</h2>
+              <p class="block_subtitle">로그인이나 회원가입을 해주세요.</p>
+              <a href="{% url 'common:login' %}" class="main_login_signup" type="button">로그인하러가기</a>
+              <a href="{% url 'common:signup' %}" class="main_login_signup" type="button">회원가입하러가기</a>
             </div>
             {% endif %}
-      </section>
+        </section>
+
+      </div>
     </div>
-  </div>
-</main>
-<footer style="height: 85px; display: flex; justify-content: center; align-items: center; bottom: -380px; padding: 15px;">
-  <p style="margin-right: 10px;margin-bottom: 0;">&copy; ITS</p>
+
+<footer class="index_footer">
+  <p style="margin-right: 10px;">&copy; ITS</p>
   <a href="https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08.git" style="text-decoration: none;">
   <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png" style="margin-bottom: 3px;" alt="GitHub logo" width="15" height="15">
   <span style="font-size: 15px;">Github</span>
   </a>
 </footer>
-</body>
-</html>
+
+
 {% endblock %}
