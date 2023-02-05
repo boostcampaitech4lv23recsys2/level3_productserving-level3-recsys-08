@@ -222,11 +222,27 @@ def delete_tmpuser(request, tmpuser_id):
     return redirect('common:user_profile')
 
 
+def clean(votes):
+    votes = votes[:votes.index("/")]
+    if votes[-1] == "k":
+        votes = votes[:-1].replace(".","") + "000"
+    return int(votes)
+
 # MBTI 상세 페이지 함수
 def show_mbti_info(request, mbti):
     get_mbti = mbti
     
+    cha_df_with_ko_title['vote'] = cha_df_with_ko_title['Votes'].apply(lambda x:clean(x))
+    alldf = pd.merge(cha_df_with_ko_title, movie_df[['movieId', 'npop', 'contents_year']], on="movieId", how="left")
+    alldf = alldf[alldf['MBTI'] == 'INFP'].sort_values(['npop','vote','contents_year'], ascending=False)
+    
+    # all_INFP = []
+    # for u in alldf['Character']:
+    #     all_INFP.extend(alldf[alldf['Character'] == u].to_dict(orient='records'))
+    
     context = {
-        'mbti' : [get_mbti]
+        'mbti' : get_mbti,
+        'character' : alldf
     }
+    
     return render(request, 'common/mbti_info.html', context)
