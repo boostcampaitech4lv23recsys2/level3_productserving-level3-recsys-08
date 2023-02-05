@@ -43,14 +43,14 @@ def check_TmpUserInfo(request):
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
 
 movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
-character_df = pd.read_pickle(pickle_path / '230130_Popular_movie_character_2867_cwj.pickle')
+character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
 cha_df_with_ko_title = pd.read_pickle(pickle_path / 'Popular_movie_character_2867_with_ko_title.pickle')
 
 movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
-characterid_to_hashtag_path = pickle_path / '230201_characterid_to_hashtag.pickle'
+    characterid_to_hashtag_path = pickle_path / '230203_characterid_to_hashtag.pickle'
 with open(characterid_to_hashtag_path, 'rb') as f:
     characterid_to_hashtag = pickle.load(f)
 
@@ -233,16 +233,20 @@ def show_mbti_info(request, mbti):
     get_mbti = mbti
     
     cha_df_with_ko_title['vote'] = cha_df_with_ko_title['Votes'].apply(lambda x:clean(x))
-    alldf = pd.merge(cha_df_with_ko_title, movie_df[['movieId', 'npop', 'contents_year']], on="movieId", how="left")
-    alldf = alldf[alldf['MBTI'] == 'INFP'].sort_values(['npop','vote','contents_year'], ascending=False)
-    
+    # alldf = pd.merge(cha_df_with_ko_title, movie_df[['movieId', 'npop', 'contents_year']], on="movieId", how="left")
+    # alldf = alldf[alldf['MBTI'] == 'INFP'].sort_values(['npop','vote','contents_year'], ascending=False)
+    char_df = character_df[character_df.MBTI=="INFP"].copy()
+    char_df.sort_values('npop',ascending=False,inplace=True)
+    char_df[char_df.vote>=1000]
+    char_df['hashtag'] = char_df.CharacterId.map(characterid_to_hashtag)
+    char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag']
     # all_INFP = []
     # for u in alldf['Character']:
     #     all_INFP.extend(alldf[alldf['Character'] == u].to_dict(orient='records'))
-    
+    char_list = char_df[char_cols][:200].to_dict(orient='records')
     context = {
         'mbti' : get_mbti,
-        'character' : alldf
+        'character' : char_list
     }
     
     return render(request, 'common/mbti_info.html', context)

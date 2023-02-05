@@ -92,7 +92,7 @@
   /* 영화 */
 .movie{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     box-shadow: 3px 3px 3px 3px rgb(0 0 0 / 30%);
     padding: 20px;
     margin-bottom:5vh;

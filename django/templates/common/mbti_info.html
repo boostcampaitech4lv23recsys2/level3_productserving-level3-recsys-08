@@ -21,12 +21,12 @@
       action="{% url 'test_rec:result_page' %}"
     >
       <div class="movie_box2 infinite-container">
-        {% for u in alldf %}
+        {% for u in character %}
             <div class="infinite-item">
               <input type="checkbox" class="movie_card" value="{{ u.Character }}" name="movies" id="{{ u.Character }}"  required/>
               <label
                 for="{{ u.Character }}"
-                style="background-image: '{{ u.img_src }}'; background-size:cover;"
+                style="background-image: url('{{u.img_src}}'); background-size:cover;"
                 data-bs-toggle="tooltip" data-bs-title="{{ u.ko_title }}"
               >
             </label>
