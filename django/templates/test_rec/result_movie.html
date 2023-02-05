@@ -17,16 +17,16 @@
             <div class="character_title">캐릭터 정보</div>
             <div class="character">
               <div class="poster_box">
-                <img src="{{character.img_path}}" alt="character" class="character_image"/>
+                <img src="{{ cur_character.img_src }}" alt="character" class="character_image"/>
               </div>
               <div class="character_body_info">
                 <div class="fullText">
-                  <div class="character_title">{{ data.name }}</div>
-                  <div class="character_info">MBTI, Engram 정보</div>
-                  <div class="character_info_tag">#열여덟 #잘생김 #해시태그자리</div>
+                  <div class="character_title">{{ cur_character.Character }}</div>
+                  <div class="character_info">MBTI: {{ cur_character.MBTI }}</div>
+                  <div class="character_info_tag">{{ cur_character.hashtag }}</div>
 
                 </div>
-                <div id="character_description" class="character_info">{{ character.char_info }}</div>
+                <div id="character_description" class="character_info">{{ cur_character.char_info }}</div>
                 {#<div class="character_description_container"></div>#}
                 {#<input type="checkbox" id="plus">#}
                 <a href="#", id="plus" class="plus_button">더보기</a>
@@ -180,7 +180,7 @@
             <div class="character_title">작품에 등장한 다른 캐릭터</div>
 
             <div class="other">
-              {% for character in data1 %}
+              {% for character in char_data %}
                   <div class="character_card others_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
@@ -203,11 +203,13 @@
                             <span class="card_info_item_tag">{{ character.hashtag }}</span>
                           </div>
                         </div>
+                        {% if login_user and character.Enneagram_sim %}
                         <div class="card_info_text_box">
                           <h6 class="card_info_text">유사도</h6>
                           <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
                         </div>
                         <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
+                        {% endif %}
                       </div>
                       {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
                     </div>

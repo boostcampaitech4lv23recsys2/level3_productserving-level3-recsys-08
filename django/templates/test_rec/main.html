@@ -41,6 +41,8 @@
     {% comment %} css {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/reset.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}" />
+
     {% comment %} <link rel="stylesheet" href="{% static 'css/test.css' %}" /> {% endcomment %}
     {% comment %} <link rel="stylesheet" href="{% static 'css/result_bootstrap.css' %}" /> {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/netflix.css' %}" />
@@ -49,7 +51,7 @@
   <body>
     {% comment %} {% include "test_rec/loading.html" %} {% endcomment %}
     {% comment %} {% include 'navbar.html' %} {% endcomment %}
-    {% include "test_rec/nav.html" %}
+    {% include "navbar.html" %}
     
     <div class="main_container">
       <div class="main_header">
