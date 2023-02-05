@@ -34,7 +34,11 @@
 .mbti_button:hover {
   background-color: #c72003;
 }
-
+.engram_button{
+  width: auto;
+  background-color: rgb(201, 147, 142);
+  font-size: 24px;
+}
 .engram_box {
   width: 80%;
   display: grid;
@@ -78,6 +82,7 @@
   grid-template-rows: repeat(auto-fill, minmax(160px, 1fr));
   gap: 10px 0px;
   justify-content: center;
+  justify-items: center;
   grid-auto-flow: row dense;
 }
 
@@ -248,5 +253,17 @@
 
   .engram_box_3 button {
     width: 75vw;
+  }
+}
+@media (max-width:415px){
+  .progress_container{
+    width: 200px;
+  }
+  .progressbar_left{
+    width: 40px;
+    height: 40px;
+  }
+  .progressbar{
+    margin-top: 5vh;
   }
 }

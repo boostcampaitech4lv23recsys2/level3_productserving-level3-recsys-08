@@ -130,7 +130,7 @@
   /* align-content: flex-end; */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  /* align-items: start; */
+  justify-items: center;
   gap: 5px;
 }
 .cards_box:first-child{
@@ -171,7 +171,7 @@
   width: 200px;
   height: 200px;
   border-radius: 1rem;
-  box-shadow: inset 3px 3px 10px #ccc;
+  box-shadow: 3px 3px 10px #ccc;
   display:inline-block;
   position: relative;
   overflow: hidden;

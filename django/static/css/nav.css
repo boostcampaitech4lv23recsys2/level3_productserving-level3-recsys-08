@@ -35,3 +35,6 @@
 #nav_profile{
     margin-right: 20px;
 }
+.mobile_nav_item_box{
+    display: none;
+}

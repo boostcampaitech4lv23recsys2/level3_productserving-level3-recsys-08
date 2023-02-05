@@ -106,7 +106,7 @@ footer p {
 }
 
 .button {
-  background-color: #c72003;
+  background-color: #d94840;
   color: white;
   width: 25vw;
   padding: 1rem;
@@ -240,5 +240,10 @@ footer p {
 
   .button {
     width: 40vw;
+  }
+}
+@media (max-width:400px) {
+  .button{
+    width: 50vw;
   }
 }

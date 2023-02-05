@@ -193,3 +193,8 @@ a {
     }
 
 }
+@media (max-width:400px) {
+    .login_container{
+        width: 90%;
+    }
+}

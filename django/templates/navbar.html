@@ -24,3 +24,19 @@
     <input type="hidden" id="page" name="page" value="{{ page }}">
   </form> {% endcomment %}
 </div>
+<div class="mobile_nav_item_box">
+  <ul class="mobile_nav_item_right">
+    <li class="mobile_nav_items">
+      <a class="mobile_nav_link" href="{% url 'test_rec:start_test' %}">테스트하러가기</a>
+    </li>
+    <li class="mobile_nav_items">
+      {% if user.is_authenticated %}
+        <a id="nav_profile" class="mobile_nav_link" href="{% url 'common:user_profile' %}">{{ user.username }}프로필</a>
+        <a class="mobile_nav_link" href="{% url 'common:logout' %}">로그아웃</a>
+
+      {% else %}
+        <a class="mobile_nav_link" href="{% url 'common:login' %}">로그인</a>
+      {% endif %}
+    </li>
+  </ul>
+</div>

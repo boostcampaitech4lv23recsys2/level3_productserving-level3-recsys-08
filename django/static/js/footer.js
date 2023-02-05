@@ -3,9 +3,9 @@ $(window).scroll(function () {
   const docHeight = document.documentElement.scrollHeight;
   const winHeight = $(window).height();
   const finalHeight = docHeight - winHeight;
-  console.log('here', $(window).scrollTop() + $(window).height())
-  console.log('here2:', $(document).height())
-  if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+  // console.log('here', $(window).scrollTop() + $(window).height())
+  // console.log('here2:', $(document).height())
+  if ($(window).scrollTop() + $(window).height() >= $(document).height()-100) {
     $('footer').css({ 'bottom': `-${finalHeight}px` });
     $('footer').css({ 'display': 'flex' });
 

@@ -22,7 +22,7 @@
             <div class="cards_box_container">
               <div class="cards_box">
                 <div class="cards_category">
-                  <div id="mbti" class="cards_caategory_text">나와 비슷한 캐릭터</div>
+                  <div id="mbti" class="cards_category_text">나와 비슷한 캐릭터</div>
                 </div>
                 {% for character in data1 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
@@ -59,7 +59,7 @@
                 {% endfor %}
                   
                 <div class="cards_category category_color">
-                  <div id="attractive" class="cards_caategory_text">매력적인 캐릭터</div>
+                  <div id="attractive" class="cards_category_text">나와 궁합이 잘맞는 캐릭터</div>
                 </div>
                 {% for character in data2 %}
                   <div id="data2" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
