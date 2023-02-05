@@ -31,6 +31,12 @@ def check_TmpUserInfo(request):
         return False
     if user.recommended_character_id == None:
         return False
+    if user.fit_character_id == None:
+        return False
+    if user.recommended_character_sim == None:
+        return False
+    if user.fit_character_sim == None:
+        return False
     return True
 
 
@@ -154,7 +160,7 @@ def user_profile(request):
     return render(request, 'common/user_profile.html', context)
 
 
-@login_required(login_url='common:login')
+
 def detail_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     user = tmpuser.LoginUser
@@ -175,6 +181,7 @@ def detail_tmpuser(request, tmpuser_id):
     data1 = data1.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data1['CharacterId'] = data1['CharacterId'].map(int)
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
+    
     data1['Enneagram_sim'] = eval(tmpuser.recommended_character_sim)
     cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
     data1 = data1[cols][:20].to_dict(orient='records')
@@ -193,7 +200,7 @@ def detail_tmpuser(request, tmpuser_id):
     
     context = {
         'user' : user,
-        'user_name' : user.username,
+        'tmpuser' : tmpuser,
         'mbti': mbti,
         'data1': data1,
         'data2': data2,

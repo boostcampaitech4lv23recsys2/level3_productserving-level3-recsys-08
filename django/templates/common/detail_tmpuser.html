@@ -56,7 +56,14 @@
     </style>
     {% comment %} css {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/result_bootstrap.css' %}" />
-    </head>
+    
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+      integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
+    <script>
+      Kakao.init('a6933f999071cb7128cff80358c1ce88'); // 사용하려는 앱의 JavaScript 키 입력
+    </script>
+    
+  </head>
   <body>
     {% include "navbar.html" %}
     <div class="container character_container container_result">
@@ -81,7 +88,12 @@
               style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
             />
             <div style="padding-right:4%; padding-left:1%">
-              <div class="character_title" >{{ user_name }}님의 추천결과 🎉</div>
+              <div class="character_title" >
+                {% if user %}
+                  {{ user.username }}님의 추천결과 🎉
+                {% else %}
+                  임시 유저🌱님의 추천결과
+                {% endif %}</div>
               <div class="character_info" >MBTI: {{ mbti }}</div>
               <div class="character_info" >설문을 통한 성격:</div>
               <ul>
@@ -95,7 +107,13 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">{{ user_name }}님과 성격이 비슷한 캐릭터</div>
+              <div class="character_title">
+                {% if user %}
+                  {{ user.username }}님과 성격이 비슷한 캐릭터
+                {% else %}
+                  임시 유저🌱님과 성격이 비슷한 캐릭터
+                {% endif %}  
+              </div>
               <div class="scrollMenu3">
                 {% for character in data1 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
@@ -136,7 +154,13 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">{{ user_name }}님과 성격이 잘맞는 캐릭터</div>
+              <div class="character_title">
+                {% if user %}
+                  {{ user.username }}님과 성격이 잘맞는 캐릭터
+                {% else %}
+                  임시 유저🌱님과 성격이 잘맞는 캐릭터
+                {% endif %}
+                </div>
               <div class="scrollMenu3">
                 {% for character in data2 %}
                   <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
@@ -177,7 +201,13 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
-              <div class="character_title">{{ user_name }}님이 고른 영화</div>
+              <div class="character_title">
+                {% if user %}
+                  {{ user.username }}님이 고른 영화
+                {% else %}
+                  임시 유저🌱님이 고른 영화
+                {% endif %}
+              </div>
               <div class="scrollMenu">
                 {% for movie in movie_data %}
                   <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">
@@ -185,12 +215,19 @@
               </div>
             </div>
           </div>
-          <button class="button back_button" onclick="history.back()">
-            뒤로 가기
-          </button>
+          <div class="button-group" style="display: flex; justify-content: space-between;">
+            <a href="{% url 'common:delete_tmpuser' tmpuser.id %}">
+              <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" type="button">삭제하기</button>
+            </a>
+            <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" onclick="history.back()">뒤로 가기</button>
+            <a id="kakaotalk-sharing-btn" href="javascript:;">
+              <button class="button back_button" style="margin-left:1vw; margin-right:1vw;" type="button">카카오톡 공유하기</button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+    <div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
     {% include "test_rec/footer.html" %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
@@ -205,5 +242,42 @@
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"
     ></script>
+
+    <script> //카카오톡 공유하는 스크립트
+      var variable = document.getElementById('jsvariable'); // 임시로 만든 변수를 담을 div
+      tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
+
+      Kakao.Share.createDefaultButton({
+        container: '#kakaotalk-sharing-btn',
+        objectType: 'feed',
+        content: {
+          title: '인생캐릭터 테스트 결과',
+          description: '#MBTI #인생캐릭터 #영화추천 #내 최애캐릭터',
+          imageUrl:
+            'https://user-images.githubusercontent.com/57648890/211701382-0014bb80-2371-4fae-b101-0e71a3462c67.png',
+          link: {
+            // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+            mobileWebUrl: 'https://인생캐릭터.com',
+            webUrl: 'https://인생캐릭터.com',
+          },
+        },
+        social: {
+          likeCount: 286,
+          commentCount: 45,
+          sharedCount: 845,
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id,
+              webUrl: 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id,
+            },
+          },
+        ],
+      });
+    </script>    
+    
+
   </body>
 </html>

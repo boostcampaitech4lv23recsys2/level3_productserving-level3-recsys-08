@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 from django.utils import timezone
 import simplejson as json
 import pandas as pd
@@ -15,14 +16,35 @@ sys.path.append('..')
 from Utils import *
 
 
-def print_TmpUserInfo(user):
-    print(f'userid: {user.id}')
-    print(f'MBTI:{user.MBTI}')
-    print(f'ennea_ans1:{user.ennea_ans1}')
-    print(f'ennea_ans2:{user.ennea_ans2}')
-    print(f'ennea_res:{user.ennea_res}')
-    print(f'prefer_movie_id:{user.prefer_movie_id}')
-    print(f'recommended_character_id:{user.recommended_character_id}')
+
+# request의 유저가 정상적으로 테스트를 마쳤는지 확인하는 함수
+def check_TmpUserInfo(request):
+    try:
+        user = TmpUser.objects.get(id=request.session['user_id'])
+    except:
+        return False
+    if user == None:
+        return False
+    if user.MBTI == None:
+        return False
+    if user.ennea_ans1 == None:
+        return False
+    if user.ennea_ans2 == None:
+        return False    
+    if user.ennea_res == None:
+        return False
+    if user.prefer_movie_id == None:
+        return False
+    if user.recommended_character_id == None:
+        return False
+    if user.fit_character_id == None:
+        return False
+    if user.recommended_character_sim == None:
+        return False
+    if user.fit_character_sim == None:
+        return False
+    return True
+
 
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
 
@@ -203,7 +225,16 @@ def result_page(request):
             user.fit_character_sim = json.dumps(fit_character_sim)
             user.save()
 
-            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj}
+            # 로그인 되었다면 TmpUser 객체 로그인 유저와 연결
+            if request.user.is_authenticated:  #로그인이 되어있는지 확인
+                print('로그인 OK')
+                if check_TmpUserInfo(request): #테스트를 마쳤는지 확인
+                    print('TmpUser 객체 OK')
+                    login_user = request.user        #로그인한 유저의 정보를 가져옴
+                    user.LoginUser = login_user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
+                    user.save()
+
+            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj, 'tmpuser':user}
             return render(request, 'test_rec/result.html', context)
         else:
             return render(request, 'test_rec/result.html')
