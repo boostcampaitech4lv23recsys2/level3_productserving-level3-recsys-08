@@ -36,7 +36,22 @@ footer {
   position: absolute;
   bottom: 0px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* transition: bottom 0.5s ease-in-out; */
+}
+
+footer a {
+  display: inherit;
+}
+
+footer img {
+  margin-right: 4px;
+}
+
+footer p {
+  margin-right: 10px;
 }
 
 .container {
@@ -77,7 +92,7 @@ footer {
   font-weight: 500;
 }
 
-.main_contents{
+.main_contents {
   align-items: center;
 }
 
@@ -91,7 +106,7 @@ footer {
 }
 
 .button {
-  background-color: #c72003;
+  background-color: #d94840;
   color: white;
   width: 25vw;
   padding: 1rem;
@@ -225,5 +240,10 @@ footer {
 
   .button {
     width: 40vw;
+  }
+}
+@media (max-width:400px) {
+  .button{
+    width: 50vw;
   }
 }

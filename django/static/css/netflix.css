@@ -59,7 +59,7 @@
 /* Test 페이지 style */
 .wrap{
     position:absolute;
-    top:10vh;
+    top:22vh;
     width:60%;
     display: flex;
     justify-content: center;
@@ -86,6 +86,19 @@
 }
 .test_question_example{
     font-size:22px;
+}
+.mbti_flex{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.mbti_p{
+    margin-bottom: 10px;
+}
+.mbtitest{
+    background-color: #c9938e;
+    width: 200px;
 }
 .contents{
     display: flex;
@@ -199,6 +212,10 @@
     }
 }
 @media (max-width:622px) {
+    .progress_container{
+        width: 350px;
+      }
+      
     .contents_result{
         width:90%;
         background-color: white;
@@ -209,24 +226,27 @@
         margin-top:10px;
     }
     .cards_box{
-        grid-template-columns: 1fr;
+        /* grid-template-columns: 1fr; */
+        justify-items: stretch;
     }
     .cards_category{
+        /* background: none; */
+        width: auto;
+        height:100%;
+        border-radius: 0;
+        padding:20px;
+        /* margin: 25px 0 6px 0; */
+    }
+    .cards_category_text{
         text-align: center;
         font-weight: 600;
         font-size: 25px;
-        background: none;
-        padding:10px;
-        width: auto;
-        height:100px;
-        border-radius: 0;
-        text-align: left;
-        padding:20px;
     }
     .character_card{
         width: auto;
         height:auto;
         border-radius: 0;
+        border: 1px solid #a4a4a4;
     }
     .card_image{
         width:100%;
@@ -259,12 +279,7 @@
     .card_info{
         padding: 0 10px;
     }
-    .card_info_items_box{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-
-    }
+    
     .card_info_item{
         height: auto;
         font-size:inherit
@@ -285,3 +300,65 @@
         margin-left:5%;
     }
 }
+@media (max-width:514px) {
+    .card_info_items_box{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+    }
+}
+
+@media (max-width:415px){
+    .wrap{
+      top: 30vh;
+      width: 90%;
+    }
+    .mbti_p{
+        margin: 0;
+    }
+    
+    .test_question, .test_question_subtitle{
+        font-size: 23px;
+        margin-bottom: 15px;
+        line-height: 32px;
+    }
+    .test_question_example{
+        font-size: 19px;
+    }
+    .contents{
+        margin-top: 40px;
+    }
+    .button_box{
+        width: auto;
+    }
+    .button{
+        width: 50vw;
+        font-size: 20px;
+        padding: 10px 15px;
+    }
+    .mbtitest{
+        width: 40vw;
+    }
+    .mbti_button{
+        width: 71px;
+    }
+    .engram_button{
+        width: 100%;
+    }
+    .engram_box_3{
+        width: 90vw;
+    }
+    .engram_box_3 button{
+        padding: 20px;
+        width: 100%;
+        line-height: 28px;
+    }
+    .fixed_button{
+        padding: 24px 20%;
+    }
+    .movie_button{
+        padding: 12px 60px;
+    }
+
+  }

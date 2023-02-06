@@ -1,31 +1,67 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-<!doctype html>
-<html lang="ko">
-  <head>
-    <link rel="canonical" href="https://getbootstrap.kr/docs/5.1/examples/blog/">
-    <!-- Bootstrap core CSS -->
+{% extends 'test_rec/base.html' %}
+{% load static %} 
+{% load split_movieId_title %}
+{% block contents %}
+
+<div class="wrap"> 
+
+  <div class="left_header">
+    <h1 class="test_question">{{ mbti }}</h1>
+    <h3 class="test_question_subtitle">🔥 인기순위 🔥</h3>  
+    <h3 class="test_question_example">
+      ❗해당 MBTI의<br> 캐릭터 인기순위입니다.
+
+    </h3>
+  </div>
+  <div class="contents" id="movie_contents">
+
+    <form
+      class="movie_box"
+      method="post"
+      action="{% url 'test_rec:result_page' %}"
+    >
+      <div class="movie_box2 infinite-container">
+        {% for u in character %}
+            <div class="infinite-item">
+              <input type="checkbox" class="movie_card" value="{{ u.Character }}" name="movies" id="{{ u.Character }}"  required/>
+              <label
+                for="{{ u.Character }}"
+                style="background-image: url('{{u.img_src}}'); background-size:cover;"
+                data-bs-toggle="tooltip" data-bs-title="{{ u.ko_title }}"
+              >
+            </label>
+            </div>
+        {% endfor %}
+        
+      </div>
+      <div class="pagination">
+        {% if page_obj.has_next %}
+          <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+      </div>
+      
+    </form>
+  </div>
+</div>
+  <script>
+    const movieBox = $('.movie_box')
+    movieBox.on('click', movieClick)
+
+    const infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      offset: 'bottom-in-view',
+      handler: function(direction){
+        console.log('Scrolled!')
+      },
+      onBeforePageLoad: function(){},
+      onAfterPageLoad: function(){
+        const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      }
+    })
     
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#7952b3">
-    <style>
-      p {
-        margin-bottom:0.5;
-      }
-      .block_title {
-        margin-bottom:2;
-      }
-    </style>    
-  </head>
-  <body>
-    <h2>{{ mbti }}</h2>
-  </body>
-</html>
+    const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+  </script>
 {% endblock %}
