@@ -1,34 +1,65 @@
 {% extends "base.html" %}
-{% load django_bootstrap5 %}
+{% load static %} 
 {% load socialaccount %}
 
 {% block content %}
-<div class="container my-3">
-    <div class="row">
-        <div class="col-4">
+<div class="contents_container">
+
+    <div class="login_container">
+        <div class="login_header">
             <h4>로그인</h4>
         </div>
-        <div class="col-8 text-right">
-            <span>또는 <a href="{% url 'common:signup' %}">계정을 만드세요.</a> </span>
-        </div>
-    </div>
-    <form method="post" class="post-form" action="{% url 'common:login' %}">
-        {% csrf_token %}
-        {% include "form_errors.html" %}
-        <div class="form-group">
-            <label for="username">사용자ID</label>
-            <input type="text" class="form-control" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="password">비밀번호</label>
-            <input type="password" class="form-control" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}">
-        </div>
-        <div>
-            <a href="{% provider_login_url 'google' %}" class="mt-3 btn btn-danger btn-user btn-block">
-                <i class ="fab fa-google fa-fw"></i> Google 로그인
+        <div class="login_signup">
+            <div class="login_signup_btn on_process">Login</div>
+            <a class="login_signup_btn" href="{% url 'common:signup' %}" >
+                <div class="sigunup_link">
+                    Signup
+                </div>
             </a>
+
         </div>
-        <button type="submit" class="btn btn-success my-3">로그인</button>
-    </form>
+        <form method="post" class="login_form" action="{% url 'common:login' %}">
+            {% csrf_token %}
+            {% include "form_errors.html" %}
+            <div class="input_box">
+                <input placeholder="username" type="text" class="login_input" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+            </div>
+            <div class="input_box">
+                <input placeholder="password" type="password" class="login_input" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}">
+            </div>
+        
+            <div class="btn_box">
+                <a class="login_btn google_btn" href="{% provider_login_url 'google' %}">
+                    <div class="login_wrap">
+                        <img src="{% static 'google_icon.png' %}" class="icon google_icon" />
+                        <div class="white_login">구글 로그인</div>
+                    </div>
+                </a>
+                <a class="login_btn naver_btn" href="{% provider_login_url 'google' %}">
+                    <div class="login_wrap">
+                        <img src="{% static 'naver_icon.png' %}" class="icon" />
+                        <div class="white_login">네이버 로그인</div>
+
+                    </div>
+                </a>
+                <a class="login_btn kakao_btn" href="{% provider_login_url 'google' %}">
+                <div class="login_wrap">
+                    <img src="{% static 'kakao_icon.png' %}" class="icon" />
+                    <div class="black_login">카카오 로그인</div>
+                </div>
+                </a>
+                <button type="submit" class="login_btn login_submit">로그인</button>
+            </div>
+            <div class="sigunup_link_box">
+                <span class="sigunup_link_box_span">
+                아직 회원이 아니세요? 
+                </span>
+                <a class="sigunup_link" href="{% url 'common:signup' %}" >
+                    가입하러 가기
+                </a> 
+            </div>
+        </form>
+    </div>
 </div>
+
 {% endblock %}

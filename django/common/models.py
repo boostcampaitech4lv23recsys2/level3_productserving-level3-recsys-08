@@ -12,3 +12,14 @@ class UserINFO(models.Model):
 
     def __str__(self):
         return User.username
+
+
+
+class BatchTrain(models.Model):
+    LoginUser = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='batchtrain')
+    model_path = models.CharField(max_length=10, null=True, blank=True)  
+    recommended_movie_list = models.TextField(null=True, blank=True) #int로 안한 이유는 리스트로 담기 위함이다.
+    create_time = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.id)
