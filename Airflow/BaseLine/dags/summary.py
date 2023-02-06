@@ -38,9 +38,12 @@ def load_yesterday_summary():
 
     engine = create_engine(f"mysql+mysqldb://{user}:{pw}@{host}:3306/{dbname}")
 
-    yesterday = date.today()-timedelta(1)
 
-    df = pd.read_sql_query(f"select * from test_rec_tmpuser WHERE DATE(create_time)='{str(yesterday)}'",engine)
+    today = datetime.today()
+    yesterday = datetime.today() - timedelta(1)
+
+    df = pd.read_sql_query(f"select * from test_rec_tmpuser WHERE create_time BETWEEN '{str(yesterday)}' AND '{str(today)}' ",engine)
+
 
     MBTI_summary = df.value_counts("MBTI").to_dict()
 
@@ -64,8 +67,23 @@ def load_yesterday_summary():
                 except :
                     recommend_summary[mid] = 1
 
+
+    fit_summary = {}
+    for f in df['fit_character_id']:
+        if f != None:
+            f = json.loads(f)
+            for mid in list(f):
+                try :
+                    fit_summary[mid] +=1
+                except :
+                    fit_summary[mid] = 1
+
     prefer_summary = dict(sorted(prefer_summary.items(),key = lambda x: -x[1]))
     recommend_summary = dict(sorted(recommend_summary.items(),key = lambda x: -x[1]))
+    fit_summary = dict(sorted(fit_summary.items(),key = lambda x: -x[1]))
+
+
+
 
     conn = mysql.connector.connect(
         host=host,
@@ -79,9 +97,10 @@ def load_yesterday_summary():
 
     cursor = conn.cursor()
 
-    query = "INSERT INTO summary (MBTI_summary, prefer_summary, character_summary, create_time) VALUES (%s, %s, %s, %s)"
+    query = "INSERT INTO summary (MBTI_summary, prefer_summary, character_summary, fit_character_summary,create_time) VALUES (%s, %s, %s, %s, %s)"
 
-    cursor.execute(query, (json.dumps(MBTI_summary),json.dumps(prefer_summary),json.dumps(recommend_summary),datetime_value))
+    cursor.execute(query, (json.dumps(MBTI_summary),json.dumps(prefer_summary),json.dumps(recommend_summary),json.dumps(fit_summary),datetime_value))
+
 
     conn.commit()
 
@@ -93,7 +112,8 @@ def load_yesterday_summary():
 with DAG(
         dag_id='daily_summary',
         default_args=default_args,
-        schedule_interval='1 9 * * *',
+        schedule_interval='0 15 * * *',
+
         tags=['summary']
 ) as dag:
     python_task = PythonOperator(

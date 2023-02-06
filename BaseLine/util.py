@@ -145,6 +145,121 @@ def filter_after_review_interaction(sub:pd.DataFrame) -> pd.DataFrame:
     sub = sub[sub.lastyear >= sub.m_year]
     return sub[['user','item']]
 
+def mvti_recommend(model_name : str, topk : int, model_path=None)->None:
+    """
+    train.py에서 학습했던 모델로 inference를 하는 함수입니다.
+    submission 폴더에 저장됩니다.
+
+    Args:
+        model_name (str): 돌렸던 모델의 이름입니다. 해당 모델의 이름이 들어가는 pth파일 중 최근 걸로 불러옵니다.
+        topk (int): submission에 몇 개의 아이템을 출력할지 정합니다.
+    """
+    print('inference start!')
+    if model_path is None:
+        # model_name이 들어가는 pth 파일 중 최근에 생성된 걸로 불러옴
+        os.makedirs('saved',exist_ok=True)
+        save_path = os.listdir('./saved')
+        model_path = './saved/' + sorted([file for file in save_path if model_name in file ])[-1]
+
+    K = topk
+
+    # config, model, dataset 불러오기
+    checkpoint = torch.load(model_path)
+    config = checkpoint['config']
+
+    init_seed(config['seed'], config['reproducibility'])
+    config['dataset'] = 'train_data'
+    if model_name=="S3Rec":
+        config['eval_args']['split']={'RS':[99999,0,1]}
+    else:
+        config['eval_args']['split']['RS']=[999999,0,1]
+    print("create dataset start!")
+    dataset = create_dataset(config)
+    train_data, valid_data, test_data = data_preparation(config, dataset)
+    print("create dataset done!")
+
+    model = get_model(config['model'])(config, train_data.dataset).to(config['device'])
+    model.load_state_dict(checkpoint['state_dict'])
+    model.load_other_parameter(checkpoint.get('other_parameter'))
+
+    # device 설정
+    device = config.final_config_dict['device']
+
+    # user, item id -> token 변환 array
+    user_id = config['USER_ID_FIELD']
+    item_id = config['ITEM_ID_FIELD']
+    user_id2token = dataset.field2id_token[user_id]
+    item_id2token = dataset.field2id_token[item_id]
+
+    # user id list
+    all_user_list = torch.arange(1, len(user_id2token)).view(-1,128) # 245, 128
+
+    # user, item 길이
+    user_len = len(user_id2token) # 31361 (PAD 포함)
+    item_len = len(item_id2token) # 6808 (PAD 포함)
+
+    # user-item sparse matrix
+    matrix = dataset.inter_matrix(form='csr') # (31361, 6808)
+
+    # user id, predict item id 저장 변수
+    pred_list = None
+    user_list = []
+
+    # user id list
+    all_user_list = torch.arange(1, len(user_id2token)).view(-1,128) # 245, 128
+
+    tbar = tqdm(all_user_list, desc=set_color(f"Inference", 'pink')) # 245, 128
+
+    for data in tbar:
+        batch_pred_list = full_sort_topk(data, model, test_data, K+50, device=device)[1]
+        batch_pred_list = batch_pred_list.clone().detach().cpu().numpy()
+        if pred_list is None:
+            pred_list = batch_pred_list
+            user_list = data.numpy()
+        else:
+            pred_list = np.append(pred_list, batch_pred_list, axis=0)
+            user_list = np.append(
+                user_list, data.numpy(), axis=0
+            )
+    tbar.close()
+
+    # user별 item 추천 결과 하나로 합쳐주기
+    result = []
+    for user, pred in zip(user_list, pred_list):
+        for item in pred:
+            result.append((int(user_id2token[user]), int(item_id2token[item])))
+
+    sub = pd.DataFrame(result, columns=["user", "item"])
+
+    # 인덱스 -> 유저 아이템번호 dictionary 불러오기
+    with open('./index/uidx2user.pickle','rb') as f:
+        uidx2user = pickle.load(f)
+    with open('./index/iidx2item.pickle','rb') as f:
+        iidx2item = pickle.load(f)   
+
+    # submission 생성
+    sub = pd.DataFrame(result, columns=["user", "item"])
+    sub.user = sub.user.map(uidx2user)
+    sub.item = sub.item.map(iidx2item)
+
+    # extract Top K 
+    users = sub.groupby('user').user.head(K).reset_index(drop=True)
+    items = sub.groupby('user').item.head(K).reset_index(drop=True)
+    sub = pd.concat([users,items],axis=1)
+    
+    print(f"submission length: {sub.shape[0]}")
+
+    os.makedirs('submission',exist_ok=True)
+    submission=f"./submission/{model_path[8:-4]}.csv"
+    submission = uniquify(submission)
+    sub[['user','item']].to_csv(
+        submission, index=False # "./saved/" 와 ".pth" 제거
+    )
+    print(f"model path: {model_path}")
+    print(f"submission path: {os.path.relpath(submission)}")
+    print('inference done!')
+    return
+
 def inference(model_name : str, topk : int, model_path=None)->None:
     """
     train.py에서 학습했던 모델로 inference를 하는 함수입니다.
