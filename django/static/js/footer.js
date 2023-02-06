@@ -1,15 +1,13 @@
 
 $(window).scroll(function () {
-  // console.log($('.wrap').outerHeight(true))
-  // console.log(document.documentElement.scrollHeight)
   const docHeight = document.documentElement.scrollHeight;
   const winHeight = $(window).height();
-  // const finalHeight = $('.wrap').outerHeight(true) - ($(window).height() * 0.9);
-  const finalHeight = docHeight - winHeight
-  // console.log(finalHeight)
-  if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+  const finalHeight = docHeight - winHeight;
+  // console.log('here', $(window).scrollTop() + $(window).height())
+  // console.log('here2:', $(document).height())
+  if ($(window).scrollTop() + $(window).height() >= $(document).height()-100) {
     $('footer').css({ 'bottom': `-${finalHeight}px` });
-    $('footer').css({ 'display': 'block' });
+    $('footer').css({ 'display': 'flex' });
 
   } else {
     // $('footer').css({ 'bottom': `-${outerHeight}px` });

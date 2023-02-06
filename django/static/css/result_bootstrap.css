@@ -3,7 +3,7 @@
   width:100%;
   padding-top:0;
   position:absolute;
-  top:10vh;
+  /* top:10vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,8 +22,9 @@
 .nav_result{
   background: #fff;
   position: sticky;
-  z-index: 2;
+  z-index: 22;
   top:0;
+  border-top:1px solid #c4c4c4;
 }
 
 .nav_result_box{
@@ -52,11 +53,9 @@
   /* -webkit-filter: brightness(0.70);filter: brightness(0.70); */
   background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80') no-repeat;
   /* background:url('https://t1.daumcdn.net/cfile/tistory/23244237550DBE651D'); */
-  
   background-size:cover;
   background-position: center;
   height: 400px;
-  /* margin-bottom: 40px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,9 +64,25 @@
 .header_image{
   background-image: center;
 }
+.contents_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color:white;
+  height: 100%;
+}
+.container_header_bar {
+  width: 25px;
+  background-color: rgb(255, 213, 224);
+  padding: 2px;
+  margin: 2vh 0;
+}
 .contents_header_title{
   font-size:46px;
   font-weight: 700;
+  margin-bottom: 25px
 }
 .contents_header_subtitle{
   font-size:28px;
@@ -103,22 +118,6 @@
   padding: 5vh; */
 }
 
-.contents_header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color:white;
-}
-
-.container_header_bar {
-  width: 25px;
-  background-color: rgb(255, 213, 224);
-  padding: 2px;
-  margin: 2vh 0;
-}
-
 /* 카드 css */
 .cards_box_container{
   display: flex;
@@ -131,7 +130,7 @@
   /* align-content: flex-end; */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  /* align-items: start; */
+  justify-items: center;
   gap: 5px;
 }
 .cards_box:first-child{
@@ -172,7 +171,7 @@
   width: 200px;
   height: 200px;
   border-radius: 1rem;
-  box-shadow: inset 3px 3px 10px #ccc;
+  box-shadow:1px 1px 3px #ccc;
   display:inline-block;
   position: relative;
   overflow: hidden;

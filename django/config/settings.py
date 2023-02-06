@@ -179,6 +179,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+# 로그인 경로
+LOGIN_URL = 'common:login'
+
 # 로그인 후에 이동할 주소
 LOGIN_REDIRECT_URL = "/"
 

@@ -2,14 +2,23 @@
 {% load static %} 
 {% load split_movieId_title %}
 {% block contents %}
+<div class="progressbar">
+  <a class="progressbar_left" href="/test_rec/enneagram_test3/">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">80%</span>
+  </div>
+</div>
+
 <div class="wrap"> 
 
   <div class="left_header">
     <h1 class="test_question">Q5.</h1>
-    <h3 class="test_question_subtitle">좋아하는 영화를 5개이상 골라주세요!</h3>  
+    <h3 class="test_question_subtitle">좋아하는 영화를 3개이상 골라주세요!</h3>  
     <h3 class="test_question_example">
-      취향에 꼭 맞는 시리즈와 영화를 찾아드리는 데 도움이 됩니다.
-      마음에 드는 콘텐츠를 선택하세요.
+      ❗선택한 영화 개수가 많을수록 추천 정확도가 올라갑니다
+
     </h3>
   </div>
   <div class="contents" id="movie_contents">
@@ -22,7 +31,7 @@
       <div class="movie_box2 infinite-container">
         {% for movie, ko_title in zip_page_obj %}
             <div class="infinite-item">
-              <input type="checkbox" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
+              <input type="checkbox" class="movie_card" value="{{ movie }}" name="movies" id="{{ movie }}"  required/>
               <label
                 for="{{ movie }}"
                 style="background-image: url('/static/img/{{movie}}'); background-size:cover;"
@@ -44,7 +53,7 @@
           id="movie_btn"
           class="movie_button"
           type="submit"
-          value="5개 선택해 주세요"
+          value="3개 선택해 주세요"
           onclick="check(event)"
         />
       </div>
@@ -52,24 +61,24 @@
   </div>
 </div>
   <script>
+    $(document).ready(function(){
+      $('.progress_container').addClass('progress4')
+    })
+    
 
     function movieClick(){
       let checkedMovies = $('input[type=checkbox][name=movies]:checked').length
-      let leftChoice = 5 - checkedMovies
+      let leftChoice = 3 - checkedMovies
       
       $('#movie_btn').val(`${leftChoice}개 선택해주세요`)
-      if(leftChoice == 0){
+      if(leftChoice <= 0){
         $('#movie_btn').val('완료되었습니다!')
         $('#movie_btn').css({
           'background-color' : '#e50914',
           'color':'#fef7f7'
         })
-      }else if(leftChoice < 0){
-        $('#movie_btn').val('완료되었습니다!')
-        $('#movie_btn').css({
-          'background-color' : '#e50914',
-          'color':'#fef7f7'
-        })
+        $('.progress_container').addClass('progress5')
+        $('.test_progress_bar').text('100%')
       }else{
         $('#movie_btn').css({
           'background-color' : '#e5e5e5',

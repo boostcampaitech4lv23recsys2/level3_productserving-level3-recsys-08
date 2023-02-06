@@ -31,17 +31,28 @@ def check_TmpUserInfo(request):
         return False
     if user.recommended_character_id == None:
         return False
+    if user.fit_character_id == None:
+        return False
+    if user.recommended_character_sim == None:
+        return False
+    if user.fit_character_sim == None:
+        return False
     return True
 
 
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
+
+movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
+character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
+cha_df_with_ko_title = pd.read_pickle(pickle_path / 'Popular_movie_character_2867_with_ko_title.pickle')
+
 movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
-character_df = pd.read_pickle(pickle_path / '230130_Popular_movie_character_2867_cwj.pickle')
-
-
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
+    characterid_to_hashtag_path = pickle_path / '230203_characterid_to_hashtag.pickle'
+with open(characterid_to_hashtag_path, 'rb') as f:
+    characterid_to_hashtag = pickle.load(f)
 
 
 def signup(request):
@@ -70,22 +81,34 @@ def index(request):
             tmpuser.LoginUser = user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
             tmpuser.save()
 
+    # 인기있는 캐릭터 Top 10 CharacterId
+    characterid1 = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
+
+    # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
+    cha_li1 = []
+    for c in characterid1:
+        cha_li1.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        
+    # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
+    characterid2 = [1274, 1284, 1281, 1293, 1297, 1304, 1313, 1321, 1352, 1391]
+    cha_li2 = []
+    for c in characterid2:
+        cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        
+    # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
+    characterid3 = [8153, 8136, 8140, 8144, 8177, 8134, 8158, 8146, 8189, 8303]
+    cha_li3 = []
+    for c in characterid3:
+        cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+    
     context = {
         'my_person_list': [],
         'datetime' : "",
-        'characters' : [
-                        "https://static1.personality-database.com/profile_images/10372ac29c714ea8aa84fdfccfd9ae8e.png",\
-                        "https://static1.personality-database.com/profile_images/fc179ba7fe644eaa82a1aca584e16868.png",\
-                        "https://static1.personality-database.com/profile_images/ec0fdef9370245c69e9547daf3eff906.png",\
-                        "https://static1.personality-database.com/profile_images/1d86aef46ec14549b24000306bc36db9.png",\
-                        "https://static1.personality-database.com/profile_images/3bcb54ca72024d8a9c00dae8712009f0.png",\
-                        "https://static1.personality-database.com/profile_images/f614546e3d5e434c98b695fe7735a98a.png",\
-                        "https://static1.personality-database.com/profile_images/3877aed32c3b4d7185b22eabd80b9939.png",\
-                        "https://static1.personality-database.com/profile_images/c207665f45f14fb2b9ccc78554e68790.png",\
-                        "https://static1.personality-database.com/profile_images/be417e9fdf2e4604a564d6ceaa1b6b28.png",\
-                        "https://static1.personality-database.com/profile_images/0087da2072a14eec8d01e541e9d9e98f.png",\
-                        ]
+        'characters1' : cha_li1,
+        'characters2' : cha_li2,
+        'characters3' : cha_li3
     }
+    
     return render(request, 'index.html', context)
 
 
@@ -103,34 +126,127 @@ def user_test_history(request):
 def user_profile(request):
     user = request.user
     tmpusers = TmpUser.objects.filter(LoginUser=user)
+    tmpusers = list(tmpusers)[::-1]
+    print(tmpusers)
     if len(tmpusers) == 0:
         return redirect('index')
     mbti = tmpusers[len(tmpusers)-1].MBTI
-    # prefer_movie_ids와 해당 포스터 파일이름 불러오는 과정
+
+    # prefer_movie_ids와 해당 영화정보 불러오는 과정
     tmp = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
     prefer_movie_ids = [eval(tmp[i]) for i in range(len(tmp))]
     prefer_movie_ids = [item for sublist in prefer_movie_ids for item in sublist]
-    prefer_movie_posters = [movieId_to_posterfile[int(id)] for id in prefer_movie_ids]
-    # recommended_character_ids와 해당 이미지 파일 불러오는 과정
+    movie_data = pd.DataFrame()
+    for id in prefer_movie_ids:
+        movie_data = movie_data.append(movie_df[movie_df['movieId']==int(id)])
+    movie_data['poster'] = movie_data['movieId'].apply(lambda x: movieId_to_posterfile[x])
+    movie_data = movie_data.to_dict(orient='records')
+
+    # recommended_character_ids와 해당 캐릭터 정보 불러오는 과정
     tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
     recommended_character_ids = [eval(tmp[i]) for i in range(len(tmp))]
     recommended_character_ids = [item for sublist in recommended_character_ids for item in sublist]
-    character_images = [character_df[character_df['CharacterId']==int(id)]['img_src'].values[0] \
-                        for id in recommended_character_ids \
-                        if len(character_df[character_df['CharacterId']==int(id)]['img_src']) > 0 ]
+    character_data = pd.DataFrame()
+    for id in recommended_character_ids:
+        character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
+    character_data = character_data.merge(movie_df[['ko_title', 'movieId']], on='movieId', how='left')
+    character_data['CharacterId'] = character_data['CharacterId'].map(int)
+    character_data = character_data.to_dict(orient='records')
+    
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
         'user_name' : user.username,
         'mbti': mbti,
-        'prefer_movie_posters' : prefer_movie_posters,
-        'character_images' : character_images,
-        'tmpusers' : list(tmpusers)[-min(5, len(tmpusers)):][::-1],
+        'character_data' : character_data,
+        'movie_data' : movie_data,
+        'tmpusers' : list(tmpusers)[: min(5, len(tmpusers))],
     }
+
     return render(request, 'common/user_profile.html', context)
+
+
+
+def detail_tmpuser(request, tmpuser_id):
+    tmpuser = TmpUser.objects.get(id=tmpuser_id)
+    user = tmpuser.LoginUser
+    mbti = tmpuser.MBTI
+
+    prefer_movie_ids = tmpuser.prefer_movie_id
+    movie_data = pd.DataFrame()
+    for id in eval(prefer_movie_ids):
+        movie_data = movie_data.append(movie_df[movie_df['movieId']==int(id)])
+    movie_data['poster'] = movie_data['movieId'].apply(lambda x: movieId_to_posterfile[x])
+    movie_data = movie_data.to_dict(orient='records')
+
+    recommended_character_ids = tmpuser.recommended_character_id
+    # data1은 나와 같은 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
+    data1 = pd.DataFrame()
+    for id in eval(recommended_character_ids):
+        data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+    data1 = data1.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
+    data1['CharacterId'] = data1['CharacterId'].map(int)
+    data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
+    
+    data1['Enneagram_sim'] = eval(tmpuser.recommended_character_sim)
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+    data1 = data1[cols][:20].to_dict(orient='records')
+
+    fit_character_ids = tmpuser.fit_character_id
+    fit_character_data = pd.DataFrame()
+    data2 = pd.DataFrame()
+    for id in eval(fit_character_ids):
+        data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
+    data2 = data2.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
+    data2['CharacterId'] = data2['CharacterId'].map(int)
+    data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
+    data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+    data2 = data2[cols][:20].to_dict(orient='records')
+    
+    context = {
+        'user' : user,
+        'tmpuser' : tmpuser,
+        'mbti': mbti,
+        'data1': data1,
+        'data2': data2,
+        'movie_data' : movie_data,
+    }
+    return render(request, 'common/detail_tmpuser.html', context)
+
 
 @login_required(login_url='common:login')
 def delete_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     tmpuser.delete()
     return redirect('common:user_profile')
+
+
+def clean(votes):
+    votes = votes[:votes.index("/")]
+    if votes[-1] == "k":
+        votes = votes[:-1].replace(".","") + "000"
+    return int(votes)
+
+# MBTI 상세 페이지 함수
+def show_mbti_info(request, mbti):
+    get_mbti = mbti
+    
+    cha_df_with_ko_title['vote'] = cha_df_with_ko_title['Votes'].apply(lambda x:clean(x))
+    # alldf = pd.merge(cha_df_with_ko_title, movie_df[['movieId', 'npop', 'contents_year']], on="movieId", how="left")
+    # alldf = alldf[alldf['MBTI'] == 'INFP'].sort_values(['npop','vote','contents_year'], ascending=False)
+    char_df = character_df[character_df.MBTI=="INFP"].copy()
+    char_df.sort_values('npop',ascending=False,inplace=True)
+    char_df[char_df.vote>=1000]
+    char_df['hashtag'] = char_df.CharacterId.map(characterid_to_hashtag)
+    char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag']
+    # all_INFP = []
+    # for u in alldf['Character']:
+    #     all_INFP.extend(alldf[alldf['Character'] == u].to_dict(orient='records'))
+    char_list = char_df[char_cols][:200].to_dict(orient='records')
+    context = {
+        'mbti' : get_mbti,
+        'character' : char_list
+    }
+    
+    return render(request, 'common/mbti_info.html', context)
