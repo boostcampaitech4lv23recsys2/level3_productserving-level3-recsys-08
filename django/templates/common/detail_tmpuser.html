@@ -82,7 +82,7 @@
           </div>
           <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: white; align-items: center; flex-wrap: wrap;">
             <img
-              src="/static/img/18_four_rooms.png"
+              src="/static/img/mbti/{{ mbti }}.png"
               alt="Responsive image"
               class="character_image"
               style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
@@ -95,13 +95,12 @@
                   임시 유저🌱님의 추천결과
                 {% endif %}</div>
               <div class="character_info" >MBTI: {{ mbti }}</div>
-              <div class="character_info" >설문을 통한 성격:</div>
+              <div class="character_info" >설문을 통한 성격</div>
               <ul>
-                <li>- 삶을 이해하는 것이 삶을 사는 것만큼이나 중요하다</li>
-                <li>- 자신만의 아이디어(지식)가 있고 자신만의 통찰을 이야기할 수 있는 사람이 되고 싶다.</li>
-                <li>- 독립성, 비밀스러움을 갖기 위해 은신처를 개발(타인이 모르거나 경험못한 일을 창조)한다.</li>
-                <li>- 안전감과 자존심(스스로의 삶을 통제하고 있다는 느낌)을 갖기 위해 능력있는 사람(전문가)가 되려하고, 독립성(서로 간섭하지 않음)을 추구한다.</li>
-                <li>- 강력한 집중력은 놀라운 발명과 발견이 되지만, 지나치면 실질 문제를 회피하게 되어 사고 과정의 복잡함 속에서 헤매다가 이상한 사람으로 취급되고 고립되기도 한다.</li>
+                <li style="margin-bottom:12px">{{ user_tag }}</li>
+                {% for description in user_desc %}
+                  <li style="margin-bottom:5px">- {{ description }}</li>
+                {% endfor %}
               </ul>
             </div>
           </div>
