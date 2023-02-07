@@ -56,7 +56,7 @@
               {% for cha in characters1 %}
                 <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/> -->
 
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.Character}}'">
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
@@ -89,7 +89,7 @@
               </div>
               <div class="inner_block">
                 {% for cha in characters2 %}
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.Character}}'">
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
@@ -120,7 +120,7 @@
               </div>
               <div class="inner_block">
                 {% for cha in characters3 %}
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.Character}}'">
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
