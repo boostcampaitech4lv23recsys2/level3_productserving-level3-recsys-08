@@ -158,7 +158,18 @@ def user_profile(request):
     tmpusers = list(tmpusers)[::-1]
     if len(tmpusers) == 0:
         return redirect('index')
-    mbti = tmpusers[len(tmpusers)-1].MBTI
+    mbti = tmpusers[0].MBTI    
+    enneagram = tmpusers[0].ennea_res
+    mbti_enneagram = mbti + ' ' + enneagram
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+    print(mbti_enneagram)
+
+    # 유저의 성격 태그
+    user_tag = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['tag']
+    user_tag = " ".join(user_tag.values[0])
+
+    # 유저의 성격 설명
+    user_desc = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['description'].values[0]
 
     # prefer_movie_ids와 해당 영화정보 불러오는 과정
     tmp = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
@@ -185,6 +196,8 @@ def user_profile(request):
         'user' : User,
         'user_name' : user.username,
         'mbti': mbti,
+        'user_tag' : user_tag,
+        'user_desc' : user_desc,
         'character_data' : character_data,
         'movie_data' : movie_data,
         'tmpusers' : list(tmpusers)[: min(5, len(tmpusers))],
