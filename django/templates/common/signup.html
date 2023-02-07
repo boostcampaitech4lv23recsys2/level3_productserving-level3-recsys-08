@@ -20,16 +20,17 @@
             {% csrf_token %}
             {% include "form_errors.html" %}
             <div class="input_box">
-                <input placeholder="username" type="text" class="login_input" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+                
+                <input required placeholder="username" type="text" class="login_input" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
             </div>
             <div class="input_box">
-                <input placeholder="password" type="password" class="login_input" name="password1" id="password1" value="{{ form.password.value|default_if_none:'' }}">
+                <input required placeholder="password" type="password" class="login_input" name="password1" id="password1" value="{{ form.password.value|default_if_none:'' }}">
             </div>
             <div class="input_box">
-                <input placeholder="password check" type="password" class="login_input" name="password2" id="password2" value="{{ form.password.value|default_if_none:'' }}">
+                <input required placeholder="password check" type="password" class="login_input" name="password2" id="password2" value="{{ form.password.value|default_if_none:'' }}">
             </div>
             <div class="input_box">
-                <input placeholder="email" type="text" class="login_input" name="email" id="email" value="{{ form.username.value|default_if_none:'' }}">
+                <input required placeholder="email" type="text" class="login_input" name="email" id="email" value="{{ form.username.value|default_if_none:'' }}">
             </div>
         
             <div class="btn_box">
@@ -52,7 +53,7 @@
                     <div class="black_login">카카오로 회원가입</div>
                 </div>
                 </a>
-                <div type="submit" class="login_btn login_submit">회원가입</div>
+                <button type="submit" class="login_btn login_submit">회원가입</div>
             </div>
         </form>
     </div>

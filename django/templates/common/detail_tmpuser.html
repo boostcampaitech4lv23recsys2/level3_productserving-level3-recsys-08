@@ -116,7 +116,7 @@
               </div>
               <div class="scrollMenu3">
                 {% for character in data1 %}
-                  <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data1" class="character_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -145,7 +145,7 @@
                         </div>
                         <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                       </div>
-                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
+                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/{{character.CharacterId}}'" >+</button> {% endcomment %}
                     </div>
                   </div>
                 {% endfor %}
@@ -163,7 +163,7 @@
                 </div>
               <div class="scrollMenu3">
                 {% for character in data2 %}
-                  <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data1" class="character_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -192,7 +192,7 @@
                         </div>
                         <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress> -->
                       </div>
-                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
+                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/{{character.CharacterId}}'" >+</button> {% endcomment %}
                     </div>
                   </div>
                 {% endfor %}

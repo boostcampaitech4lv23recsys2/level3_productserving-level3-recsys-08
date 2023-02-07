@@ -25,7 +25,7 @@
                   <div id="mbti" class="cards_category_text">나와 비슷한 캐릭터</div>
                 </div>
                 {% for character in data1 %}
-                  <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data1" class="character_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -62,7 +62,7 @@
                   <div id="attractive" class="cards_category_text">나와 궁합이 잘맞는 캐릭터</div>
                 </div>
                 {% for character in data2 %}
-                  <div id="data2" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data2" class="character_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -85,13 +85,7 @@
                             
                           </div>
                         </div>
-                        {% comment %} <div class="card_info_text_box">
-                          <h6 class="card_info_text">유사도</h6>
-                          <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
-                        </div>
-                        <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
-                      </div> {% endcomment %}
-                      
+                      </div>
                     </div>
                   </div>
                 {% endfor %}
@@ -101,18 +95,65 @@
         </div>
       </div>
     </div>
-    <div class="button-group" style="display: flex; justify-content: space-between;">
-      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none;" 
-        >다시 테스트하기</a
-      ></button>
-      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none;" 
-        >카카오톡 공유하기</a
-      ></button>
+    
+    <div class="button_group">
+      <button class="retest_button">
+        <a href="/test_rec/start_test" class="result_button">다시 테스트하기</a>
+      </button>
+      <div class="feedback_box" data_user="{{tmpuser}}" data_loginUser="{{tmpuser.LoginUser_id}}">
+        <button class="feedback" value="+" id="thumbs_up">
+          <i class="fa-regular fa-thumbs-up"></i>
+          <span class="feedback_text">추천결과가 맘에들어요</span>
+        </button>
+        <div class="divider"></div>
+        <div class="feedback" value="-">
+          <i class="fa-regular fa-thumbs-down"></i>
+          <span class="feedback_text"></span>
+        </div>
+      </div>
+      <button class="retest_button">
+        <a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" >카카오톡 공유하기</a>
+    </button>
     </div>
     
     <a href="#"><div class="button_top" style="bottom: 115px"><i class="fa-solid fa-arrow-up"></i></div></a>
 </div>
 
 <div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
+<script>
+  $('.feedback').click(function(event){
+    event.preventDefault();
+    let userId = $('.feedback_box').attr('data_user')
+    // let loginUserId = $('.like_box').attr('data_loginUser')
+    
+    let url = '/test_rec/feedback/' + userId
+    let value = event.currentTarget.value
+    console.log(value)
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {
+        'userId':userId,
+        'value':value
+      },
+      success: function (response) {
+        setTimeout(() => {
+          console.log('response',response)
+          if(response.feedback == 1){
+           
+            $('.feedback').append('<i class="fa-solid fa-thumbs-up"></i>')
 
+          }else if(response.feedback == 0){
+            $('.feedback').append('<i class="fa-solid fa-thumbs-down"></i>')
+          }
+        }, 500)
+      },
+      error: function (error) {
+        setTimeout(() => {
+          $('.wrap').innerHTML = `failed to load the data`
+        }, 5000)
+      }
+    })
+  })
+</script>
 {% endblock %}

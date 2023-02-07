@@ -54,9 +54,9 @@
               </div>
               <div class="inner_block">
               {% for cha in characters1 %}
-                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/> -->
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/{{ cha.CharacterId }}'"/> -->
 
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.Character}}'">
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
@@ -89,7 +89,33 @@
               </div>
               <div class="inner_block">
                 {% for cha in characters2 %}
-                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/{{ cha.CharacterId }}'"/> -->
+
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/{{cha.CharacterId}}'">
+                  <img
+                    src="{{ cha.img_src }}"
+                    class="card_image"
+                    alt="Responsive image"
+                  />
+                  <div class="card_body">
+                    <div class="card_title">{{ cha.Character }}</div>
+                    <div class="card_info">
+                      <div class="card_info_items">
+                        <div class="card_info_items_box">
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">{{cha.ko_title}}</span>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">MBTI | {{ cha.MBTI }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 {% endfor %}   
               </div>                                                                       
             </div>
@@ -99,7 +125,32 @@
               </div>
               <div class="inner_block">
                 {% for cha in characters3 %}
-                <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/>
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/{{ cha.CharacterId }}'"/> -->
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/{{cha.CharacterId}}'">
+                  <img
+                    src="{{ cha.img_src }}"
+                    class="card_image"
+                    alt="Responsive image"
+                  />
+                  <div class="card_body">
+                    <div class="card_title">{{ cha.Character }}</div>
+                    <div class="card_info">
+                      <div class="card_info_items">
+                        <div class="card_info_items_box">
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">{{cha.ko_title}}</span>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">MBTI | {{ cha.MBTI }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 {% endfor %}      
               </div>                                                          
             </div>                               
