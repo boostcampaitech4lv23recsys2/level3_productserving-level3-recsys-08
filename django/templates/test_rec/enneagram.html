@@ -1,52 +1,65 @@
 {% extends 'test_rec/base.html' %}
 {% load static %} 
 {% block contents %}
-
-<h1 class="test_question">Q2.</h1>
-<h3 class="test_question_subtitle">
-  처음보는 사람들이 20명 이상 모여있는 방에 들어가려고 한다. 이때의 나는?
-</h3>
-<h3 class="test_question_example">ex) 학교 교실, 예비군훈련</h3>
-<form
-  class="quiz_form"
-  novalidate
-  method="post"
-  action="{% url 'test_rec:enneagram_test2' %}"
->
-  <div class="engram_box">
-    <button
-      class="button mbti_button"
-      value="1"
-      name="enneagram1"
-      type="submit"
-    >
-      나는 여기서 중요한 인물이다.
-    </button>
-    <button
-      class="button mbti_button"
-      value="2"
-      name="enneagram1"
-      type="submit"
-    >
-      여기서 내 역할은 뭘까?
-    </button>
-    <button
-      class="button mbti_button"
-      value="3"
-      name="enneagram1"
-      type="submit"
-    >
-      여기서 일어나는 일에 엮이고 싶지 않아.
-    </button>
-    <button
-      class="button mbti_button"
-      value="4"
-      name="enneagram1"
-      type="submit"
-    >
-      모르겠다.
-    </button>
+<div class="progressbar">
+  <a class="progressbar_left" href="/test_rec/mbti_test/">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">20%</span>
   </div>
-</form>
+</div>
+<div class="wrap"> 
+
+  <div class="left_header">
+    <h1 class="test_question">Q2.</h1>
+    <h3 class="test_question_subtitle">
+      처음보는 사람들이 20명 이상 모여있는 방에 들어가려고 한다. 이때의 나는?
+    </h3>
+    <h3 class="test_question_example">ex) 학교 교실, 예비군훈련</h3>
+  </div>
+  <div class="contents">
+    <form
+      class="quiz_form"
+      novalidate
+      method="post"
+      action="{% url 'test_rec:enneagram_test2' %}"
+    >
+      <div class="engram_box">
+        <button
+          class="button engram_button"
+          value="1"
+          name="enneagram1"
+          type="submit"
+        >
+          나는 여기서 중요한 인물이다.
+        </button>
+        <button
+          class="button engram_button"
+          value="2"
+          name="enneagram1"
+          type="submit"
+        >
+          여기서 내 역할은 뭘까?
+        </button>
+        <button
+          class="button engram_button"
+          value="3"
+          name="enneagram1"
+          type="submit"
+        >
+          여기서 일어나는 일에 엮이고 싶지 않아.
+        </button>
+        
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    console.log('document ready!')
+    $('.progress_container').addClass('progress1')
+  })
+</script>
 
 {% endblock %}

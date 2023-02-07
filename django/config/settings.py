@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "test_rec.templatetags.split_movieId_title",
     "common.apps.CommonConfig",
     "test_rec.apps.TestRecConfig",
     'django.contrib.admin',
@@ -97,6 +98,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://www.xn--py2bl5k6yfu6hbpd.com']
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -122,10 +125,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+			'ENGINE'    : 'django.db.backends.mysql',
+			'NAME'      : env.get_value('GCPDB_NAME'),
+			'USER'      : env.get_value('GCPDB_USER'),
+			'PASSWORD'  : env.get_value('GCPDB_PASSWORD'),
+			'HOST'      : env.get_value('GCPDB_HOST'),
+		}
 }
 
 
@@ -168,6 +178,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+# 로그인 경로
+LOGIN_URL = 'common:login'
 
 # 로그인 후에 이동할 주소
 LOGIN_REDIRECT_URL = "/"

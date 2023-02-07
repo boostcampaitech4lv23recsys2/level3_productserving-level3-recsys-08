@@ -1,121 +1,331 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <title>Recsys 8</title>
-    <link rel="stylesheet" href="{% static 'reset.css' %}" />
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <link rel="stylesheet" href="{% static 'test.css' %}" />
-    <link rel="stylesheet" href="{% static 'result_bootstrap.css' %}" />
-  </head>
-  <body>
-    <div class="container character_container container_result">
-      <div class="header header_result">
-        <img class="header_image" src={% static 'image.png' %} alt="film" />
+{% extends 'test_rec/base.html' %}
+{% load static %} 
+{% block contents %}
+<div class="result_wrap">
+    <div class="container_result">
+      <div class="header_result">
+        <div class="contents_header">
+          <h3 class="contents_header_title">{{data.name}}</h3>
+          <h2 class="contents_header_subtitle">{{data.movie}}</h2>
+          {# <div class="container_header_bar"></div>#}
+        </div>
       </div>
-      <div class="contents result_contents contents_result">
-        <div class="contents_box character_box">
-          <div class="contents_header">
-            <!-- <h2 class="test_question">{{data.name}}</h2> -->
-            <!-- <div class="container_header_bar"></div> -->
-          </div>
+      <div class="background_wrap">
+        <div class="contents_result contents_result_movie">
+          <div class="character_box">
+            {# <div class="character_title">{{ character.name }}</div> #}
+            <div class="character_title">캐릭터 정보</div>
+            <div class="character">
+              <div class="poster_box">
+                <img src="{{ cur_character.img_src }}" alt="character" class="character_image"/>
+              </div>
+              <div class="character_body_info">
+                <div class="fullText">
+                  <div class="character_title">{{ cur_character.Character }}</div>
+                  <div class="character_info">MBTI: {{ cur_character.MBTI }}</div>
+                  <div class="character_info_tag">{{ cur_character.hashtag }}</div>
 
-          <div class="character">
-            <div class="poster_box">
-              <img
-                src="/static/img/{{ data.img_path }}"
-                alt="Responsive image"
-                class="character_image"
-              />
-              <div class="temp_box"></div>
+                </div>
+                <div id="character_description" class="character_info">{{ cur_character.char_info }}</div>
+                {#<div class="character_description_container"></div>#}
+                {#<input type="checkbox" id="plus">#}
+                <a href="#", id="plus" class="plus_button">더보기</a>
+              </div>
             </div>
-            <div class="character_body_info">
-              <div class="character_title">{{ data.movie }}</div>
-              <div class="character_info">{{ data.genres }}</div>
-              <div class="character_info">{{ data.plot }}</div>
-            </div>
-            <div class="link_box" data-links="{{links}}">
-              <div class="link_box_title">감상 가능한 곳</div>
-              {% for link in links %} 
-              {% if link.platform == '왓챠' %}
-              <div class="link_box_link">
-                <a
-                  href="{{link.link}}"
-                  target="_blank"
-                  title="왓챠"
-                  class="link_link"
-                >
-                  <img
-                    class="link_logo"
-                    src="{% static 'watcha_logo.jpg' %}"
-                    alt="watcha"
-                  />
-                  <div class="link_box_info">
-                    <div class="link_box_name">{{link.platform}}</div>
-                    <i class="fa-solid fa-angle-right"></i>
-                  </div>
-                </a>
-              </div>
-              {% elif link.platform == '넷플릭스' %}
-              <div class="link_box_link">
-                <a
-                  href="{{link.link}}"
-                  target="_blank"
-                  title="넷플릭스"
-                  class="link_link"
-                >
-                  <img
-                    class="link_logo"
-                    src="{% static 'netflix_logo.png' %}"
-                    alt="netflix"
-                  />
-                  <div class="link_box_info">
-                    <div class="link_box_name">{{link.platform}}</div>
-                    <i class="fa-solid fa-angle-right"></i>
-                  </div>
-                </a>
-              </div>
-              {% elif link.platform == '디즈니+' %}
-              <div class="link_box_link">
-                <a
-                  href="{{link.link}}"
-                  target="_blank"
-                  title="디즈니+"
-                  class="link_link"
-                >
-                  <img
-                    class="link_logo"
-                    src="{% static 'disneyplus_logo.jpg' %}"
-                    alt="watcha"
-                  />
-                  <div class="link_box_info">
-                    <div class="link_box_name">{{link.platform}}</div>
-                    <i class="fa-solid fa-angle-right"></i>
-                  </div>
-                </a>
-              </div>
 
-              {% endif %} 
-              {% endfor %}
+            <div class="character_title">캐릭터가 등장한 작품</div>
+            <div class="movie">
+              <div class="poster_box">
+                <img
+                  src="/static/img/{{ data.img_path }}"
+                  alt="Responsive image"
+                  class="movie_image"
+                />
+                <div class="temp_box"></div>
+              </div>
+              <div class="movie_info_box">
+                <div class="movie_title">{{ data.movie }}</div>
+                <div class="character_info">장르 : {{ data.genres }}</div>
+                <div id="movie_description" class="movie_info">설명 : {{ data.plot }}</div>
+                <a href="#" id="plus_movie" class="plus_button">더보기</a>
+
+              </div>
+              <div class="link_box" data-links="{{links}}">
+                <div class="link_box_title">감상 가능한 곳</div>
+                {% for link in links %} 
+
+                {% if link.platform == '왓챠' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="왓챠"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'watcha_logo.jpg' %}"
+                      alt="watcha"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+
+                {% elif link.platform == '넷플릭스' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="넷플릭스"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'netflix_logo.png' %}"
+                      alt="netflix"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+
+                {% elif link.platform == '디즈니+' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="디즈니+"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'disneyplus_logo.jpg' %}"
+                      alt="디즈니"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+
+                {% elif link.platform == '티빙' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="티빙"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'tving_logo.png' %}"
+                      alt="티빙"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+
+                {% elif link.platform == '웨이브' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="웨이브"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'wavve_logo.png' %}"
+                      alt="웨이브"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+
+                {% elif link.platform == '애플 TV+' %}
+                <div class="link_box_link">
+                  <a
+                    href="{{link.link}}"
+                    target="_blank"
+                    title="애플 TV+"
+                    class="link_link"
+                  >
+                    <img
+                      class="link_logo"
+                      src="{% static 'apple_tv_logo.png' %}"
+                      alt="애플 TV+"
+                    />
+                    <div class="link_box_info">
+                      <div class="link_box_name">{{link.platform}}</div>
+                      <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                  </a>
+                </div>
+                {% endif %} 
+                {% endfor %}
+              </div>
             </div>
+            <div class="character_title">작품에 등장한 다른 캐릭터</div>
+
+            <div class="other">
+              {% for character in char_data %}
+                  <div class="character_card others_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                    <img
+                      src="{{ character.img_src }}"
+                      class="card_image others_image"
+                      alt="Responsive image"
+                    />
+                    <div class="card_body">
+                      <div class="card_title">{{ character.Character }}</div>
+                      <div class="card_info" data-sim="{{character.Enneagram_sim}}">
+                        <div class="card_info_items">
+                          <div class="card_info_items_box">
+                            <div class="card_info_item">
+                              <span class="card_info_item_title">{{character.ko_title}}</span>
+                            </div>
+                            <div class="card_info_item">
+                              <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
+                            </div>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_tag">{{ character.hashtag }}</span>
+                          </div>
+                        </div>
+                        {% comment %} {% if login_user and character.Enneagram_sim %}
+                        <div class="card_info_text_box">
+                          <h6 class="card_info_text">유사도</h6>
+                          <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
+                        </div>
+                        <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
+                        {% endif %} {% endcomment %}
+                      </div>
+                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+
           </div>
         </div>
       </div>
-      <button class="button back_button" onclick="history.back()">
-        뒤로 가기
-      </button>
     </div>
-    {% include "test_rec/footer.html" %}
+    <button class="button back_button" onclick="history.back()">
+      뒤로 가기
+    </button>
+    {% comment %} <button class="retest_button" >
+      <a href="/test_rec/result_page" class="result_button" style="text-decoration: none">뒤로가기</a>
+    </button> {% endcomment %}
+</div>
     <script>
-      let characterBody = document.querySelector(".temp_box");
+
+      // const text = document.getElementById("character_description");
+      // const style = window.getComputedStyle(text);
+      // const lineClamp = style.getPropertyValue("-webkit-line-clamp");
+      // console.log('lineClamp',lineClamp);
+      // function checkOverflow() {
+        // const container = $('.character_body_info').height()
+        // const fullText = $(".fullText").height()
+        // // let parent = $(".character_description_container").height()
+        // let displayText = $("#character_description").height()
+        // let moreButton = $("#plus")
+        // console.log(container)
+        // console.log(fullText)
+       // // console.log(parent)
+        // console.log(displayText)
+// 
+        // if ((container - fullText) < displayText) {
+//           
+          // moreButton.css('display', '-webkit-box')
+        // } else {
+          // moreButton.hide()
+        // }
+      // }
+      // function checkOverflowMovie() {
+        // let parent = $(".movie_info_box")
+        // let child = $("#movie_description")
+        // let moreButton = $("#plus_movie")
+        // console.log(parent.height())
+        // console.log(child.height())
+        // if (child.height() > parent.height()-72) {
+//           
+          // moreButton.css('display', '-webkit-box')
+        // } else {
+          // moreButton.hide()
+        // }
+      // }
+      // checkOverflow()
+      // checkOverflowMovie()
+//       
+      // window.addEventListener("resize", checkOverflow);
+      // window.addEventListener("resize", checkOverflowMovie);
+
+
+      // let characterHeight = $('#character_description').height()
+      // let movieHeight = $('.movie_info').height()
+      // console.log(characterHeight)
+      // console.log(movieHeight)
+//     
+      // if(characterHeight >= 324){
+        // $('#plus').css('display', '-webkit-box');
+      // }
+      // else{
+        // $('#plus').hide()
+      // }
+      // if(movieHeight >= 163){
+        // $('#plus_movie').css('display', '-webkit-box')
+      // }
+      // else{
+        // $('#plus_movie').hide()
+      // }
+
+
+      // 더보기 버튼
+      $('#plus').click(function(e){
+        e.preventDefault();
+        let txt = $('#plus').text();
+        if(txt == '더보기') {
+          $('.character_info').css({'display':'block'})
+          $('#plus').text('접기');
+        }
+        else {
+          $('.character_info').css({'display':'-webkit-box'})
+          $('#plus').text('더보기');
+        }
+      })
+      // movie 더보기 버튼
+      $('#plus_movie').click(function(e){
+        e.preventDefault();
+        let txt = $('#plus_movie').text();
+        if(txt == '더보기') {
+          $('.movie_info').css({'display':'block'})
+          $('#plus_movie').text('접기');
+        }
+        else {
+          $('.movie_info').css({'display':'-webkit-box'})
+          $('#plus_movie').text('더보기');
+        }
+      })
+      
+      
+
+      {% comment %} let characterBody = document.querySelector(".temp_box");
       let poster_box = document.querySelector(".poster_box");
       let resultContents = document.querySelector(".result_contents");
       let character = document.querySelector(".character");
       let characterBodyInfo = document.querySelector(".character_body_info");
-      let linkBox = document.querySelector(".link_box");
+      
       window.onload = () => {
         checkScreenSize();
       };
@@ -134,9 +344,11 @@
           poster_box.appendChild(linkBox);
           character.appendChild(characterBodyInfo);
         }
-      };
+      }; {% endcomment %}
 
       // 링크 없으면 안보여주기
+      let linkBox = document.querySelector(".link_box");
+      
       let links = document
         .querySelector(".link_box")
         .getAttribute("data-links");
@@ -151,12 +363,11 @@
         links.includes("no_result")
       ) {
         linkBox.style.display = "none";
-        resultContents.style.display = "inherit";
+        // resultContents.style.display = "inherit";
       }
     </script>
     <script
       src="https://kit.fontawesome.com/eb52efc223.js"
       crossorigin="anonymous"
     ></script>
-  </body>
-</html>
+{% endblock %}

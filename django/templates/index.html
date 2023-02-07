@@ -1,95 +1,170 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-<!doctype html>
-<html lang="ko">
-  <head>
-    <link rel="canonical" href="https://getbootstrap.kr/docs/5.1/examples/blog/">
-    <!-- Bootstrap core CSS -->
-    <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#7952b3">
-    <style>
-      p {
-        margin-bottom:0.5;
-      }
-      .block_title {
-        margin-bottom:2;
-      }
-    </style>    
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="blog.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="banner1" style="display: flex">
-      <div class="banner__content">
-        <style>
-          .banner__content {
-            margin-left: auto;
-            }
-          </style>
-        <div class="test_block">
-          <style>
-          .test_block {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-right: 10px;
-            padding-left: 10px;
-          }
-          </style>
-          <a href="{% url 'test_rec:start_test' %}" class="btn btn-outline-success" type="button">테스트 하러가기</a>
-          <a href="{% url 'common:user_test_history' %}" class="btn btn-outline-success" type="button">테스트 결과보기</a>
-        </div>
+
+    <div class="banner">
+      <div class="banner_content">
+        <h1 class="banner_title">MoVie + mbTI = MVTI</h1>
+        <h2 class="banner_subtitle">주인공이 되어 영화에 몰입해보세요!</h2>
+        <a href="{% url 'test_rec:start_test' %}" class="banner_testlink" type="button">
+          <div class="testlink_box">
+              테스트 하러가기
+          </div>
+        </a>
       </div>
     </div>
-<main class="container">
-  <div class="container">
-    <div class="row mb-2">
-    </div>
-    <div class="h-100 p-5 bg-light border rounded-3">
-      <h2 class="block_title">인기있는 캐릭터 Top 10</h2>
-      <form
-          class="movie_box"
-          method="POST"
-          action="{% url 'test_rec:result_page' %}"
-          data-movies="{{ length }}"
-        >
-          <div class="movie_box2">
-            {% for character in characters %}
-            <input
-              type="checkbox"
-              value="{{ character }}"
-              name="movies"
-              id="{{ character }}"
-            />
-            <label
-              for="{{ character }}"
-              style="background-image: url('static/img/{{character}}.png'); background-size:cover;"
-            >
-            </label>
-
-            {% endfor %}
+    <div class="index_contents">
+      <div class="index_contents_box">
+        <section class="mbti_section">
+          <div class="mbti_section_title">MBTI</div>
+          <div class="mbti_nav_box">
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISTJ">ISTJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESTJ">ESTJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISFJ">ISFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESFJ">ESFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESFP">ESFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISFP">ISFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ESTP">ESTP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ISTP">ISTP</a>          
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INFJ">INFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENFJ">ENFJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INFP">INFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENFP">ENFP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INTP">INTP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENTP">ENTP</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/INTJ">INTJ</a>
+            <a class="btn nav-button" type="button" href="/common/show_mbti_info/ENTJ">ENTJ</a>
           </div>
-        </form>
+          
+        </section>
+        <section class="character_section">
+          <div class="character_section_container">
+            <div class="main_box">
+              <div class="tooltip_box">
+                <div class="block_title">
+                  인기있는 캐릭터 Top 10
+                </div>
+                <div class="tooltip" style="opacity: 1;">
+                  <img src="https://cdn.icon-icons.com/icons2/10/PNG/256/help_question_1566.png" style="margin-left: 1%; margin-bottom: 3px;" alt="question mark" width="20" height="20">
+                  <div class="tooltip-content">
+                    <p>최신 영화(2020~) 중<br>영화와 캐릭터의 인기도를 기반으로 뽑은<br>Top 10 캐릭터입니다.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="inner_block">
+              {% for cha in characters1 %}
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/> -->
+
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
+                  <img
+                    src="{{ cha.img_src }}"
+                    class="card_image"
+                    alt="Responsive image"
+                  />
+                  <div class="card_body">
+                    <div class="card_title">{{ cha.Character }}</div>
+                    <div class="card_info">
+                      <div class="card_info_items">
+                        <div class="card_info_items_box">
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">{{cha.ko_title}}</span>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">MBTI | {{ cha.MBTI }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              {% endfor %}   
+              </div>                                                                                      
+            </div>
+            {% if user.is_authenticated %}
+            <div class="main_box">
+              <div class="block_title" >
+                나와 성격이 유사한 캐릭터 Top 10
+              </div>
+              <div class="inner_block">
+                {% for cha in characters2 %}
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
+                  <img
+                    src="{{ cha.img_src }}"
+                    class="card_image"
+                    alt="Responsive image"
+                  />
+                  <div class="card_body">
+                    <div class="card_title">{{ cha.Character }}</div>
+                    <div class="card_info">
+                      <div class="card_info_items">
+                        <div class="card_info_items_box">
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">{{cha.ko_title}}</span>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">MBTI | {{ cha.MBTI }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}   
+              </div>                                                                       
+            </div>
+            <div class="main_box">
+              <div class="block_title">
+                나와 궁합이 잘 맞는 캐릭터 Top 10
+              </div>
+              <div class="inner_block">
+                {% for cha in characters3 %}
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
+                  <img
+                    src="{{ cha.img_src }}"
+                    class="card_image"
+                    alt="Responsive image"
+                  />
+                  <div class="card_body">
+                    <div class="card_title">{{ cha.Character }}</div>
+                    <div class="card_info">
+                      <div class="card_info_items">
+                        <div class="card_info_items_box">
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">{{cha.ko_title}}</span>
+                          </div>
+                          <div class="card_info_item">
+                            <span class="card_info_item_title">MBTI | {{ cha.MBTI }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}      
+              </div>                                                          
+            </div>                               
+            {% else %}
+            <div class="main_box">
+              <h2 class="block_title">🤖 나의 테스트 정보가 없습니다!</h2>
+              <p class="block_subtitle">로그인이나 회원가입을 해주세요.</p>
+              <a href="{% url 'common:login' %}" class="main_login_signup" type="button">로그인하러가기</a>
+              <a href="{% url 'common:signup' %}" class="main_login_signup" type="button">회원가입하러가기</a>
+            </div>
+            {% endif %}
+        </section>
+
+      </div>
     </div>
-    <div class="row mb-2">
-    </div>
-    <div class="h-100 p-5 bg-light border rounded-3">
-      <h2 class="block_title">나의 테스트 정보가 없습니다!</h2>
-      <p>로그인이나 회원가입을 해주세요.</p>
-      <a href="{% url 'common:login' %}" class="btn btn-outline-success" type="button">Log in</a>
-      <a href="{% url 'common:signup' %}" class="btn btn-outline-success" type="button">Sign up</a>
-    </div>
-  </div>
-</main>
-  </body>
-</html>
+
+<footer class="index_footer">
+  <p style="margin-right: 10px;">&copy; ITS</p>
+  <a href="https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08.git" target="_blank" style="text-decoration: none;">
+  <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png" style="margin-bottom: 3px;" alt="GitHub logo" width="15" height="15">
+  <span style="font-size: 15px;">Github</span>
+  </a>
+</footer>
+
+
 {% endblock %}

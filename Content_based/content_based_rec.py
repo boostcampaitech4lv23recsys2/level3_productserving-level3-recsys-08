@@ -1,10 +1,11 @@
 import pandas as pd
 import pickle
 
+popular_movie = pd.read_csv('/opt/ml/input/final_project/Content_based/230129_Popular_movie_1192_cwj.csv') # 유명황 영화로 걸러주기 위해
 mbti_all = pd.read_csv('/opt/ml/input/final_project/data/Personality_All_168000_rows.csv') # 캐릭터 검색을 위해
 data = pd.read_csv('/opt/ml/input/final_project/Content_based/content_based_4035.csv') # side information data
 
-with open('/opt/ml/input/final_project/Content_based/p_sim.pkl', 'rb') as file:
+with open('/opt/ml/input/final_project/Content_based/content_based_plot_sim.pkl', 'rb') as file:
     '''
     p_sim이 만들어지는 과정
     - plot을 TF-IDF를 통해 유사도 측정한것
@@ -12,7 +13,7 @@ with open('/opt/ml/input/final_project/Content_based/p_sim.pkl', 'rb') as file:
     '''
     p_sim = pickle.load(file)
     
-with open('/opt/ml/input/final_project/Content_based/g_sim.pkl', 'rb') as file:
+with open('/opt/ml/input/final_project/Content_based/content_based_genre_sim.pkl', 'rb') as file:
     '''
     g_sim이 만들어지는 과정
 
@@ -26,7 +27,7 @@ with open('/opt/ml/input/final_project/Content_based/g_sim.pkl', 'rb') as file:
 
 
 
-def content_based_filtering(checked:list, topk:int):
+def content_based_filtering(movieIds:list, topk:int):
     '''
     user가 선호하는 movie_list를 입력으로 받아 유사도 높은 컨텐츠의 movieId topk개를 반환합니다.
     - 장르를 pre-train된 BERT모델을 통해 벡터화
@@ -40,6 +41,11 @@ def content_based_filtering(checked:list, topk:int):
     Returns:
        recommended_movie_ids (list): 유사도 높은 아이템의 movieId topk개를 담고 있는 list 입니다.
     '''
+    checked = []
+    for mid in movieIds:
+        index = data.index[data['movieId']==mid][0]
+        checked.append((index,mid))
+
     # index로 접근하기 위한 처리
     content2idx = {}
     idx2content = {}
@@ -67,21 +73,23 @@ def content_based_filtering(checked:list, topk:int):
             return True
         return False
 
-    candi_list = []
-    duplicate_check = []
-    for k in checked:
+    candi_dictionary = {}
+    for k,m in checked:
         sim_scores = [(i,c) for i, c in enumerate(total_sim[k]) if i != 0] # 자기 자신을 제외한 영화들의 유사도 및 인덱스를 추출
         sim_scores = sorted(sim_scores, key= lambda x: x[1],reverse=True) # 유사도가 높은 순서로 정렬
         cnt = 0
         for idx, sc in sim_scores:
-            if cnt >= 10:  # 하나의 영화 당 10개의 후보를 생성
+            if cnt >= 60:  # 하나의 영화 당 60개의 후보를 생성
                 break
-            if idx in checked or not check_latest(idx) or idx in duplicate_check:
+            if idx in checked or not check_latest(idx) or m not in popular_movie['movieId'].values:
                 continue
-            candi_list.append((idx, sc))
-            duplicate_check.append(idx)
+            if idx in candi_dictionary:
+                candi_dictionary[idx] += sc
+            else:
+                candi_dictionary[idx] = sc
             cnt+=1
 
+    candi_list = list(candi_dictionary.items())
     candi_list = sorted(candi_list, key= lambda x: x[1],reverse=True)
 
 
@@ -92,9 +100,9 @@ def content_based_filtering(checked:list, topk:int):
     recommended_movie_ids = []
     for i,j in top_k:
         m_id = int(data.loc[data['Contents']==i]['movieId'].values[0])
-        recommended_movie_ids.append(m_id)
+        recommended_movie_ids.append((m_id,j)) # (movieId, Score)
 
     return recommended_movie_ids
 
 if __name__=='__main__':
-    print(content_based_filtering([0,1,2], 10)) # [모아나, 인사이드 아웃, 주토피아]
+    print(content_based_filtering([73141,122470,152081], 10)) # 입력 : [모아나, 인사이드 아웃, 주토피아]

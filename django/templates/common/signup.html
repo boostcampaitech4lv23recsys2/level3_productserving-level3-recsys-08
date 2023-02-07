@@ -1,38 +1,61 @@
 {% extends "base.html" %}
+{% load static %} 
+{% load socialaccount %}
+
 {% block content %}
-<div class="container my-3">
-    <div class="row my-3">
-        <div class="col-4">
-            <h4>계정생성</h4>
+<div class="contents_container">
+    <div class="login_container signup_container">
+        <div class="login_header">
+            <h4>회원가입</h4>
         </div>
-        <div class="col-8 text-right">
-            <span>또는 <a href="{% url 'common:login' %}">로그인 하세요.</a></span>
+        <div class="login_signup">
+            <a class="login_signup_btn" href="{% url 'common:login' %}" >
+                <div class="sigunup_link">
+                    Login
+                </div>
+            </a>
+            <div class="login_signup_btn on_process">Signup</div>
         </div>
+        <form method="post" class="login_form" action="{% url 'common:signup' %}">
+            {% csrf_token %}
+            {% include "form_errors.html" %}
+            <div class="input_box">
+                <input placeholder="username" type="text" class="login_input" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+            </div>
+            <div class="input_box">
+                <input placeholder="password" type="password" class="login_input" name="password1" id="password1" value="{{ form.password.value|default_if_none:'' }}">
+            </div>
+            <div class="input_box">
+                <input placeholder="password check" type="password" class="login_input" name="password2" id="password2" value="{{ form.password.value|default_if_none:'' }}">
+            </div>
+            <div class="input_box">
+                <input placeholder="email" type="text" class="login_input" name="email" id="email" value="{{ form.username.value|default_if_none:'' }}">
+            </div>
+        
+            <div class="btn_box">
+                <a class="login_btn google_btn" href="{% provider_login_url 'google' %}">
+                    <div class="login_wrap">
+                        <img src="{% static 'google_icon.png' %}" class="icon google_icon" />
+                        <div class="white_login">구글로 회원가입</div>
+                    </div>
+                </a>
+                <a class="login_btn naver_btn" href="{% provider_login_url 'google' %}">
+                    <div class="login_wrap">
+                        <img src="{% static 'naver_icon.png' %}" class="icon" />
+                        <div class="white_login">네이버로 회원가입</div>
+
+                    </div>
+                </a>
+                <a class="login_btn kakao_btn" href="{% provider_login_url 'google' %}">
+                <div class="login_wrap">
+                    <img src="{% static 'kakao_icon.png' %}" class="icon" />
+                    <div class="black_login">카카오로 회원가입</div>
+                </div>
+                </a>
+                <div type="submit" class="login_btn login_submit">회원가입</div>
+            </div>
+        </form>
     </div>
-    <form method="post" class="post-form" action="{% url 'common:signup' %}">
-        {% csrf_token %}
-        {% include "form_errors.html" %}
-        <div class="form-group">
-            <label for="username">사용자 이름</label>
-            <input type="text" class="form-control" name="username" id="username"
-                  value="{{ form.username.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="password1">비밀번호</label>
-            <input type="password" class="form-control" name="password1" id="password1"
-                  value="{{ form.password1.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="password2">비밀번호 확인</label>
-            <input type="password" class="form-control" name="password2" id="password2"
-                  value="{{ form.password2.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="email">이메일</label>
-            <input type="text" class="form-control" name="email" id="email"
-                  value="{{ form.email.value|default_if_none:'' }}">
-        </div>
-        <button type="submit" class="btn btn-primary">생성하기</button>
-    </form>
 </div>
+
 {% endblock %}
