@@ -97,7 +97,6 @@ def index(request):
         user = request.user
         tmpusers = TmpUser.objects.filter(LoginUser=user)
         tmpusers = list(tmpusers)[::-1]
-        print(tmpusers)
         if len(tmpusers) == 0:
             return redirect('index')
         mbti = tmpusers[len(tmpusers)-1].MBTI
@@ -107,11 +106,10 @@ def index(request):
         characterid2 = [item for sublist in characterid2 for item in sublist]  
         
         tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
-        print(f'3tmp : {tmp}')
         characterid3 = [eval(str(tmp[i])) for i in range(len(tmp))]
         try:
             characterid3 = [item for sublist in characterid3 for item in sublist]  
-        except:
+        except: # None 값 예외처리
             cha3 = []
             for sublist in characterid3:
                 if sublist == None:
