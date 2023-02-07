@@ -178,14 +178,27 @@ def result_page(request):
             user_fit_MBTI = fit_mbti_dict[user.MBTI]
             mbti_list=[user.MBTI, user_fit_MBTI]
             result=pd.DataFrame()
-            if interaction_movie_list:
+            ratio_string=''
+            if interaction_movie_list: # 2019년 까지의 영화를 고른 경우
                 result1 = user_input_to_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
                 result = pd.concat([result, result1])
                 print('>>>>',result1.shape)
-            if side_info_movie_list:
-                result2 = user_input_to_side_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
+                annoy_recommend = result1.movieId.drop_duplicates().tolist()
+                user.annoy_recommend_movies = annoy_recommend
+                ratio_string+=f"{len(annoy_recommend)}:"
+            else: # 2019년 까지의 영화를 고르지 않은 경우
+                ratio_string+="0:"
+            if side_info_movie_list: # 2020년 이후 영화 고른 경우
+                result2 = user_input_to_side_recommend(mbti_list, user.ennea_res, side_info_movie_list, 100)
                 result = pd.concat([result, result2])
                 print('>>>>',result2.shape)
+                bts_recommend = result2.movieId.drop_duplicates().tolist()
+                user.bts_recommend_movies = bts_recommend
+                ratio_string+=f"{len(bts_recommend)}"
+            else: # 2020년 이후 영화를 고르지 않은 경우
+                ratio_string+="0"
+            # user.annoy_bts_ratio
+            print(f"{ratio_string = }")
             print(f"{result.movieId.nunique()=} {result.shape=}")
             result.drop_duplicates('CharacterId',inplace=True)
             result = result[result.Enneagram_sim.notna()]
@@ -236,7 +249,8 @@ def result_page(request):
                     user.LoginUser = login_user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
                     user.save()
             
-            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj, 'tmpuser':user}
+            feedback=''
+            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj, 'tmpuser':user, 'feedback':feedback}
             return render(request, 'test_rec/result.html', context)
         else:
             return render(request, 'test_rec/result.html')
@@ -303,8 +317,16 @@ def result_movie(request, character_id):
     else:
         char_data = char_df[char_cols].to_dict(orient='records')
 
-    liked = 1    
-    context = {'user1' : user, 'login_user': login_user, 'liked':liked, 'data': result_movie, 'links': links, 'cur_character':cur_character, 'char_data':char_data}
+    liked = 0
+    # 로그인 유저인 경우 해당 캐릭터 좋아요 눌렀는지 여부
+    if login_user:
+        character_like = CharacterLike.objects.filter(Q(LoginUser_id=login_user) & Q(character_id=character_id))
+        if len(character_like):
+            liked=1
+    # 로그인 유저인 경우 해당 캐릭터가 받은 좋아요 수
+    cur_character_like = CharacterLike.objects.filter(character_id=character_id)
+    like_cnt = len(cur_character_like)
+    context = {'user1' : user, 'login_user': login_user, 'liked':liked, 'data': result_movie, 'links': links, 'cur_character':cur_character, 'char_data':char_data, "like_cnt":like_cnt}
     return render(request, 'test_rec/result_movie.html', context)
 
 # 좋아요
@@ -312,17 +334,27 @@ def result_movie(request, character_id):
 def like_character(request, character_id, user_id):
     print(f">>> {request.user.id=}")
     login_user_id = request.user.id
+    liked=0
     # 로그인 유저
     if login_user_id:
         # 이미 user가 해당 캐릭터 좋아요 누른 경우
         character_like = CharacterLike.objects.filter(Q(LoginUser_id=login_user_id) & Q(character_id=character_id))
         # 처음 user가 해당 캐릭터 좋아요 누른 경우
         if len(character_like)==0:
-            new_character_like = CharacterLike.objects.create(create_time=timezone.now())
-            
+            new_character_like = CharacterLike.objects.create(LoginUser_id=login_user_id, character_id=character_id, create_time=timezone.now())
+            liked=1
+        # user가 이미 좋아요 누른 캐릭터 다시 좋아요 누른 경우 -> 해제
+        else:
+            # 좋아요 삭제
+            character_like.delete()
+            liked=0
+
+    cur_character_like = CharacterLike.objects.filter(character_id=character_id)
+    cur_character_like_cnt = len(cur_character_like)
+    print(f"{login_user_id=}의 해당 캐릭터({character_id}) 좋아요: {liked}, 그래서 해당 캐릭터 좋아요 수는 {cur_character_like_cnt}")
     context={
-        'like_cnt':128,
-        'liked':1
+        'like_cnt':cur_character_like_cnt,
+        'liked':liked
     }
     response = JsonResponse(context)
     return response
@@ -330,6 +362,9 @@ def like_character(request, character_id, user_id):
 # 피드백
 @csrf_exempt
 def feedback_result(request, user_id):
+    user = TmpUser.objects.get(id=request.session['user_id'])
+    before_user_feedback = user.feedback
+    print(f"{before_user_feedback = }")
     if request.method == 'POST':
         # data = json.loads(request.body)
         value = request.POST.get('value')
@@ -337,11 +372,22 @@ def feedback_result(request, user_id):
             'feedback':0
         }
         if value == '+':
-            context['feedback'] = 1
-            print('good')
+            if before_user_feedback != 1: # 기존에 선택 안함 or 싫어요
+                user.feedback = 1
+                print('good')
+            elif before_user_feedback == 1: # 기존에 좋아요 누른 경우
+                user.feedback = 0
+                print("No eval")
+            context['feedback'] = '+'
         elif value == '-':
-            context['feedback'] = 0
-            print('bad')
+            if before_user_feedback != -1: # 기존에 선택 안함 or 좋아요
+                user.feedback = -1
+                print('bad')
+            elif before_user_feedback == -1: # 기존에 싫어요 누른 경우
+                user.feedback = 0
+                print("No eval")
+            context['feedback'] = '-'
+        user.save()
     
     response = JsonResponse(context)
     return response
