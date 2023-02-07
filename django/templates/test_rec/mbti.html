@@ -1,11 +1,28 @@
 {% extends 'test_rec/base.html' %}
 {% load static %} 
 {% block contents %}
+<div class="progressbar">
+  <a href="/test_rec/start_test/" class="progressbar_left">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">0%</span>
+  </div>
+</div>
 <div class="wrap"> 
 
   <div class="left_header">
     <h1 class="test_question">Q1.</h1>
     <h3 class="test_question_subtitle">당신의 MBTI는?</h3>
+
+    <div class="mbti_flex">
+      <p class="mbti_p">내 MBTI가 뭐였더라? 🤔</p>
+      <a href="https://www.16personalities.com/ko/%EB%AC%B4%EB%A3%8C-%EC%84%B1%EA%B2%A9-%EC%9C%A0%ED%98%95-%EA%B2%80%EC%82%AC" target="_blank">
+        <button class="button mbtitest">MBTI 검사하기</button>
+      </a>
+
+    </div>
+    
   </div>
   <div class="contents">
     <form
@@ -72,4 +89,5 @@
     </form>
   </div>
 </div>
+
 {% endblock %}

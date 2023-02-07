@@ -29,3 +29,5 @@ annoy
 apache-airflow==2.5.1
 kubernetes==25.3.0
 apache-airflow-providers-ssh==3.4.0
+mlflow==2.1.1
+

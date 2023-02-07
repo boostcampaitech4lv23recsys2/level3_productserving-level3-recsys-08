@@ -12,3 +12,26 @@ div.scrollMenu img{
 div.scrollMenu a:hover img{
     background-color: rgba(229, 242, 208, 0.797);
   }
+
+div.scrollMenu2 {
+    overflow: auto;
+    white-space: nowrap;
+  }
+div.scrollMenu2 a, img{
+    display: inline-block;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    text-decoration: none;
+    padding: 14px;
+  }
+
+div.scrollMenu3 {
+    overflow: auto;
+    /* white-space: nowrap; */
+  }
+div.scrollMenu3 div{
+    /* display: inline-block; */
+    /* color: rgb(0, 0, 0); */
+    text-align: center;
+    text-decoration: none;
+  }

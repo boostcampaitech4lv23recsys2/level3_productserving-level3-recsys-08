@@ -1,6 +1,15 @@
 {% extends 'test_rec/base.html' %}
 {% load static %} 
 {% block contents %}
+<div class="progressbar">
+  <a class="progressbar_left" href="/test_rec/enneagram_test/">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">40%</span>
+  </div>
+</div>
+
 <div class="wrap"> 
 
   <div class="left_header">
@@ -24,7 +33,7 @@
     >
       <div class="engram_box">
         <button
-          class="button mbti_button"
+          class="button engram_button"
           value="A"
           name="enneagram2"
           type="submit"
@@ -32,7 +41,7 @@
           잘 되겠지 뭐..
         </button>
         <button
-          class="button mbti_button"
+          class="button engram_button"
           value="B"
           name="enneagram2"
           type="submit"
@@ -40,7 +49,7 @@
           해결할 방법을 생각해보자.
         </button>
         <button
-          class="button mbti_button"
+          class="button engram_button"
           value="C"
           name="enneagram2"
           type="submit"
@@ -52,4 +61,10 @@
     </form>
   </div>
 </div>
+<script>
+  $(document).ready(function(){
+    console.log('document ready!')
+    $('.progress_container').addClass('progress2')
+  })
+</script>
 {% endblock %}
