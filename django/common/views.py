@@ -247,16 +247,11 @@ def show_mbti_info(request, mbti):
     get_mbti = mbti
     
     cha_df_with_ko_title['vote'] = cha_df_with_ko_title['Votes'].apply(lambda x:clean(x))
-    # alldf = pd.merge(cha_df_with_ko_title, movie_df[['movieId', 'npop', 'contents_year']], on="movieId", how="left")
-    # alldf = alldf[alldf['MBTI'] == 'INFP'].sort_values(['npop','vote','contents_year'], ascending=False)
-    char_df = character_df[character_df.MBTI=="INFP"].copy()
+    char_df = character_df[character_df.MBTI==mbti].copy()
     char_df.sort_values('npop',ascending=False,inplace=True)
     char_df[char_df.vote>=1000]
     char_df['hashtag'] = char_df.CharacterId.map(characterid_to_hashtag)
     char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag']
-    # all_INFP = []
-    # for u in alldf['Character']:
-    #     all_INFP.extend(alldf[alldf['Character'] == u].to_dict(orient='records'))
     char_list = char_df[char_cols][:200].to_dict(orient='records')
     context = {
         'mbti' : get_mbti,
