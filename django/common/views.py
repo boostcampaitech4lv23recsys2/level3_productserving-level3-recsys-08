@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views import View
+from django.http import JsonResponse
+from test_rec.models import TmpUser
 
 import pickle
 import pandas as pd
@@ -81,25 +84,47 @@ def index(request):
             tmpuser.LoginUser = user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
             tmpuser.save()
 
+    cha_li1 = []; cha_li2 = []; cha_li3 = []
+    
     # 인기있는 캐릭터 Top 10 CharacterId
     characterid1 = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
 
     # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
-    cha_li1 = []
     for c in characterid1:
         cha_li1.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+     
+    if request.user.is_authenticated:
+        user = request.user
+        tmpusers = TmpUser.objects.filter(LoginUser=user)
+        tmpusers = list(tmpusers)[::-1]
+        if len(tmpusers) == 0:
+            return redirect('index')
+        mbti = tmpusers[len(tmpusers)-1].MBTI
         
-    # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
-    characterid2 = [1274, 1284, 1281, 1293, 1297, 1304, 1313, 1321, 1352, 1391]
-    cha_li2 = []
-    for c in characterid2:
-        cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
+        characterid2 = [eval(str(tmp[i])) for i in range(len(tmp))]
+        characterid2 = [item for sublist in characterid2 for item in sublist]  
         
-    # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
-    characterid3 = [8153, 8136, 8140, 8144, 8177, 8134, 8158, 8146, 8189, 8303]
-    cha_li3 = []
-    for c in characterid3:
-        cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
+        characterid3 = [eval(str(tmp[i])) for i in range(len(tmp))]
+        try:
+            characterid3 = [item for sublist in characterid3 for item in sublist]  
+        except: # None 값 예외처리
+            cha3 = []
+            for sublist in characterid3:
+                if sublist == None:
+                    continue
+                for item in sublist:
+                    cha3.extend(item)
+            characterid3 = cha3
+
+        # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
+        for c in characterid2[:10]:
+            cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+            
+        # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
+        for c in characterid3[:10]:
+            cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
     
     context = {
         'my_person_list': [],
@@ -149,10 +174,10 @@ def user_profile(request):
     character_data = pd.DataFrame()
     for id in recommended_character_ids:
         character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
-    character_data = character_data.merge(movie_df[['ko_title', 'movieId']], on='movieId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
+    print(character_data.columns)
     character_data = character_data.to_dict(orient='records')
-    
+
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
@@ -184,7 +209,6 @@ def detail_tmpuser(request, tmpuser_id):
     data1 = pd.DataFrame()
     for id in eval(recommended_character_ids):
         data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
-    data1 = data1.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data1['CharacterId'] = data1['CharacterId'].map(int)
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
     
@@ -197,7 +221,6 @@ def detail_tmpuser(request, tmpuser_id):
     data2 = pd.DataFrame()
     for id in eval(fit_character_ids):
         data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
-    data2 = data2.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data2['CharacterId'] = data2['CharacterId'].map(int)
     data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
     data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
@@ -215,11 +238,23 @@ def detail_tmpuser(request, tmpuser_id):
     return render(request, 'common/detail_tmpuser.html', context)
 
 
-@login_required(login_url='common:login')
-def delete_tmpuser(request, tmpuser_id):
-    tmpuser = TmpUser.objects.get(id=tmpuser_id)
-    tmpuser.delete()
-    return redirect('common:user_profile')
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+class TmpUserDeleteView(View):
+    def get(self, request, tmpuser_id, *args, **kwargs):
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            tmpuser = TmpUser.objects.get(id=tmpuser_id)
+            tmpuser.delete()
+            return JsonResponse({'message': 'success'})
+        return JsonResponse({'message': 'Wrong route'})
+
+# @login_required(login_url='common:login')
+# def delete_tmpuser(request, tmpuser_id):
+#     tmpuser = TmpUser.objects.get(id=tmpuser_id)
+#     tmpuser.delete()
+#     return redirect('common:user_profile')
 
 
 def clean(votes):
@@ -233,16 +268,11 @@ def show_mbti_info(request, mbti):
     get_mbti = mbti
     
     cha_df_with_ko_title['vote'] = cha_df_with_ko_title['Votes'].apply(lambda x:clean(x))
-    # alldf = pd.merge(cha_df_with_ko_title, movie_df[['movieId', 'npop', 'contents_year']], on="movieId", how="left")
-    # alldf = alldf[alldf['MBTI'] == 'INFP'].sort_values(['npop','vote','contents_year'], ascending=False)
-    char_df = character_df[character_df.MBTI=="INFP"].copy()
+    char_df = character_df[character_df.MBTI==mbti].copy()
     char_df.sort_values('npop',ascending=False,inplace=True)
     char_df[char_df.vote>=1000]
     char_df['hashtag'] = char_df.CharacterId.map(characterid_to_hashtag)
     char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag']
-    # all_INFP = []
-    # for u in alldf['Character']:
-    #     all_INFP.extend(alldf[alldf['Character'] == u].to_dict(orient='records'))
     char_list = char_df[char_cols][:200].to_dict(orient='records')
     context = {
         'mbti' : get_mbti,
