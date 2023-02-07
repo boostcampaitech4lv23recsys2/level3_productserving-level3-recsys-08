@@ -37,13 +37,13 @@
     border-radius: 1rem;
     width: 70%;
     margin-left:25px;
+    position: relative;
 }
 
 .character_title {
     font-size: 1.5rem;
     margin-bottom: 2vh;
     font-weight: 600;
-    margin-left: 10px;
 }
 .character_info_tag{
     font-size: 16px;
@@ -80,8 +80,12 @@
     display: flex;
     flex-direction: column;
 }
-
+.plus_box{
+    position:relative;
+}
 .plus_button{
+    position: absolute;
+    right: 0;
     color: #7b1a21;
     text-align: right;
     font-weight: 500;
@@ -89,6 +93,39 @@
 .plus_button:hover{
     color:#a6a6a6;
 }
+
+.like_box{
+    position: absolute;
+    bottom: 0;
+}
+
+.like_button{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid black;
+    width: 70px;
+    padding: 8px;
+    border-radius: 1rem;
+    background-color: rgb(42, 41, 39);
+    color: white;
+    box-shadow: -10px -10px 15px rgba(255,255,255,0.5), 10px 10px 15px rgba(70,70,70,0.12);
+    box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+}
+.like_box i{
+    color: #e50914;
+    font-size: 20px;
+}
+.like_button:hover{
+    opacity: 0.9;
+}
+.like_button:active{
+    box-shadow: inset -10px -10px 15px rgba(255, 255, 255, 0.5), inset 10px 10px 15px rgba(70, 70, 70, 0.12);
+    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.15), 
+            inset 0px 4px 8px rgba(0,0,0,0.15), 
+            inset 0px 8px 16px rgba(0,0,0,0.15);
+}
+
   /* 영화 */
 .movie{
     display: flex;
@@ -125,6 +162,7 @@
     width: 180px;
     background-color: rgb(159, 56, 43);
     align-self: center;
+    box-shadow: -10px -10px 15px rgba(255,255,255,0.5), 10px 10px 15px rgba(70,70,70,0.12);
 }
 
 /* 감상 가능 링크 */
