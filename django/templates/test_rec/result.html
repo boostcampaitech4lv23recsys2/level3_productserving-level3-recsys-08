@@ -101,15 +101,44 @@
         <a href="/test_rec/start_test" class="result_button">다시 테스트하기</a>
       </button>
       <div class="feedback_box" data_user="{{tmpuser}}" data_loginUser="{{tmpuser.LoginUser_id}}">
-        <button class="feedback" value="+" id="thumbs_up">
-          <i class="fa-regular fa-thumbs-up"></i>
-          <span class="feedback_text">추천결과가 맘에들어요</span>
-        </button>
-        <div class="divider"></div>
-        <div class="feedback" value="-">
-          <i class="fa-regular fa-thumbs-down"></i>
-          <span class="feedback_text"></span>
-        </div>
+        <!-- 이미 피드백을 했을때 -->  
+        {% if feedback %}
+          <!-- 피드백이 좋음일때 -->
+          {% if feedback == '+' %}
+          <button class="feedback left" value="+" id="thumbs_up">
+            <i id="thumbs_up" class="fa-solid fa-thumbs-up"></i>
+            <span class="feedback_text">추천결과가 맘에들어요</span>
+          </button>
+          <div class="divider"></div>
+          <button class="feedback right" value="-">
+            <i id="thumbs_up" class="fa-regular fa-thumbs-down"></i>
+            <span class="feedback_text"></span>
+          </button>
+        <!-- 피드백이 안좋음일때 -->
+        
+          {% elif feedback == '-' %}
+          <button class="feedback left" value="+" id="thumbs_up">
+            <i id="thumbs_up" class="fa-regular fa-thumbs-up"></i>
+            <span class="feedback_text"></span>
+          </button>
+          <div class="divider"></div>
+          <button class="feedback right" value="-">
+            <i id="thumbs_up" class="fa-solid fa-thumbs-down"></i>
+            <span class="feedback_text">추천결과가 맘에 안들어요</span>
+          </button>
+          {% endif %}
+          <!-- 피드백을 안했을때 -->
+        {% else %}
+          <button class="feedback left" value="+" id="thumbs_up">
+            <i id="thumbs_up" class="fa-regular fa-thumbs-up"></i>
+            <span class="feedback_text">추천결과가 맘에들어요</span>
+          </button>
+          <div class="divider"></div>
+          <button class="feedback right" value="-">
+            <i id="thumbs_down" class="fa-regular fa-thumbs-down"></i>
+            <span class="feedback_text"></span>
+          </button>
+        {% endif %}  
       </div>
       <button class="retest_button">
         <a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" >카카오톡 공유하기</a>
@@ -121,6 +150,34 @@
 
 <div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
 <script>
+  function giveFeedback(url, value){
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {
+        'value':value
+      },
+      success: function (response) {
+        setTimeout(() => {
+          console.log('response',response)
+        }, 500)
+      },
+      error: function (error) {
+        setTimeout(() => {
+          $('.wrap').innerHTML = `failed to load the data`
+        }, 5000)
+      }
+    }).done(() => {
+      if(response.feedback == '1'){
+        $('.feedback').remove('#thumbs_up')
+        $('.feedback').append('<i id="thumbs_up" class="fa-solid fa-thumbs-up"></i>')
+
+      }else if(response.feedback == '0'){
+        $('.feedback').remove('#thumbs_down')
+        $('.feedback').append('<i id="thumbs_down" class="fa-solid fa-thumbs-down"></i>')
+      }
+    })
+  }
   $('.feedback').click(function(event){
     event.preventDefault();
     let userId = $('.feedback_box').attr('data_user')
@@ -129,31 +186,7 @@
     let url = '/test_rec/feedback/' + userId
     let value = event.currentTarget.value
     console.log(value)
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: {
-        'userId':userId,
-        'value':value
-      },
-      success: function (response) {
-        setTimeout(() => {
-          console.log('response',response)
-          if(response.feedback == 1){
-           
-            $('.feedback').append('<i class="fa-solid fa-thumbs-up"></i>')
-
-          }else if(response.feedback == 0){
-            $('.feedback').append('<i class="fa-solid fa-thumbs-down"></i>')
-          }
-        }, 500)
-      },
-      error: function (error) {
-        setTimeout(() => {
-          $('.wrap').innerHTML = `failed to load the data`
-        }, 5000)
-      }
-    })
+    giveFeedback(url, value)
   })
 </script>
 {% endblock %}
