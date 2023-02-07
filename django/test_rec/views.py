@@ -319,9 +319,7 @@ def like_character(request, character_id, user_id):
         # 처음 user가 해당 캐릭터 좋아요 누른 경우
         if len(character_like)==0:
             new_character_like = CharacterLike.objects.create(create_time=timezone.now())
-            new_character_like.
-
-        breakpoint()
+            
     context={
         'like_cnt':128,
         'liked':1
