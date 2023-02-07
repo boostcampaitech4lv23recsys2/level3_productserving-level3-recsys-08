@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views import View
+from django.http import JsonResponse
 
 import pickle
 import pandas as pd
@@ -215,11 +217,23 @@ def detail_tmpuser(request, tmpuser_id):
     return render(request, 'common/detail_tmpuser.html', context)
 
 
-@login_required(login_url='common:login')
-def delete_tmpuser(request, tmpuser_id):
-    tmpuser = TmpUser.objects.get(id=tmpuser_id)
-    tmpuser.delete()
-    return redirect('common:user_profile')
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+class TmpUserDeleteView(View):
+    def get(self, request, tmpuser_id, *args, **kwargs):
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            tmpuser = TmpUser.objects.get(id=tmpuser_id)
+            tmpuser.delete()
+            return JsonResponse({'message': 'success'})
+        return JsonResponse({'message': 'Wrong route'})
+
+# @login_required(login_url='common:login')
+# def delete_tmpuser(request, tmpuser_id):
+#     tmpuser = TmpUser.objects.get(id=tmpuser_id)
+#     tmpuser.delete()
+#     return redirect('common:user_profile')
 
 
 def clean(votes):
