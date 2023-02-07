@@ -18,3 +18,12 @@ class TmpUser(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class CharacterLike(models.Model):
+    LoginUser = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='characterlike')
+    character_id = models.IntegerField()
+    create_time = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.id)

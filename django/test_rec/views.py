@@ -4,14 +4,17 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.http import HttpResponse, JsonResponse
+from django.db.models import Q
 import simplejson as json
 import pandas as pd
 import numpy
 import pickle
 import random
 from pathlib import Path
-from .models import TmpUser
+from .models import TmpUser, CharacterLike
 import sys
+import json
 sys.path.append('..')
 from Utils import *
 
@@ -173,7 +176,7 @@ def result_page(request):
             interaction_movie_list = [i for i in movie_list if i < 300_000]
             side_info_movie_list = [i for i in movie_list if i >= 300_000]
             user_fit_MBTI = fit_mbti_dict[user.MBTI]
-            mbti_list=[user.MBTI,user_fit_MBTI]
+            mbti_list=[user.MBTI, user_fit_MBTI]
             result=pd.DataFrame()
             if interaction_movie_list:
                 result1 = user_input_to_recommend(mbti_list, user.ennea_res, interaction_movie_list, 100)
@@ -223,7 +226,7 @@ def result_page(request):
             fit_character_sim = [str(i) for i in fit_character_sim]
             user.fit_character_sim = json.dumps(fit_character_sim)
             user.save()
-
+            
             # 로그인 되었다면 TmpUser 객체 로그인 유저와 연결
             if request.user.is_authenticated:  #로그인이 되어있는지 확인
                 print('로그인 OK')
@@ -232,7 +235,7 @@ def result_page(request):
                     login_user = request.user        #로그인한 유저의 정보를 가져옴
                     user.LoginUser = login_user   #로그인한 유저의 정보를 TmpUser 객체에 저장 -> 로그인유저와 tmp유저 연결됨
                     user.save()
-
+            
             context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj, 'tmpuser':user}
             return render(request, 'test_rec/result.html', context)
         else:
@@ -241,13 +244,18 @@ def result_page(request):
 
 @csrf_exempt
 def result_movie(request, character_id):
+    
     try:
+        # 테스트 완료 했을 때 - 로그인 여부 상관없음
         user = TmpUser.objects.get(id=request.session['user_id'])
-        login_user = user.LoginUser_id
-        print(f"{user.LoginUser_id=}")
+        login_user = request.user.id
+        print(f"테스트 완료: {user.LoginUser_id=} {login_user=}")
     except:
+        # 테스트 완료 안했을 때 - 인덱스에서 바로 들어왔을 때
+        # user = TmpUser.objects.get(id=request.session['user_id'])
         user = None
-        login_user = None
+        login_user = request.user.id
+        print(f"테스트 안했을 때: {user=} {login_user=}")
     need_cols=['Character','movieId']
     character_name, movie_id = character_df[character_df.CharacterId==int(character_id)][need_cols].values[0]
     char_df = character_df[character_df.movieId==movie_id].copy()
@@ -288,16 +296,54 @@ def result_movie(request, character_id):
     print(cur_char_df[char_cols])
     cur_character = cur_char_df[char_cols].to_dict(orient='records')[0]
     cur_character['char_info'] = '이미 망친 인생이란 없어. 아직 열여덟인데. 나도. 너도. 느리고 태평한 듯 보인다. 모두가 숨차게 뛰어가도 혼자서만 천천히 걸어가는 아이. 다섯 살 때 부모가 이혼, 아버지는 떠났고 엄마와 둘이 살았다. 엉뚱하고 귀여운 구석이 있지만 늘 혼자였기에 감정 표현이 서툴다. 하지만 어른이 키워내지 않아도 혼자 잘 크는 아이다. 아주 행복할 땐 그냥 히죽 웃는다.'
-    # character = {
-    #     'name':'최준우',
-    #     'img_path':'http://cdn.slist.kr/news/photo/201906/86759_173339_423.jpg',
-    #     'char_info':'이미 망친 인생이란 없어. 아직 열여덟인데. 나도. 너도. 느리고 태평한 듯 보인다. 모두가 숨차게 뛰어가도 혼자서만 천천히 걸어가는 아이. 다섯 살 때 부모가 이혼, 아버지는 떠났고 엄마와 둘이 살았다. 작은 식당을 하다 사기를 당해 빚까지 진 엄마는 지방의 식당에 기거하며 일한다고 하지만, 어떤 목적을 위해 일을 하고 있는지 준우도 잘 알고 있지 못한다. 너무 속상하지만, 모른 체 한다. 그렇게 서로가 모르는 척하는 것이 이 모자가 사는 유일한 방법이다. 그래서인지 고독이 습관이 된 지 오래. 자신도 미처 자각하지 못하는 버려짐에 대한 두려움으로 누구에게도 정을 주지 않는다. 그가 더 이상 어찌해 볼 수 없는 게 어른들이란 생각에서다. 하지만 혼자 사는 옥탑방에 밥 짓는 냄새가 나면, 어김없이 엄마가 왔는지 가슴이 뛴다. 남들이 눈치 채지 못하고 지나쳐 버리는 것들을 소중히 볼 줄 안다. 이런 것들을 늘 준우의 시선으로 담아 스케치 한다. 학교생활에서 자꾸만 생기는 오해들이 준우의 마음을 그곳에서 멀어지게 했고, 어차피 떠날 곳이 학교이기에 떠나지 않을 것에만 정을 줬던 것 같다. 수빈이에게도 일부로 정을 주지 않으려 했는데 수빈을 좋아하면서 난생 처음의 행복을 느낀다. 그동안 유일하게 정을 주던 사물이나 자연이 주는 편안함과는 다른 아찔한 떨림이다. 준우의 가장 큰 장점이라 하면 누구에게도 무언가를 강요하지 않는 것. 이로 인해 곧잘, 타인에게 무심하고 공감능력 부재한 아이로 오해받는다. 엉뚱하고 귀여운 구석이 있지만 늘 혼자였기에 감정 표현이 서툴다. 하지만 어른이 키워내지 않아도 혼자 잘 크는 아이다. 아주 행복할 땐 그냥 히죽 웃는다.'
-    # }
-    # print(links)
+   
     char_df = char_df[char_df.CharacterId!=int(character_id)]
     if len(char_df)==0:
         char_data = []
     else:
         char_data = char_df[char_cols].to_dict(orient='records')
-    context = {'login_user': login_user, 'data': result_movie, 'links': links, 'cur_character':cur_character, 'char_data':char_data}
+
+    liked = 1    
+    context = {'user1' : user, 'login_user': login_user, 'liked':liked, 'data': result_movie, 'links': links, 'cur_character':cur_character, 'char_data':char_data}
     return render(request, 'test_rec/result_movie.html', context)
+
+# 좋아요
+@csrf_exempt
+def like_character(request, character_id, user_id):
+    print(f">>> {request.user.id=}")
+    login_user_id = request.user.id
+    # 로그인 유저
+    if login_user_id:
+        # 이미 user가 해당 캐릭터 좋아요 누른 경우
+        character_like = CharacterLike.objects.filter(Q(LoginUser_id=login_user_id) & Q(character_id=character_id))
+        # 처음 user가 해당 캐릭터 좋아요 누른 경우
+        if len(character_like)==0:
+            new_character_like = CharacterLike.objects.create(create_time=timezone.now())
+            new_character_like.
+
+        breakpoint()
+    context={
+        'like_cnt':128,
+        'liked':1
+    }
+    response = JsonResponse(context)
+    return response
+
+# 피드백
+@csrf_exempt
+def feedback_result(request, user_id):
+    if request.method == 'POST':
+        # data = json.loads(request.body)
+        value = request.POST.get('value')
+        context={
+            'feedback':0
+        }
+        if value == '+':
+            context['feedback'] = 1
+            print('good')
+        elif value == '-':
+            context['feedback'] = 0
+            print('bad')
+    
+    response = JsonResponse(context)
+    return response
