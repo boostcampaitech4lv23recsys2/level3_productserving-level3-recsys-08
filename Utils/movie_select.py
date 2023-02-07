@@ -141,16 +141,16 @@ def final_movie_select(seed, num):
  
     # 각 군집에서 영화 랜덤 추출
     data_0 = data.loc[data['cluster'] == 0, :]
-    data_0 = data_0.loc[((data_0['contents_year'] >= 2008) & (data_0['npop'] >= 20000)) | \
-        ((data_0['contents_year'] <= 2000) & (data_0['npop'] >= 100000))] 
+    data_0 = data_0.loc[((data_0['contents_year'] >= 2008) & (data_0['npop'] >= 100000)) | \
+        ((data_0['contents_year'] <= 2000) & (data_0['npop'] >= 300000))] 
     
     data_1 = data.loc[data['cluster'] == 1, :]
-    data_1 = data_1.loc[((data_1['contents_year'] >= 2008) & (data_1['npop'] >= 20000)) | \
-        ((data_1['contents_year'] <= 2000) & (data_1['npop'] >= 100000))]
+    data_1 = data_1.loc[((data_1['contents_year'] >= 2008) & (data_1['npop'] >= 100000)) | \
+        ((data_1['contents_year'] <= 2000) & (data_1['npop'] >= 300000))]
     
     data_2 = data.loc[data['cluster'] == 2, :]
-    data_2 = data_2.loc[((data_2['contents_year'] >= 2008) & (data_2['npop'] >= 20000)) | \
-        ((data_2['contents_year'] <= 2000) & (data_2['npop'] >= 100000))]
+    data_2 = data_2.loc[((data_2['contents_year'] >= 2008) & (data_2['npop'] >= 100000)) | \
+        ((data_2['contents_year'] <= 2000) & (data_2['npop'] >= 300000))]
     
     np.random.seed(seed)
     movieId_list = []

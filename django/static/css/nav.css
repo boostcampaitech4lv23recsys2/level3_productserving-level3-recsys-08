@@ -1,0 +1,40 @@
+.nav_container{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 21px 40px;
+}
+.nav_item_box{
+    display: flex;
+    align-items: center;
+}
+.nav_logo{
+    font-size:30px;
+    margin-right: 10px;
+    color: black;
+    font-weight: 500;
+}
+.nav_logo:hover{
+    cursor: pointer;
+}
+.nav_logo_right{
+    font-size: 15px;
+    padding-bottom: 15px;
+}
+.nav_item_right{
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    width: 300px;
+}
+.nav_items{
+    display: flex;
+}
+#nav_profile{
+    margin-right: 20px;
+}
+.mobile_nav_item_box{
+    display: none;
+}

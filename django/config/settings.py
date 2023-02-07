@@ -98,6 +98,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://www.xn--py2bl5k6yfu6hbpd.com']
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -176,6 +178,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+# 로그인 경로
+LOGIN_URL = 'common:login'
 
 # 로그인 후에 이동할 주소
 LOGIN_REDIRECT_URL = "/"

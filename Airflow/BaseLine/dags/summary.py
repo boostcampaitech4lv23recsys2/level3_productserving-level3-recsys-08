@@ -12,8 +12,8 @@ import json
 default_args = {
     'owner': 'cwj',
     'depends_on_past': False,  
-    'start_date': datetime(2023, 2, 1),
-    'retires': 5,  
+    'start_date': datetime(2023, 2, 2),
+    'retires': 1,  
     'retry_delay': timedelta(minutes=5) 
     # 'priority_weight': 10 
     # 'end_date': datetime(2022, 4, 24) 
@@ -27,7 +27,6 @@ def load_yesterday_summary():
     BASE_DIR = Path(os.curdir).resolve()
     env = Env()
     env_path = BASE_DIR / "level3_productserving-level3-recsys-08/django/.env"
-    print(env_path)
     if env_path.exists():
         with env_path.open("rt",encoding="utf8") as f:
             env.read_env(f,overwite = True)
@@ -39,10 +38,12 @@ def load_yesterday_summary():
 
     engine = create_engine(f"mysql+mysqldb://{user}:{pw}@{host}:3306/{dbname}")
 
+
     today = datetime.today()
     yesterday = datetime.today() - timedelta(1)
 
     df = pd.read_sql_query(f"select * from test_rec_tmpuser WHERE create_time BETWEEN '{str(yesterday)}' AND '{str(today)}' ",engine)
+
 
     MBTI_summary = df.value_counts("MBTI").to_dict()
 
@@ -66,6 +67,7 @@ def load_yesterday_summary():
                 except :
                     recommend_summary[mid] = 1
 
+
     fit_summary = {}
     for f in df['fit_character_id']:
         if f != None:
@@ -79,6 +81,7 @@ def load_yesterday_summary():
     prefer_summary = dict(sorted(prefer_summary.items(),key = lambda x: -x[1]))
     recommend_summary = dict(sorted(recommend_summary.items(),key = lambda x: -x[1]))
     fit_summary = dict(sorted(fit_summary.items(),key = lambda x: -x[1]))
+
 
 
 
@@ -98,6 +101,7 @@ def load_yesterday_summary():
 
     cursor.execute(query, (json.dumps(MBTI_summary),json.dumps(prefer_summary),json.dumps(recommend_summary),json.dumps(fit_summary),datetime_value))
 
+
     conn.commit()
 
     cursor.close()
@@ -109,6 +113,7 @@ with DAG(
         dag_id='daily_summary',
         default_args=default_args,
         schedule_interval='0 15 * * *',
+
         tags=['summary']
 ) as dag:
     python_task = PythonOperator(

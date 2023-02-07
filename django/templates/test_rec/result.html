@@ -22,10 +22,10 @@
             <div class="cards_box_container">
               <div class="cards_box">
                 <div class="cards_category">
-                  <div id="mbti" class="cards_caategory_text">나와 비슷한 캐릭터</div>
+                  <div id="mbti" class="cards_category_text">나와 비슷한 캐릭터</div>
                 </div>
                 {% for character in data1 %}
-                  <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -53,16 +53,16 @@
                         </div>
                         <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
                       </div>
-                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
+                      
                     </div>
                   </div>
                 {% endfor %}
                   
                 <div class="cards_category category_color">
-                  <div id="attractive" class="cards_caategory_text">매력적인 캐릭터</div>
+                  <div id="attractive" class="cards_category_text">나와 궁합이 잘맞는 캐릭터</div>
                 </div>
                 {% for character in data2 %}
-                  <div class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data2" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -85,13 +85,13 @@
                             
                           </div>
                         </div>
-                        <div class="card_info_text_box">
+                        {% comment %} <div class="card_info_text_box">
                           <h6 class="card_info_text">유사도</h6>
                           <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
                         </div>
                         <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
-                      </div>
-                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
+                      </div> {% endcomment %}
+                      
                     </div>
                   </div>
                 {% endfor %}
@@ -101,9 +101,18 @@
         </div>
       </div>
     </div>
-    <button class="retest_button"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none"
-      >다시 테스트하기</a
-    ></button>
-    <a href="#"><div class="button_top"><i class="fa-solid fa-arrow-up"></i></div></a>
+    <div class="button-group" style="display: flex; justify-content: space-between;">
+      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none;" 
+        >다시 테스트하기</a
+      ></button>
+      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none;" 
+        >카카오톡 공유하기</a
+      ></button>
+    </div>
+    
+    <a href="#"><div class="button_top" style="bottom: 115px"><i class="fa-solid fa-arrow-up"></i></div></a>
 </div>
+
+<div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
+
 {% endblock %}
