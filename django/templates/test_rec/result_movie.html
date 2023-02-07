@@ -31,26 +31,24 @@
                   <a href="#", id="plus" class="plus_button">더보기</a>
                 </div>
                
-                <div class="like_box" data-charId="{{cur_character.CharacterId}}" data-loginUser="{{login_user}}" data-cnt="{{like_cnt}}">
+                <div class="like_box" charId="{{cur_character.CharacterId}}" loginUser="{{login_user}}" like_cnt="{{like_cnt}}" liked="{{liked}}">
                   <div class="like_button">
+                    
                     <!-- 로그인했을때 -->
                     {% if login_user %} 
                       <!-- 이미 좋아요함 -->
                       {% if liked %}
-                        <i class="fa-solid fa-heart"></i>
-                        <span class="like_cnt">{{ like_cnt }}</span>
-
+                        <i id="heart" class="fa-solid fa-heart"></i>
                       <!-- 좋아요 안함 -->
                       {% else %}
-                      <i class="fa-regular fa-heart"></i>
-                      <span class="like_cnt">{{ like_cnt }}</span>
-
+                        <i id="heart" class="fa-regular fa-heart"></i>
                       {% endif %}
                     <!-- 로그인안했을때 -->
                     {% else %}
-                      <i class="fa-solid fa-heart-circle-exclamation"></i> 
-                      <span class="like_cnt">로그인해주세요</span>
+                      <i id="heart" class="fa-solid fa-heart-circle-exclamation"></i> 
                     {% endif %}
+                    <span class="like_cnt">{{ like_cnt }}</span>
+                    
                   </div>
                 </div>
               </div>
@@ -242,38 +240,60 @@
     <script>
       // 좋아요
       $('.like_box').click(function(){
-        let characterId = $('.like_box').attr('data-charId')
-        let loginUserId = $('.like_box').attr('data-loginUser')
+        let characterId = $('.like_box').attr('charId')
+        let loginUserId = $('.like_box').attr('loginUser')
+        let liked = $('.like_box').attr('liked')
         let url = '/test_rec' + '/' + characterId + '/' + loginUserId
-        console.log(loginUserId)
-        if(!loginUserId){
+        console.log('liked', liked)
+        
+        if(loginUserId == 'None'){
           console.log('로그인 안함')
-          Swal.fire({ icon: 'info', title: '로그인해주세요!' })
+          $('.like_cnt').text('로그인 해주세요:)')
+          $('.like_button').css({'width':'160px'})
+         
+          
         }else{
           console.log('로그인 한 유저:', loginUserId)
-          $.ajax({
-            type: 'POST',
-            url: url,
-            data: {'characterId':characterId},
-            success: function (response) {
-              
-              let likeCnt =$('like_box').attr('data-cnt')
-              setTimeout(() => {
-                console.log('response',response)
-                $('.like_cnt').text(response.like_cnt)
-                
-              }, 500)
-            },
-            error: function (error) {
-              setTimeout(() => {
-                $('.wrap').innerHTML = `failed to load the data`
-              }, 5000)
-            }
-          })
+
+          if(liked == '1'){
+            console.log('좋아요함')
+            like(url);
+          }else{
+            console.log('아직 좋아요안함')
+            like(url);
+          }
+          
 
         }
       })
-
+      function like(url){
+        $.ajax({
+          type: 'POST',
+          url: url,
+          success: function (response) {
+            console.log('좋아요 누름!')
+            console.log(response)
+          },
+          error: function (error) {
+            setTimeout(() => {
+              $('.wrap').innerHTML = `failed to load the data`
+            }, 5000)
+          }
+        }).done((response)=>{
+          let like_cnt = response.like_cnt
+          let liked = response.liked
+          let heart = ''
+          $('.like_cnt').text(like_cnt)
+        
+          if(liked == '1'){
+            heart = '<i id="heart" class="fa-solid fa-heart"></i>'
+          }else if (liked == '0'){
+            heart = '<i id="heart" class="fa-regular fa-heart"></i>'
+          }
+          $('#heart').remove();
+          $('.like_button').prepend(heart)
+        })
+      }
 
       // 더보기 버튼
       $('#plus').click(function(e){
