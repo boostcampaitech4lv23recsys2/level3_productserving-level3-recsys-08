@@ -151,10 +151,10 @@ def user_profile(request):
     character_data = pd.DataFrame()
     for id in recommended_character_ids:
         character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
-    character_data = character_data.merge(movie_df[['ko_title', 'movieId']], on='movieId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
+    print(character_data.columns)
     character_data = character_data.to_dict(orient='records')
-    
+
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
@@ -186,7 +186,6 @@ def detail_tmpuser(request, tmpuser_id):
     data1 = pd.DataFrame()
     for id in eval(recommended_character_ids):
         data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
-    data1 = data1.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data1['CharacterId'] = data1['CharacterId'].map(int)
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
     
@@ -199,7 +198,6 @@ def detail_tmpuser(request, tmpuser_id):
     data2 = pd.DataFrame()
     for id in eval(fit_character_ids):
         data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
-    data2 = data2.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data2['CharacterId'] = data2['CharacterId'].map(int)
     data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
     data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
