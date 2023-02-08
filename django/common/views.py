@@ -102,33 +102,34 @@ def index(request):
         tmpusers = TmpUser.objects.filter(LoginUser=user)
         tmpusers = list(tmpusers)[::-1]
         if len(tmpusers) == 0:
-            return redirect('index')
-        mbti = tmpusers[len(tmpusers)-1].MBTI
-        
-        tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
-        characterid2 = [eval(str(tmp[i])) for i in range(len(tmp))]
-        characterid2 = [item for sublist in characterid2 for item in sublist]  
-        
-        tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
-        characterid3 = [eval(str(tmp[i])) for i in range(len(tmp))]
-        try:
-            characterid3 = [item for sublist in characterid3 for item in sublist]  
-        except: # None 값 예외처리
-            cha3 = []
-            for sublist in characterid3:
-                if sublist == None:
-                    continue
-                for item in sublist:
-                    cha3.extend(item)
-            characterid3 = cha3
-
-        # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
-        for c in characterid2[:10]:
-            cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+            pass
+        else:
+            mbti = tmpusers[len(tmpusers)-1].MBTI
             
-        # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
-        for c in characterid3[:10]:
-            cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+            tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
+            characterid2 = [eval(str(tmp[i])) for i in range(len(tmp))]
+            characterid2 = [item for sublist in characterid2 for item in sublist]  
+            
+            tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
+            characterid3 = [eval(str(tmp[i])) for i in range(len(tmp))]
+            try:
+                characterid3 = [item for sublist in characterid3 for item in sublist]  
+            except: # None 값 예외처리
+                cha3 = []
+                for sublist in characterid3:
+                    if sublist == None:
+                        continue
+                    for item in sublist:
+                        cha3.extend(item)
+                characterid3 = cha3
+
+            # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
+            for c in characterid2[:10]:
+                cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+                
+            # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
+            for c in characterid3[:10]:
+                cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
     
     context = {
         'my_person_list': [],
