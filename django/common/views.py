@@ -91,7 +91,7 @@ def index(request):
     cha_li1 = []; cha_li2 = []; cha_li3 = []
     
     # 인기있는 캐릭터 Top 10 CharacterId
-    characterid1 = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
+    characterid1 = [18003, 0, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
 
     # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
     for c in characterid1:
