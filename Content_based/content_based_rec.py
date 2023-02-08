@@ -5,7 +5,7 @@ popular_movie = pd.read_csv('/opt/ml/input/final_project/Content_based/230129_Po
 mbti_all = pd.read_csv('/opt/ml/input/final_project/data/Personality_All_168000_rows.csv') # 캐릭터 검색을 위해
 data = pd.read_csv('/opt/ml/input/final_project/Content_based/content_based_4035.csv') # side information data
 
-with open('/opt/ml/input/final_project/Content_based/content_based_plot_sim.pkl', 'rb') as file:
+with open('/opt/ml/input/final_project/Utils/Pickle/content_based_plot_sim.pkl', 'rb') as file:
     '''
     p_sim이 만들어지는 과정
     - plot을 TF-IDF를 통해 유사도 측정한것
@@ -13,7 +13,7 @@ with open('/opt/ml/input/final_project/Content_based/content_based_plot_sim.pkl'
     '''
     p_sim = pickle.load(file)
     
-with open('/opt/ml/input/final_project/Content_based/content_based_genre_sim.pkl', 'rb') as file:
+with open('/opt/ml/input/final_project/Utils/Pickle/content_based_genre_sim.pkl', 'rb') as file:
     '''
     g_sim이 만들어지는 과정
 
