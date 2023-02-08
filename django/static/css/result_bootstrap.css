@@ -361,7 +361,8 @@
 .button_group {
   display: flex;
   justify-content: space-between;
-  width: 670px;
+  align-items: center;
+  width: 820px;
   font-size: 18px;
   color: white;
   margin-top: 20px;

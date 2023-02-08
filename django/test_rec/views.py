@@ -71,7 +71,7 @@ character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle
 movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
 watch_link =  pd.read_pickle(pickle_path / '230131_watch_link_4679_rows.pickle')
 engram_sim = pd.read_pickle(pickle_path / 'enneagram_similarity_075_099.pickle')
-
+character_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
 
 @csrf_exempt
 def start_test(request):
@@ -333,8 +333,9 @@ def result_movie(request, character_id):
     cur_char_df = char_df[char_df.CharacterId==int(character_id)]
     print(cur_char_df[char_cols])
     cur_character = cur_char_df[char_cols].to_dict(orient='records')[0]
-    cur_character['char_info'] = '이미 망친 인생이란 없어. 아직 열여덟인데. 나도. 너도. 느리고 태평한 듯 보인다. 모두가 숨차게 뛰어가도 혼자서만 천천히 걸어가는 아이. 다섯 살 때 부모가 이혼, 아버지는 떠났고 엄마와 둘이 살았다. 엉뚱하고 귀여운 구석이 있지만 늘 혼자였기에 감정 표현이 서툴다. 하지만 어른이 키워내지 않아도 혼자 잘 크는 아이다. 아주 행복할 땐 그냥 히죽 웃는다.'
-   
+    cur_character['char_info'] = character_info_df[character_info_df.CharacterId==int(character_id)]['desc'].values[0]
+    cur_character['char_name'] = character_info_df[character_info_df.CharacterId==int(character_id)]['name'].values[0]
+    
     char_df = char_df[char_df.CharacterId!=int(character_id)]
     if len(char_df)==0:
         char_data = []

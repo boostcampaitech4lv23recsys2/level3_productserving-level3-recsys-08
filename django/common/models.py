@@ -17,7 +17,8 @@ class UserINFO(models.Model):
 
 class BatchTrain(models.Model):
     LoginUser = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='batchtrain')
-    model_path = models.CharField(max_length=10, null=True, blank=True)  
+    model_name = models.CharField(max_length=30, null=True, blank=True)  
+    model_path = models.CharField(max_length=300, null=True, blank=True)  
     recommended_movie_list = models.TextField(null=True, blank=True) #int로 안한 이유는 리스트로 담기 위함이다.
     create_time = models.DateTimeField()
 
