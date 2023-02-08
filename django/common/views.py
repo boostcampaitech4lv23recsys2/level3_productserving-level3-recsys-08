@@ -48,6 +48,7 @@ pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
 movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
 character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
 cha_df_with_ko_title = pd.read_pickle(pickle_path / 'Popular_movie_character_2867_with_ko_title.pickle')
+character_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
 
 movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
 with open(movieId2poster_path,'rb') as f:
@@ -92,19 +93,22 @@ def index(request):
     
     # 인기있는 캐릭터 Top 10 CharacterId
     characterid1 = [18003, 0, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
-
+    
     # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
     for c in characterid1:
         cha_li1.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
-     
+        # print(cha_li1)
+        cha_df_with_ko_title[cha_df_with_ko_title.CharacterId.isin(characterid1)].to_dict(orient='records')
+        char1 = character_df[character_df.CharacterId.isin(characterid1)]
+        char1.sort_values('vote', ascending=False, inplace=True)
+        char1_merge = char1.merge(character_info_df, on='CharacterId')
+        cha_li1 = char1_merge.to_dict(orient='records')        
+
     if request.user.is_authenticated:
         user = request.user
-        tmpusers = TmpUser.objects.filter(LoginUser=user)
-        tmpusers = list(tmpusers)[::-1]
-        if len(tmpusers) == 0:
-            pass
-        else:
-            mbti = tmpusers[len(tmpusers)-1].MBTI
+        tmpusers = TmpUser.objects.filter(LoginUser=user).order_by('-create_time')
+        if tmpusers:
+            mbti = tmpusers[0].MBTI
             
             tmp = [tmpuser.recommended_character_id for tmpuser in tmpusers]
             characterid2 = [eval(str(tmp[i])) for i in range(len(tmp))]
@@ -124,13 +128,31 @@ def index(request):
                 characterid3 = cha3
 
             # 나와 성격이 같은 캐릭터 Top 10의 정보를 담은 리스트
-            for c in characterid2[:10]:
-                cha_li2.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+            deduple_charcter_id2=[]
+            for i in characterid2:
+                if i not in deduple_charcter_id2:
+                    deduple_charcter_id2.append(i)
+            deduple_charcter_id2_top10 = [int(i) for i in deduple_charcter_id2[:10]]
+            char2 = character_df[character_df.CharacterId.isin(deduple_charcter_id2_top10)]
+            char2_merge = char2.merge(character_info_df, on='CharacterId')
+            cha_li2 = char2_merge.to_dict(orient='records')
                 
             # 나와 궁합이 잘 맞는 캐릭터 Top 10의 정보를 담은 리스트
-            for c in characterid3[:10]:
-                cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+            deduple_charcter_id3=[]
+            for i in characterid3:
+                if i not in deduple_charcter_id3:
+                    deduple_charcter_id3.append(i)
+            deduple_charcter_id3_top10 = [int(i) for i in deduple_charcter_id3[:10]]
+            char3 = character_df[character_df.CharacterId.isin(deduple_charcter_id3_top10)]
+            char3_merge = char3.merge(character_info_df, on='CharacterId')
+            cha_li3 = char3_merge.to_dict(orient='records')
+            # for c in characterid3[:10]:
+            #     cha_li3.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == int(c)].to_dict(orient='records'))
+        else:
+            pass
     
+    
+
     context = {
         'my_person_list': [],
         'datetime' : "",
@@ -252,7 +274,8 @@ def detail_tmpuser(request, tmpuser_id):
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
     
     data1['Enneagram_sim'] = eval(tmpuser.recommended_character_sim)
-    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
+    data1 = data1.merge(character_info_df, on='CharacterId')
     data1 = data1[cols][:20].to_dict(orient='records')
 
     fit_character_ids = tmpuser.fit_character_id
@@ -264,9 +287,9 @@ def detail_tmpuser(request, tmpuser_id):
     data2['CharacterId'] = data2['CharacterId'].map(int)
     data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
     data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
-    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
+    data2 = data2.merge(character_info_df, on='CharacterId')
     data2 = data2[cols][:20].to_dict(orient='records')
-    
     context = {
         'user' : user,
         'tmpuser' : tmpuser,
@@ -314,11 +337,12 @@ def show_mbti_info(request, mbti):
     char_df.sort_values('npop',ascending=False,inplace=True)
     char_df[char_df.vote>=1000]
     char_df['hashtag'] = char_df.CharacterId.map(characterid_to_hashtag)
-    char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag']
-    char_list = char_df[char_cols][:200].to_dict(orient='records')
+    char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag','name','desc']
+    char_df = char_df.merge(character_info_df, on='CharacterId')
+    char_list = char_df[char_cols][:200].to_dict(orient='records')    
     context = {
         'mbti' : get_mbti,
-        'character' : char_list
+        'characters':char_list
     }
     
     return render(request, 'common/mbti_info.html', context)

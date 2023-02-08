@@ -221,9 +221,11 @@ def result_page(request):
             result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
 
             # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
-            cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+            cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
             result = result.merge(movie_df[['movieId','ko_title','npop']])
             result['hashtag'] = result.CharacterId.map(characterid_to_hashtag)
+            # 캐릭터 한글 이름 추가
+            result = result.merge(character_info_df, on='CharacterId')
             ## 나와 잘맞는 MBTI도 유사도 낮추기
             result.sort_values('Enneagram_sim',ascending=False,inplace=True)
             print(result[cols][:3])
