@@ -409,6 +409,12 @@
   height: 50px;
   border-radius: 2rem;
   background-color: #393a32;
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+}
+.feedback_box:active{
+  box-shadow: inset 0px 2px 4px rgba(0,0,0,0.15), 
+            inset 0px 4px 8px rgba(0,0,0,0.15), 
+            inset 0px 8px 16px rgba(0,0,0,0.15);
 }
 
 .feedback {
