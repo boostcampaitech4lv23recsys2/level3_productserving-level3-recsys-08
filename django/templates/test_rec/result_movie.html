@@ -24,32 +24,28 @@
                   <div class="character_title">{{ cur_character.char_name }}</div>
                   <div class="character_info">MBTI: {{ cur_character.MBTI }}</div>
                   <div class="character_info_tag">{{ cur_character.hashtag }}</div>
+                  <div class="like_box" charId="{{cur_character.CharacterId}}" loginUser="{{login_user}}" like_cnt="{{like_cnt}}" liked="{{liked}}">
+                    <div class="like_button">
+                      <!-- 로그인했을때 -->
+                      {% if login_user %} 
+                        <!-- 이미 좋아요함 -->
+                        {% if liked %}
+                          <i id="heart" class="fa-solid fa-heart"></i>
+                        <!-- 좋아요 안함 -->
+                        {% else %}
+                          <i id="heart" class="fa-regular fa-heart"></i>
+                        {% endif %}
+                      <!-- 로그인안했을때 -->
+                      {% else %}
+                        <i id="heart" class="fa-solid fa-heart-circle-exclamation"></i> 
+                      {% endif %}
+                      <span class="like_cnt">{{ like_cnt }}</span>
+                    </div>
+                  </div>
                 </div>
                 <div id="character_description" class="character_info">{{ cur_character.char_info }}</div>
-                
                 <div class="plus_box">
                   <a href="#", id="plus" class="plus_button">더보기</a>
-                </div>
-               
-                <div class="like_box" charId="{{cur_character.CharacterId}}" loginUser="{{login_user}}" like_cnt="{{like_cnt}}" liked="{{liked}}">
-                  <div class="like_button">
-                    
-                    <!-- 로그인했을때 -->
-                    {% if login_user %} 
-                      <!-- 이미 좋아요함 -->
-                      {% if liked %}
-                        <i id="heart" class="fa-solid fa-heart"></i>
-                      <!-- 좋아요 안함 -->
-                      {% else %}
-                        <i id="heart" class="fa-regular fa-heart"></i>
-                      {% endif %}
-                    <!-- 로그인안했을때 -->
-                    {% else %}
-                      <i id="heart" class="fa-solid fa-heart-circle-exclamation"></i> 
-                    {% endif %}
-                    <span class="like_cnt">{{ like_cnt }}</span>
-                    
-                  </div>
                 </div>
               </div>
             </div>

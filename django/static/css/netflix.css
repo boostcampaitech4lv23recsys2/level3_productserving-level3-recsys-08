@@ -139,6 +139,37 @@
     border-radius: 4px;
 }
 
+.mbti_wrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    padding-top: 0;
+    top: 15vh;
+    position: absolute;
+    padding-bottom: 10vh;
+}
+.mbti_header_box{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.mbti_header_title{
+    color: rgb(217, 72, 64);
+    font-size: 3rem;
+    font-weight: 900;
+}
+.mbti_header_subtitle{
+    font-size: 28px;
+    font-weight: 500;
+    display: inline-block;
+}
+.mbti_contents{
+    width: 100%;
+}
+
 @media (max-width:1410px){
     .wrap{
         width:80%;

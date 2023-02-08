@@ -31,12 +31,16 @@
     margin-bottom: 5vh;
     box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
     padding: 25px;
+   
   }
   
 .character_body_info {
     border-radius: 1rem;
     width: 70%;
     margin-left:25px;
+   
+}
+.fullText{
     position: relative;
 }
 
@@ -96,7 +100,8 @@
 
 .like_box{
     position: absolute;
-    bottom: 0;
+    top: 0;
+    right: 0;
 }
 
 .like_button{
