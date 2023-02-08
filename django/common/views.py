@@ -62,6 +62,8 @@ mbti_ennea_df_path = pickle_path / 'MBTI_Enneagram_personality_tag.pickle'
 with open(mbti_ennea_df_path, 'rb') as f:
     mbti_ennea_df = pickle.load(f)
 
+character_ko_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
+
 
 def signup(request):
     if request.method == "POST":
@@ -211,6 +213,7 @@ def user_profile(request):
     character_data = pd.DataFrame()
     for id in recommended_character_ids:
         character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
+    character_data = character_data.merge(character_ko_info_df, on='CharacterId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
     character_data = character_data.to_dict(orient='records')
 
@@ -220,7 +223,9 @@ def user_profile(request):
     fit_character_data = pd.DataFrame()
     for id in fit_character_ids:
         fit_character_data = fit_character_data.append(character_df[character_df['CharacterId']==int(id)])
+    fit_character_data = fit_character_data.merge(character_ko_info_df, on='CharacterId', how='left')
     fit_character_data['CharacterId'] = fit_character_data['CharacterId'].map(int)
+    print(fit_character_data.columns)
     fit_character_data = fit_character_data.to_dict(orient='records')
 
     # 템플릿에 넘겨줄 context
