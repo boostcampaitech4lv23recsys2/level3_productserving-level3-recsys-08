@@ -3,61 +3,80 @@
 {% load split_movieId_title %}
 {% block contents %}
 
-<div class="mbti_wrap" > 
+<div class="wrap"> 
 
-  <div class="mbti_header">
-    <div class="mbti_header_box">
-      <h1 class="mbti_header_title">{{ mbti }}</h1>
-      <h3 class="mbti_header_subtitle">🔥 인기순위 🔥</h3>  
-
-    </div>
+  <div class="left_header">
+    <h1 class="test_question">{{ mbti }}</h1>
+    <h3 class="test_question_subtitle">🔥 인기순위 🔥</h3>  
     <h3 class="test_question_example">
-      ❗해당 MBTI의 캐릭터 인기순위입니다.
+      ❗해당 MBTI의<br> 캐릭터 인기순위입니다.
 
     </h3>
   </div>
-  <div class="contents mbti_contents" id="movie_contents">
+  <div class="contents" id="movie_contents">
 
-    <div class="cards_box_container">
-      <div class="cards_box infinite-container">
-       
-        {% for character in characters %}
-          <div id="data1" class="character_card infinite-item" onclick="location.href='/test_rec/{{character.CharacterId}}'">
-            <img
-              src="{{ character.img_src }}"
-              class="card_image"
-              alt="Responsive image"
-            />
-            <div class="card_body">
-              <div class="card_title">{{ character.name }}</div>
-              <div class="card_info" data-sim="{{character.Enneagram_sim}}">
-                <div class="card_info_items">
-                  <div class="card_info_items_box">
-                    <div class="card_info_item">
-                      <span class="card_info_item_title">{{character.ko_title}}</span>
-                    </div>
-                    <div class="card_info_item">
-                      <span class="card_info_item_title">MBTI | {{ character.MBTI }}</span>
-                    </div>
-                  </div>
-                  <div class="card_info_item">
-                    <span class="card_info_item_tag">{{ character.hashtag }}</span>
-                  </div>
-                </div>
-                
-              </div>
-              
+    <form
+      class="movie_box"
+      method="post"
+      action="{% url 'test_rec:result_page' %}"
+    >
+      <div class="movie_box2 infinite-container">
+        {% for character in top_character %}
+            <div class="infinite-item">
+              <input type="button" class="movie_card" onclick="location.href='/test_rec/{{ character.CharacterId }}'" value="{{ character.Character }}" name="movies" id="{{ character.Character }}"/>
+              <label
+                for="{{ character.Character }}"
+                style="background-image: url('{{character.img_src}}'); background-size:cover;"
+                data-bs-toggle="tooltip" data-bs-title="{{ character.ko_title }}"
+              >
+            </label>
             </div>
-          </div>
         {% endfor %}
+        
       </div>
       <div class="pagination">
         {% if page_obj.has_next %}
           <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
         {% endif %}
       </div>
+      
+    </form>
+
+    <div class="characters_box">
+      {% for item in character %}
+      <div class="character">
+        <div class="poster_box">
+          <img src="{{ item.img_src }}" alt="character" class="character_image"/>
+        </div>
+        <div class="character_body_info">
+          <div class="fullText">
+            <div class="character_title">{{ item.char_name }}</div>
+            <div class="character_info">MBTI: {{ item.MBTI }}</div>
+            <div class="character_info_tag">{{ item.hashtag }}</div>
+            <div class="like_box" charId="{{item.CharacterId}}" loginUser="{{login_user}}" like_cnt="{{like_cnt}}" liked="{{liked}}">
+              <div class="like_button">
+                <!-- 로그인했을때 -->
+                {% if login_user %} 
+                  <!-- 이미 좋아요함 -->
+                  {% if liked %}
+                    <i id="heart" class="fa-solid fa-heart"></i>
+                  <!-- 좋아요 안함 -->
+                  {% else %}
+                    <i id="heart" class="fa-regular fa-heart"></i>
+                  {% endif %}
+                <!-- 로그인안했을때 -->
+                {% else %}
+                  <i id="heart" class="fa-solid fa-heart-circle-exclamation"></i> 
+                {% endif %}
+                <span class="like_cnt">{{ like_cnt }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    
+
   </div>
 </div>
   <script>

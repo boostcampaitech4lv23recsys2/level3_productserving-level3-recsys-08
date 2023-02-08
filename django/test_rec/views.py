@@ -213,7 +213,7 @@ def result_page(request):
                 ratio_string+=f"{len(bts_recommend)}"
             else: # 2020년 이후 영화를 고르지 않은 경우
                 ratio_string+="0"
-            # user.annoy_bts_ratio
+            user.annoy_bts_ratio=ratio_string
             print(f"{ratio_string = }")
             print(f"{result.movieId.nunique()=} {result.shape=}")
             result.drop_duplicates('CharacterId',inplace=True)
@@ -221,9 +221,11 @@ def result_page(request):
             result.Enneagram_sim = result.Enneagram_sim.map(lambda x: int(round(x*100)))
 
             # 추천된 캐릭터 리스트를 바탕으로 html에 뿌려주기
-            cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim']
+            cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
             result = result.merge(movie_df[['movieId','ko_title','npop']])
             result['hashtag'] = result.CharacterId.map(characterid_to_hashtag)
+            # 캐릭터 한글 이름 추가
+            result = result.merge(character_info_df, on='CharacterId')
             ## 나와 잘맞는 MBTI도 유사도 낮추기
             result.sort_values('Enneagram_sim',ascending=False,inplace=True)
             print(result[cols][:3])
@@ -396,7 +398,7 @@ def feedback_result(request, user_id):
         context={
             'feedback':0
         }
-        if value == '+':
+        if value == '+': # 좋아요를 눌렀을 떄,
             if before_user_feedback != 1: # 기존에 선택 안함 or 싫어요
                 user.feedback = 1
                 print('good')
@@ -404,7 +406,7 @@ def feedback_result(request, user_id):
                 user.feedback = 0
                 print("No eval")
             context['feedback'] = '+'
-        elif value == '-':
+        elif value == '-': # 싫어요를 눌렀을 때,
             if before_user_feedback != -1: # 기존에 선택 안함 or 좋아요
                 user.feedback = -1
                 print('bad')

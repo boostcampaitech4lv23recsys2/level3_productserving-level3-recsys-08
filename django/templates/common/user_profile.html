@@ -93,7 +93,7 @@
               <div class="character_title">{{ user_name }}님과 성격이 비슷한 캐릭터</div>
               <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start;">
                 {% for character in character_data %}
-                  <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.Character}}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                  <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.name}}" data-bs-placement="bottom" data-bs-offset="0, -10">
                     <img src="{{ character.img_src }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
                   </a>
                 {% endfor %}
@@ -105,7 +105,7 @@
               <div class="character_title">{{ user_name }}님과 성격이 잘맞는 캐릭터</div>
               <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start;">
                 {% for character in fit_character_data %}
-                  <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.Character}}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                  <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.name}}" data-bs-placement="bottom" data-bs-offset="0, -10">
                     <img src="{{ character.img_src }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
                   </a>
                 {% endfor %}

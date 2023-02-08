@@ -50,7 +50,7 @@
                       alt="Responsive image"
                     />
                     <div class="card_body">
-                      <div class="card_title">{{ character.Character }}</div>
+                      <div class="card_title">{{ character.name }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_items_box">
@@ -87,7 +87,7 @@
                       alt="Responsive image"
                     />
                     <div class="card_body">
-                      <div class="card_title">{{ character.Character }}</div>
+                      <div class="card_title">{{ character.name }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_item">
@@ -182,15 +182,7 @@
         }, 5000)
       }
     }).done((response) => {
-      // if(response.feedback == '+'){
-        // $('.left').after('<span class="feedback_text">추천결과가 맘에들어요</span>')
-        // $('.feedback_text').after('<div class="divider"></div>')
-        // $('.left').toggleClass('chosen')
-      // }else if(response.feedback == '-'){
-        // $('.right').before('<span class="feedback_text">추천결과가 맘에 안들어요</span>')
-        // $('.feedback_text').before('<div class="divider"></div>')
-        // $('.right').toggleClass('chosen')
-      // }
+      console.log('feedback 완료')
     })
   }
 
@@ -264,7 +256,7 @@
   tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
       
   function copyLink() {
-    const shareURL = 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id;
+    const shareURL = 'https://인생캐릭터.com/common/detail_tmpuser/'+tmpuser_id;
     navigator.clipboard.writeText(shareURL).then(function() {
       alert("링크 복사 완료!🥰");
     }, function(err) {

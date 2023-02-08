@@ -125,7 +125,7 @@
                       style="border-radius: 2rem;"
                     />
                     <div class="card_body" style="margin-top: 0">
-                      <div class="card_title" style="margin-top: 0.5vw; text-decoration:none;">{{ character.Character }}</div>
+                      <div class="card_title" style="margin-top: 0.5vw; text-decoration:none;">{{ character.name }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_items_box">
@@ -172,7 +172,7 @@
                       style="border-radius: 2rem;"
                     />
                     <div class="card_body" style="margin-top: 0">
-                      <div class="card_title" style="margin-top: 0.5vw; text-decoration:none;">{{ character.Character }}</div>
+                      <div class="card_title" style="margin-top: 0.5vw; text-decoration:none;">{{ character.name }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_items_box">
@@ -211,7 +211,7 @@
               </div>
               <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start; align-items: baseline;">
                 {% for movie in movie_data %}
-                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom">
                 {% endfor %}
               </div>
             </div>
@@ -278,8 +278,8 @@
           {
             title: '웹으로 보기',
             link: {
-              mobileWebUrl: 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id,
-              webUrl: 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id,
+              mobileWebUrl: 'https://인생캐릭터.com/common/detail_tmpuser/'+tmpuser_id,
+              webUrl: 'https://인생캐릭터.com/common/detail_tmpuser/'+tmpuser_id,
             },
           },
         ],
