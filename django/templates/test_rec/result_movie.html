@@ -21,18 +21,38 @@
               </div>
               <div class="character_body_info">
                 <div class="fullText">
-                  <div class="character_title">{{ cur_character.Character }}</div>
+                  <div class="character_title">{{ cur_character.char_name }}</div>
                   <div class="character_info">MBTI: {{ cur_character.MBTI }}</div>
                   <div class="character_info_tag">{{ cur_character.hashtag }}</div>
-
                 </div>
                 <div id="character_description" class="character_info">{{ cur_character.char_info }}</div>
-                {#<div class="character_description_container"></div>#}
-                {#<input type="checkbox" id="plus">#}
-                <a href="#", id="plus" class="plus_button">더보기</a>
+                
+                <div class="plus_box">
+                  <a href="#", id="plus" class="plus_button">더보기</a>
+                </div>
+               
+                <div class="like_box" charId="{{cur_character.CharacterId}}" loginUser="{{login_user}}" like_cnt="{{like_cnt}}" liked="{{liked}}">
+                  <div class="like_button">
+                    
+                    <!-- 로그인했을때 -->
+                    {% if login_user %} 
+                      <!-- 이미 좋아요함 -->
+                      {% if liked %}
+                        <i id="heart" class="fa-solid fa-heart"></i>
+                      <!-- 좋아요 안함 -->
+                      {% else %}
+                        <i id="heart" class="fa-regular fa-heart"></i>
+                      {% endif %}
+                    <!-- 로그인안했을때 -->
+                    {% else %}
+                      <i id="heart" class="fa-solid fa-heart-circle-exclamation"></i> 
+                    {% endif %}
+                    <span class="like_cnt">{{ like_cnt }}</span>
+                    
+                  </div>
+                </div>
               </div>
             </div>
-
             <div class="character_title">캐릭터가 등장한 작품</div>
             <div class="movie">
               <div class="poster_box">
@@ -47,7 +67,9 @@
                 <div class="movie_title">{{ data.movie }}</div>
                 <div class="character_info">장르 : {{ data.genres }}</div>
                 <div id="movie_description" class="movie_info">설명 : {{ data.plot }}</div>
-                <a href="#" id="plus_movie" class="plus_button">더보기</a>
+                <div class="plus_box">
+                  <a href="#" id="plus_movie" class="plus_button">더보기</a>
+                </div>
 
               </div>
               <div class="link_box" data-links="{{links}}">
@@ -178,10 +200,9 @@
               </div>
             </div>
             <div class="character_title">작품에 등장한 다른 캐릭터</div>
-
             <div class="other">
               {% for character in char_data %}
-                  <div class="character_card others_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div class="character_card others_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image others_image"
@@ -203,20 +224,11 @@
                             <span class="card_info_item_tag">{{ character.hashtag }}</span>
                           </div>
                         </div>
-                        {% comment %} {% if login_user and character.Enneagram_sim %}
-                        <div class="card_info_text_box">
-                          <h6 class="card_info_text">유사도</h6>
-                          <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
-                        </div>
-                        <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
-                        {% endif %} {% endcomment %}
                       </div>
-                      {% comment %} <button class="card_info_button" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'" >+</button> {% endcomment %}
                     </div>
                   </div>
                 {% endfor %}
             </div>
-
           </div>
         </div>
       </div>
@@ -224,72 +236,64 @@
     <button class="button back_button" onclick="history.back()">
       뒤로 가기
     </button>
-    {% comment %} <button class="retest_button" >
-      <a href="/test_rec/result_page" class="result_button" style="text-decoration: none">뒤로가기</a>
-    </button> {% endcomment %}
 </div>
     <script>
+      // 좋아요
+      $('.like_box').click(function(){
+        let characterId = $('.like_box').attr('charId')
+        let loginUserId = $('.like_box').attr('loginUser')
+        let liked = $('.like_box').attr('liked')
+        let url = '/test_rec' + '/' + characterId + '/' + loginUserId
+        console.log('liked', liked)
+        
+        if(loginUserId == 'None'){
+          console.log('로그인 안함')
+          $('.like_cnt').text('로그인 해주세요:)')
+          $('.like_button').css({'width':'160px'})
+         
+          
+        }else{
+          console.log('로그인 한 유저:', loginUserId)
 
-      // const text = document.getElementById("character_description");
-      // const style = window.getComputedStyle(text);
-      // const lineClamp = style.getPropertyValue("-webkit-line-clamp");
-      // console.log('lineClamp',lineClamp);
-      // function checkOverflow() {
-        // const container = $('.character_body_info').height()
-        // const fullText = $(".fullText").height()
-        // // let parent = $(".character_description_container").height()
-        // let displayText = $("#character_description").height()
-        // let moreButton = $("#plus")
-        // console.log(container)
-        // console.log(fullText)
-       // // console.log(parent)
-        // console.log(displayText)
-// 
-        // if ((container - fullText) < displayText) {
-//           
-          // moreButton.css('display', '-webkit-box')
-        // } else {
-          // moreButton.hide()
-        // }
-      // }
-      // function checkOverflowMovie() {
-        // let parent = $(".movie_info_box")
-        // let child = $("#movie_description")
-        // let moreButton = $("#plus_movie")
-        // console.log(parent.height())
-        // console.log(child.height())
-        // if (child.height() > parent.height()-72) {
-//           
-          // moreButton.css('display', '-webkit-box')
-        // } else {
-          // moreButton.hide()
-        // }
-      // }
-      // checkOverflow()
-      // checkOverflowMovie()
-//       
-      // window.addEventListener("resize", checkOverflow);
-      // window.addEventListener("resize", checkOverflowMovie);
+          if(liked == '1'){
+            console.log('좋아요함')
+            like(url);
+          }else{
+            console.log('아직 좋아요안함')
+            like(url);
+          }
+          
 
-
-      // let characterHeight = $('#character_description').height()
-      // let movieHeight = $('.movie_info').height()
-      // console.log(characterHeight)
-      // console.log(movieHeight)
-//     
-      // if(characterHeight >= 324){
-        // $('#plus').css('display', '-webkit-box');
-      // }
-      // else{
-        // $('#plus').hide()
-      // }
-      // if(movieHeight >= 163){
-        // $('#plus_movie').css('display', '-webkit-box')
-      // }
-      // else{
-        // $('#plus_movie').hide()
-      // }
-
+        }
+      })
+      function like(url){
+        $.ajax({
+          type: 'POST',
+          url: url,
+          success: function (response) {
+            console.log('좋아요 누름!')
+            console.log(response)
+          },
+          error: function (error) {
+            setTimeout(() => {
+              $('.wrap').innerHTML = `failed to load the data`
+            }, 5000)
+          }
+        }).done((response)=>{
+          let like_cnt = response.like_cnt
+          let liked = response.liked
+          let heart = ''
+          $('.like_cnt').text(like_cnt)
+        
+          if(liked == '1'){
+            heart = '<i id="heart" class="fa-solid fa-heart"></i>'
+          }else if (liked == '0'){
+            heart = '<i id="heart" class="fa-regular fa-heart"></i>'
+          }
+          $('#heart').remove();
+          $('.like_button').prepend(heart)
+        })
+      }
 
       // 더보기 버튼
       $('#plus').click(function(e){
@@ -317,34 +321,6 @@
           $('#plus_movie').text('더보기');
         }
       })
-      
-      
-
-      {% comment %} let characterBody = document.querySelector(".temp_box");
-      let poster_box = document.querySelector(".poster_box");
-      let resultContents = document.querySelector(".result_contents");
-      let character = document.querySelector(".character");
-      let characterBodyInfo = document.querySelector(".character_body_info");
-      
-      window.onload = () => {
-        checkScreenSize();
-      };
-      window.onresize = () => {
-        checkScreenSize();
-      };
-      checkScreenSize = () => {
-        if (window.innerWidth <= 1158) {
-          characterBody.appendChild(characterBodyInfo);
-          characterBody.appendChild(linkBox);
-          characterBody.classList.add("character_body");
-          characterBody.style.display = "flex";
-          characterBody.style.flexDirection = "column";
-          characterBody.style.justifyContent = "space-around";
-        } else {
-          poster_box.appendChild(linkBox);
-          character.appendChild(characterBodyInfo);
-        }
-      }; {% endcomment %}
 
       // 링크 없으면 안보여주기
       let linkBox = document.querySelector(".link_box");

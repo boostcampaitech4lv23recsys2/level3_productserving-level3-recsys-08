@@ -19,13 +19,31 @@
       </div>
       <div class="background_wrap">
         <div class="contents_result">
+            <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: #222020; color:#ffffff; border-radius:1rem; align-items: center; flex-wrap: wrap;">
+              <img
+                src="/static/img/mbti/{{ tmpuser.MBTI }}.png"
+                alt="Responsive image"
+                class="character_image"
+                style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
+              />
+              <div style="padding-right:4%; padding-left:1%">
+                <div class="character_info" style="margin-bottom:3px">선택한 MBTI: {{ tmpuser.MBTI }}</div>
+                <div class="character_info" style="margin-bottom:6px">설문을 통한 성격</div>
+                <ul>
+                  <li style="margin-bottom:8px">{{ user_tag }}</li>
+                  {% for description in user_desc %}
+                    <li style="margin-bottom:5px">- {{ description }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
             <div class="cards_box_container">
               <div class="cards_box">
                 <div class="cards_category">
                   <div id="mbti" class="cards_category_text">나와 비슷한 캐릭터</div>
                 </div>
                 {% for character in data1 %}
-                  <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data1" class="character_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -62,7 +80,7 @@
                   <div id="attractive" class="cards_category_text">나와 궁합이 잘맞는 캐릭터</div>
                 </div>
                 {% for character in data2 %}
-                  <div id="data2" class="character_card" onclick="location.href='/test_rec/result_movie/{{character.CharacterId}}'">
+                  <div id="data2" class="character_card" onclick="location.href='/test_rec/{{character.CharacterId}}'">
                     <img
                       src="{{ character.img_src }}"
                       class="card_image"
@@ -85,13 +103,7 @@
                             
                           </div>
                         </div>
-                        {% comment %} <div class="card_info_text_box">
-                          <h6 class="card_info_text">유사도</h6>
-                          <h6 class="card_info_text">{{character.Enneagram_sim}} %</h6>
-                        </div>
-                        <progress id="progress" value="{{character.Enneagram_sim}}" min="0" max="100"></progress>
-                      </div> {% endcomment %}
-                      
+                      </div>
                     </div>
                   </div>
                 {% endfor %}
@@ -101,18 +113,163 @@
         </div>
       </div>
     </div>
-    <div class="button-group" style="display: flex; justify-content: space-between;">
-      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a href="/test_rec/start_test" class="result_button" style="text-decoration: none;" 
-        >다시 테스트하기</a
-      ></button>
-      <button class="retest_button" style="margin-left:1vw; margin-right:1vw;"><a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" style="text-decoration: none;" 
-        >카카오톡 공유하기</a
-      ></button>
+    
+    <div class="button_group">
+      <button class="retest_button" >
+        <a href="/test_rec/start_test" class="result_button">다시 테스트하기</a>
+      </button>
+      <div class="feedback_box" data_user="{{tmpuser}}" data_loginUser="{{tmpuser.LoginUser_id}}">
+        <!-- 이미 피드백을 했을때 -->  
+        {% if feedback %}
+        <button class="feedback left" value="+" > 
+          {% if feedback == '+' %}
+            <i id="thumbs_up" class="fa-solid fa-thumbs-up"></i>
+          {% elif feedback == '-' %}
+            <i id="thumbs_up" class="fa-regular fa-thumbs-up"></i>
+          {% endif %}
+        </button>
+        <div class="divider"></div>
+        <button class="feedback right" value="-">
+          {% if feedback == '+' %}
+            <i id="thumbs_down" class="fa-regular fa-thumbs-down"></i>
+          {% elif feedback == '-' %}
+            <i id="thumbs_down" class="fa-solid fa-thumbs-down"></i>
+          {% endif %}
+        </button>
+        <!-- 피드백을 안했을때 -->
+        {% else %}
+        <button class="feedback left" value="+">
+          <i id="thumbs_up" class="fa-regular fa-thumbs-up"></i>
+        </button>
+        <span class="feedback_text">추천결과가 맘에 드시나요?</span>
+        <button class="feedback right" value="-">
+          <i id="thumbs_down" class="fa-regular fa-thumbs-down"></i>
+        </button>
+        {% endif %}  
+      </div>
+      <button class="retest_button" >
+        <a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" >카카오톡 공유하기</a>
+      </button>
+      <button class="retest_button"  onclick="copyLink()">
+        <a class="result_button" href="#">링크 공유하기</a>
+      </button>
     </div>
     
-    <a href="#"><div class="button_top" style="bottom: 115px"><i class="fa-solid fa-arrow-up"></i></div></a>
+    <a href="#">
+      <div class="button_top" style="bottom: 115px">
+        <i class="fa-solid fa-arrow-up"></i>
+      </div>
+    </a>
 </div>
 
 <div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
+<script>
+  function giveFeedback(url, value){
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {
+        'value':value
+      },
+      success: function (response) {
+        setTimeout(() => {
+          console.log('response',response)
+        }, 500)
+      },
+      error: function (error) {
+        setTimeout(() => {
+          $('.wrap').innerHTML = `failed to load the data`
+        }, 5000)
+      }
+    }).done((response) => {
+      // if(response.feedback == '+'){
+        // $('.left').after('<span class="feedback_text">추천결과가 맘에들어요</span>')
+        // $('.feedback_text').after('<div class="divider"></div>')
+        // $('.left').toggleClass('chosen')
+      // }else if(response.feedback == '-'){
+        // $('.right').before('<span class="feedback_text">추천결과가 맘에 안들어요</span>')
+        // $('.feedback_text').before('<div class="divider"></div>')
+        // $('.right').toggleClass('chosen')
+      // }
+    })
+  }
 
+  function toggle(value){
+    if(value == '+'){
+      $('#thumbs_up').toggleClass('fa-regular fa-solid')
+    }else if(value == '-'){
+      $('#thumbs_down').toggleClass('fa-regular fa-solid')
+    }
+  }
+  function toggleAll(){
+    $('#thumbs_up').toggleClass('fa-regular fa-solid')
+    $('#thumbs_down').toggleClass('fa-regular fa-solid')
+
+  }
+  
+  $('.feedback').click(function(event){
+    // event.preventDefault();
+    let userId = $('.feedback_box').attr('data_user')
+    let url = '/test_rec/feedback/' + userId
+    let value = event.currentTarget.value
+    let chosen = $('.chosen')
+    console.log('chosen.value', chosen.val())
+    if(chosen.val() === undefined){
+      // 선택안한 상태
+      console.log("둘다 선택 안된 상태")
+      $('.feedback_text').remove();
+      toggle(value)
+      if(value == '+'){
+        $('.left').after('<span class="feedback_text">추천결과가 맘에들어요</span>')
+        $('.feedback_text').after('<div class="divider"></div>')
+        $('.left').toggleClass('chosen')
+      }else if(value == '-'){
+        $('.right').before('<span class="feedback_text">추천결과가 맘에 안들어요</span>')
+        $('.feedback_text').before('<div class="divider"></div>')
+        $('.right').toggleClass('chosen')
+      }
+    }else{
+      console.log("둘 중 하나 선택")
+      if(chosen.val() == value){
+        console.log('chosen',chosen.val())
+        console.log("선택 된애를 해제")
+        // 선택한거 끄기 -> 선택안한 상태
+        toggle(value);
+        $('.feedback_text').remove();
+        $('.divider').remove();
+        $('.left').after('<span class="feedback_text">추천결과가 맘에 드시나요?</span>')
+        chosen.removeClass('chosen')
+      }else{
+        console.log("선택 된 반대편 누른 경우")
+        // 이미 선택하고 선택바꾸기
+        toggleAll()
+        $('.divider').remove();
+        $('.feedback_text').remove();
+        chosen.removeClass('chosen')
+        if(value == '+'){
+          $('.left').after('<span class="feedback_text">추천결과가 맘에들어요</span>')
+          $('.feedback_text').after('<div class="divider"></div>')
+          $('.left').toggleClass('chosen')
+        }else if(value == '-'){
+          $('.right').before('<span class="feedback_text">추천결과가 맘에 안들어요</span>')
+          $('.feedback_text').before('<div class="divider"></div>')
+          $('.right').toggleClass('chosen')   
+        }
+      }
+    }
+    giveFeedback(url, value)  
+  })
+
+  var variable = document.getElementById('jsvariable'); // 임시로 만든 변수를 담을 div
+  tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
+      
+  function copyLink() {
+    const shareURL = 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id;
+    navigator.clipboard.writeText(shareURL).then(function() {
+      alert("링크 복사 완료!🥰");
+    }, function(err) {
+      console.error("링크 복사에 실패했습니다: ", err);
+    });
+  }
+</script>
 {% endblock %}

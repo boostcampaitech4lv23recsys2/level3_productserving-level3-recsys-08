@@ -53,9 +53,13 @@ movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
 with open(movieId2poster_path,'rb') as f:
     movieId_to_posterfile = pickle.load(f)
 
-    characterid_to_hashtag_path = pickle_path / '230203_characterid_to_hashtag.pickle'
+characterid_to_hashtag_path = pickle_path / '230203_characterid_to_hashtag.pickle'
 with open(characterid_to_hashtag_path, 'rb') as f:
     characterid_to_hashtag = pickle.load(f)
+
+mbti_ennea_df_path = pickle_path / 'MBTI_Enneagram_personality_tag.pickle'
+with open(mbti_ennea_df_path, 'rb') as f:
+    mbti_ennea_df = pickle.load(f)
 
 
 def signup(request):
@@ -87,7 +91,7 @@ def index(request):
     cha_li1 = []; cha_li2 = []; cha_li3 = []
     
     # 인기있는 캐릭터 Top 10 CharacterId
-    characterid1 = [18003, 19481, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
+    characterid1 = [18003, 0, 7079, 9197, 8134, 5485, 6831, 4156, 1427, 8516]
 
     # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
     for c in characterid1:
@@ -152,10 +156,20 @@ def user_profile(request):
     user = request.user
     tmpusers = TmpUser.objects.filter(LoginUser=user)
     tmpusers = list(tmpusers)[::-1]
-    print(tmpusers)
     if len(tmpusers) == 0:
         return redirect('index')
-    mbti = tmpusers[len(tmpusers)-1].MBTI
+    mbti = tmpusers[0].MBTI    
+    enneagram = tmpusers[0].ennea_res
+    mbti_enneagram = mbti + ' ' + enneagram
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+    print(mbti_enneagram)
+
+    # 유저의 성격 태그
+    user_tag = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['tag']
+    user_tag = " ".join(user_tag.values[0])
+
+    # 유저의 성격 설명
+    user_desc = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['description'].values[0]
 
     # prefer_movie_ids와 해당 영화정보 불러오는 과정
     tmp = [tmpuser.prefer_movie_id for tmpuser in tmpusers]
@@ -174,16 +188,27 @@ def user_profile(request):
     character_data = pd.DataFrame()
     for id in recommended_character_ids:
         character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
-    character_data = character_data.merge(movie_df[['ko_title', 'movieId']], on='movieId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
     character_data = character_data.to_dict(orient='records')
-    
+
+    tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
+    fit_character_ids = [eval(tmp[i]) for i in range(len(tmp)) if tmp[i]]
+    fit_character_ids = [item for sublist in fit_character_ids for item in sublist]
+    fit_character_data = pd.DataFrame()
+    for id in fit_character_ids:
+        fit_character_data = fit_character_data.append(character_df[character_df['CharacterId']==int(id)])
+    fit_character_data['CharacterId'] = fit_character_data['CharacterId'].map(int)
+    fit_character_data = fit_character_data.to_dict(orient='records')
+
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
         'user_name' : user.username,
         'mbti': mbti,
+        'user_tag' : user_tag,
+        'user_desc' : user_desc,
         'character_data' : character_data,
+        'fit_character_data' : fit_character_data,
         'movie_data' : movie_data,
         'tmpusers' : list(tmpusers)[: min(5, len(tmpusers))],
     }
@@ -196,7 +221,20 @@ def detail_tmpuser(request, tmpuser_id):
     tmpuser = TmpUser.objects.get(id=tmpuser_id)
     user = tmpuser.LoginUser
     mbti = tmpuser.MBTI
+    enneagram = tmpuser.ennea_res
+    mbti_enneagram = mbti + ' ' + enneagram
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+    print(mbti_enneagram)
 
+    # 유저의 성격 태그
+    user_tag = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['tag']
+    user_tag = " ".join(user_tag.values[0])
+
+    # 유저의 성격 설명
+    user_desc = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['description'].values[0]
+
+
+    # 유저가 선호한다고 고른 영화 정보입니다.
     prefer_movie_ids = tmpuser.prefer_movie_id
     movie_data = pd.DataFrame()
     for id in eval(prefer_movie_ids):
@@ -209,7 +247,6 @@ def detail_tmpuser(request, tmpuser_id):
     data1 = pd.DataFrame()
     for id in eval(recommended_character_ids):
         data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
-    data1 = data1.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data1['CharacterId'] = data1['CharacterId'].map(int)
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
     
@@ -218,11 +255,11 @@ def detail_tmpuser(request, tmpuser_id):
     data1 = data1[cols][:20].to_dict(orient='records')
 
     fit_character_ids = tmpuser.fit_character_id
+    # data2는 나와 잘맞는 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
     fit_character_data = pd.DataFrame()
     data2 = pd.DataFrame()
     for id in eval(fit_character_ids):
         data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
-    data2 = data2.merge(movie_df[['movieId','ko_title','npop']], on='movieId', how='left')
     data2['CharacterId'] = data2['CharacterId'].map(int)
     data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
     data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
@@ -233,6 +270,8 @@ def detail_tmpuser(request, tmpuser_id):
         'user' : user,
         'tmpuser' : tmpuser,
         'mbti': mbti,
+        'user_tag' : user_tag,
+        'user_desc' : user_desc,
         'data1': data1,
         'data2': data2,
         'movie_data' : movie_data,

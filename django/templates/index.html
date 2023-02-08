@@ -54,9 +54,9 @@
               </div>
               <div class="inner_block">
               {% for cha in characters1 %}
-                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/result_movie/{{ cha.CharacterId }}'"/> -->
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/{{ cha.CharacterId }}'"/> -->
 
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
@@ -89,7 +89,9 @@
               </div>
               <div class="inner_block">
                 {% for cha in characters2 %}
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/{{ cha.CharacterId }}'"/> -->
+
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
@@ -111,6 +113,9 @@
                     </div>
                   </div>
                 </div>
+
+
+
                 {% endfor %}   
               </div>                                                                       
             </div>
@@ -120,7 +125,8 @@
               </div>
               <div class="inner_block">
                 {% for cha in characters3 %}
-                <div id="data1" class="character_card" onclick="location.href='/test_rec/result_movie/{{cha.CharacterId}}'">
+                <!-- <img src="{{ cha.img_src }}" class="pop_card_image" alt="No image" title="{{ cha.ko_title }} : {{ cha.Character }}" onclick="location.href='/test_rec/{{ cha.CharacterId }}'"/> -->
+                <div id="data1" class="character_card" onclick="location.href='/test_rec/{{cha.CharacterId}}'">
                   <img
                     src="{{ cha.img_src }}"
                     class="card_image"
@@ -142,6 +148,9 @@
                     </div>
                   </div>
                 </div>
+
+
+
                 {% endfor %}      
               </div>                                                          
             </div>                               
@@ -158,7 +167,7 @@
       </div>
     </div>
 
-<footer class="index_footer">
+<footer class="index_footer" style="position:inherit">
   <p style="margin-right: 10px;">&copy; ITS</p>
   <a href="https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08.git" target="_blank" style="text-decoration: none;">
   <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png" style="margin-bottom: 3px;" alt="GitHub logo" width="15" height="15">
