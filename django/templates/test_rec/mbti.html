@@ -1,172 +1,93 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <title>MBTI</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'test.css' %}">
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1 class="header_title">MBTI 컨텐츠 추천</h1>
-        <h3 class="header_subtitle">
-          나와 MBTI가 같은 주인공이 나오는 컨텐츠를 추천해드립니다!
-        </h3>
-      </div>
-      <div class="contents">
-        <h1 class="test_question">Q1.</h1>
-        <h3 class="test_question_subtitle">당신의 MBTI는?</h3>
-        <form class="quiz_form" novalidate method="post" action="{% url 'test_rec:enneagram_test' %}">
-          <!-- <div class="button_box"> -->
-          <div class="button_box">
-            <h3 class="grid_full">I</h3>
-            <button
-              class="button mbti_button"
-              value="INTJ"
-              name="MBTI"
-              type="submit"
-            >
-              INTJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="INTP"
-              name="MBTI"
-              type="submit"
-            >
-              INTP
-            </button>
-            <button
-              class="button mbti_button"
-              value="INFJ"
-              name="MBTI"
-              type="submit"
-            >
-              INFJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="INFP"
-              name="MBTI"
-              type="submit"
-            >
-              INFP
-            </button>
-            <button
-              class="button mbti_button"
-              value="ISTJ"
-              name="MBTI"
-              type="submit"
-            >
-              ISTJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="ISTP"
-              name="MBTI"
-              type="submit"
-            >
-              ISTP
-            </button>
-            <button
-              class="button mbti_button"
-              value="ISFJ"
-              name="MBTI"
-              type="submit"
-            >
-              ISFJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="ISFP"
-              name="MBTI"
-              type="submit"
-            >
-              ISFP
-            </button>
-          </div>
-          <div class="mbti_bar"></div>
-          <div class="button_box">
-            <h3 class="grid_full">E</h3>
-            <button
-              class="button mbti_button"
-              value="ENTJ"
-              name="MBTI"
-              type="submit"
-            >
-              ENTJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="ENTP"
-              name="MBTI"
-              type="submit"
-            >
-              ENTP
-            </button>
-            <button
-              class="button mbti_button"
-              value="ENFJ"
-              name="MBTI"
-              type="submit"
-            >
-              ENFJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="ENFP"
-              name="MBTI"
-              type="submit"
-            >
-              ENFP
-            </button>
-            <button
-              class="button mbti_button"
-              value="ESTJ"
-              name="MBTI"
-              type="submit"
-            >
-              ESTJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="ESTP"
-              name="MBTI"
-              type="submit"
-            >
-              ESTP
-            </button>
-            <button
-              class="button mbti_button"
-              value="ESFJ"
-              name="MBTI"
-              type="submit"
-            >
-              ESFJ
-            </button>
-            <button
-              class="button mbti_button"
-              value="ESFP"
-              name="MBTI"
-              type="submit"
-            >
-              ESFP
-            </button>
-          </div>
-          <!-- </div> -->
-        </form>
-      </div>
-      <footer>
-        <p>&copy; ITS</p>
-      </footer>
+{% extends 'test_rec/base.html' %}
+{% load static %} 
+{% block contents %}
+<div class="progressbar">
+  <a href="/test_rec/start_test/" class="progressbar_left">
+    <i class="fa-solid fa-chevron-left" id="left" onclick="history.back()"></i>
+  </a>
+  <div class="progress_container">
+    <span class="test_progress_bar">0%</span>
+  </div>
+</div>
+<div class="wrap"> 
+
+  <div class="left_header">
+    <h1 class="test_question">Q1.</h1>
+    <h3 class="test_question_subtitle">당신의 MBTI는?</h3>
+
+    <div class="mbti_flex">
+      <p class="mbti_p">내 MBTI가 뭐였더라? 🤔</p>
+      <a href="https://www.16personalities.com/ko/%EB%AC%B4%EB%A3%8C-%EC%84%B1%EA%B2%A9-%EC%9C%A0%ED%98%95-%EA%B2%80%EC%82%AC" target="_blank">
+        <button class="button mbtitest">MBTI 검사하기</button>
+      </a>
+
     </div>
-  </body>
-</html>
+    
+  </div>
+  <div class="contents">
+    <form
+      class="quiz_form"
+      novalidate
+      method="post"
+      action="{% url 'test_rec:enneagram_test' %}"
+    >
+      <div class="button_box">
+        <h3 class="grid_full">I</h3>
+        <button class="button mbti_button" value="INTJ" name="MBTI" type="submit">
+          INTJ
+        </button>
+        <button class="button mbti_button" value="INTP" name="MBTI" type="submit">
+          INTP
+        </button>
+        <button class="button mbti_button" value="INFJ" name="MBTI" type="submit">
+          INFJ
+        </button>
+        <button class="button mbti_button" value="INFP" name="MBTI" type="submit">
+          INFP
+        </button>
+        <button class="button mbti_button" value="ISTJ" name="MBTI" type="submit">
+          ISTJ
+        </button>
+        <button class="button mbti_button" value="ISTP" name="MBTI" type="submit">
+          ISTP
+        </button>
+        <button class="button mbti_button" value="ISFJ" name="MBTI" type="submit">
+          ISFJ
+        </button>
+        <button class="button mbti_button" value="ISFP" name="MBTI" type="submit">
+          ISFP
+        </button>
+      </div>
+      <div class="mbti_bar"></div>
+      <div class="button_box">
+        <h3 class="grid_full">E</h3>
+        <button class="button mbti_button" value="ENTJ" name="MBTI" type="submit">
+          ENTJ
+        </button>
+        <button class="button mbti_button" value="ENTP" name="MBTI" type="submit">
+          ENTP
+        </button>
+        <button class="button mbti_button" value="ENFJ" name="MBTI" type="submit">
+          ENFJ
+        </button>
+        <button class="button mbti_button" value="ENFP" name="MBTI" type="submit">
+          ENFP
+        </button>
+        <button class="button mbti_button" value="ESTJ" name="MBTI" type="submit">
+          ESTJ
+        </button>
+        <button class="button mbti_button" value="ESTP" name="MBTI" type="submit">
+          ESTP
+        </button>
+        <button class="button mbti_button" value="ESFJ" name="MBTI" type="submit">
+          ESFJ
+        </button>
+        <button class="button mbti_button" value="ESFP" name="MBTI" type="submit">
+          ESFP
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
