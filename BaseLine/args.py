@@ -34,6 +34,10 @@ def parse_args():
 
     parser.add_argument("--top_k",default = 500,type=int)
 
+    parser.add_argument("--mvti",default=False, type=lambda s : s.lower() in ['true','1'])
+
+    parser.add_argument("--wandb",default=False, type=lambda s : s.lower() in ['true','1'])
+
 #     #EASE
     parser.add_argument("--reg_weight", default=250.0, type=float)
 
