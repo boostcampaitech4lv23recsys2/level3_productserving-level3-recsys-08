@@ -334,7 +334,8 @@ def result_movie(request, character_id):
     print(cur_char_df[char_cols])
     cur_character = cur_char_df[char_cols].to_dict(orient='records')[0]
     cur_character['char_info'] = character_info_df[character_info_df.CharacterId==int(character_id)]['desc'].values[0]
-   
+    cur_character['char_name'] = character_info_df[character_info_df.CharacterId==int(character_id)]['name'].values[0]
+    
     char_df = char_df[char_df.CharacterId!=int(character_id)]
     if len(char_df)==0:
         char_data = []
