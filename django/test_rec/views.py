@@ -213,7 +213,7 @@ def result_page(request):
                 ratio_string+=f"{len(bts_recommend)}"
             else: # 2020년 이후 영화를 고르지 않은 경우
                 ratio_string+="0"
-            # user.annoy_bts_ratio
+            user.annoy_bts_ratio=ratio_string
             print(f"{ratio_string = }")
             print(f"{result.movieId.nunique()=} {result.shape=}")
             result.drop_duplicates('CharacterId',inplace=True)
@@ -395,7 +395,7 @@ def feedback_result(request, user_id):
         context={
             'feedback':0
         }
-        if value == '+':
+        if value == '+': # 좋아요를 눌렀을 떄,
             if before_user_feedback != 1: # 기존에 선택 안함 or 싫어요
                 user.feedback = 1
                 print('good')
@@ -403,7 +403,7 @@ def feedback_result(request, user_id):
                 user.feedback = 0
                 print("No eval")
             context['feedback'] = '+'
-        elif value == '-':
+        elif value == '-': # 싫어요를 눌렀을 때,
             if before_user_feedback != -1: # 기존에 선택 안함 or 좋아요
                 user.feedback = -1
                 print('bad')
