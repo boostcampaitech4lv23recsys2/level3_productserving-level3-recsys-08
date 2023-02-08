@@ -63,6 +63,9 @@ fit_mbti_dict_path = pickle_path / '230201_fit_mbti_dict.pickle'
 with open(fit_mbti_dict_path, 'rb') as f:
     fit_mbti_dict = pickle.load(f)
 
+mbti_ennea_df_path = pickle_path / 'MBTI_Enneagram_personality_tag.pickle'
+with open(mbti_ennea_df_path, 'rb') as f:
+    mbti_ennea_df = pickle.load(f)
 
 character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
 movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
@@ -162,6 +165,19 @@ def movie_test(request):
 def result_page(request):
 
     user = TmpUser.objects.get(id=request.session['user_id'])
+    mbti = user.MBTI
+    enneagram = user.ennea_res
+    mbti_enneagram = mbti + ' ' + enneagram
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+    print(mbti_enneagram)
+
+    # 유저의 성격 태그
+    user_tag = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['tag']
+    user_tag = " ".join(user_tag.values[0])
+
+    # 유저의 성격 설명
+    user_desc = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['description'].values[0]
+
     # print(">>>>>>>>>>>>>>",request.POST.getlist('movies'))
     if request.method == 'POST':
         # 이전 페이지의 영화선택 받아서 유저정보에 저장
@@ -250,7 +266,15 @@ def result_page(request):
                     user.save()
             
             feedback=''
-            context = {"data1": result_list, 'data2':result_list2, 'page_obj': page_obj, 'tmpuser':user, 'feedback':feedback}
+            context = {
+                        "data1": result_list,
+                        'data2':result_list2, 
+                        'page_obj': page_obj, 
+                        'tmpuser':user, 
+                        'feedback':feedback,
+                        'user_tag':user_tag,
+                        'user_desc':user_desc
+                      }
             return render(request, 'test_rec/result.html', context)
         else:
             return render(request, 'test_rec/result.html')
