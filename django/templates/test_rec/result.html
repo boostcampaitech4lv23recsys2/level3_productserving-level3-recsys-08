@@ -97,7 +97,7 @@
     </div>
     
     <div class="button_group">
-      <button class="retest_button">
+      <button class="retest_button" style="margin:0 1vw; margin-top:1vw">
         <a href="/test_rec/start_test" class="result_button">다시 테스트하기</a>
       </button>
       <div class="feedback_box" data_user="{{tmpuser}}" data_loginUser="{{tmpuser.LoginUser_id}}">
@@ -129,8 +129,11 @@
         </button>
         {% endif %}  
       </div>
-      <button class="retest_button">
+      <button class="retest_button" style="margin:0 1vw; margin-top:1vw">
         <a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" >카카오톡 공유하기</a>
+      </button>
+      <button class="retest_button" style="margin:0 1vw; margin-top:1vw" onclick="copyLink()">
+        <a class="result_button" href="#">링크 공유하기</a>
       </button>
     </div>
     
@@ -238,5 +241,17 @@
     }
     giveFeedback(url, value)  
   })
+
+  var variable = document.getElementById('jsvariable'); // 임시로 만든 변수를 담을 div
+  tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
+      
+  function copyLink() {
+    const shareURL = 'http://127.0.0.1:8000/common/detail_tmpuser/'+tmpuser_id;
+    navigator.clipboard.writeText(shareURL).then(function() {
+      alert("링크 복사 완료!🥰");
+    }, function(err) {
+      console.error("링크 복사에 실패했습니다: ", err);
+    });
+  }
 </script>
 {% endblock %}
