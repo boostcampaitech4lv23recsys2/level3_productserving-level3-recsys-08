@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/user_reset.css' %}" />
     <link rel="stylesheet" href="{% static 'css/user_style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/user_test.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/scroll.css' %}" />
+    <!-- <link rel="stylesheet" href="{% static 'css/scroll.css' %}" /> -->
     <link rel="stylesheet" href="{% static 'css/user_result_bootstrap.css' %}" />
     <link rel="stylesheet" href="{% static 'css/nav.css' %}" />
 
@@ -90,9 +90,21 @@
           </div>
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
-              <div class="character_title">{{ user_name }}님이 추천받은 캐릭터 리스트</div>
-              <div class="scrollMenu2">
+              <div class="character_title">{{ user_name }}님과 성격이 비슷한 캐릭터</div>
+              <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start;">
                 {% for character in character_data %}
+                  <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.Character}}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                    <img src="{{ character.img_src }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="character">
+            <div style="overflow: auto; padding:0 5.5vw; padding-bottom: 12px;">
+              <div class="character_title">{{ user_name }}님과 성격이 잘맞는 캐릭터</div>
+              <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start;">
+                {% for character in fit_character_data %}
                   <a href="{% url 'test_rec:result_movie' character.CharacterId %}" style="padding:3px; max-width:none;" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="{{character.ko_title}}<br>{{character.Character}}" data-bs-placement="bottom" data-bs-offset="0, -10">
                     <img src="{{ character.img_src }}" class="card_image" alt="character_img" style="height: auto; width: 180px; padding: 3px">
                   </a>
@@ -103,16 +115,16 @@
           <div class="character">
             <div style="overflow: auto; padding:0 5.5vw;">
               <div class="character_title">{{ user_name }}님이 선호한 영화 리스트</div>
-              <div class="scrollMenu">
+              <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start; align-items: baseline;">
                 {% for movie in movie_data %}
-                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom">
                 {% endfor %}
               </div>
             </div>
           </div>
           <div class="character" style="align-items:normal">
             <div style="overflow: auto; padding:0 5.5vw;">
-              <div class="character_title">{{ user_name }}님의 Test 이력 리스트</div>
+              <div class="character_title" style="margin:2vh">{{ user_name }}님의 Test 이력 리스트</div>
               <div class="wrap_table" style="padding:0 4vw; margin-top:15px">
                 <table class="table table-hover">
                   <thead style="background-color:#d1a5a5b3">
@@ -152,7 +164,13 @@
       </div>
     </div>
     <div id="jsvariable" tmpuser_id="{{tmpuser.id}}"></div>
-    {% include "test_rec/footer.html" %}
+    <footer class="index_footer" style="position:absolute; background-color:#efefef;">
+      <p style="margin-right: 10px;">&copy; ITS</p>
+      <a href="https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08.git" target="_blank" style="text-decoration: none; display:flex; margin-left:10px">
+      <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png" style="margin-bottom: 3px;" alt="GitHub logo" width="15" height="15">
+      <span style="font-size: 15px;">Github</span>
+      </a>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
