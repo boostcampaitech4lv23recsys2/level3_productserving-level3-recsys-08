@@ -1,13 +1,15 @@
-# Level3 Last Project
 
 <div align="center">
-  <img width="357" alt="image" src="https://user-images.githubusercontent.com/57648890/211701382-0014bb80-2371-4fae-b101-0e71a3462c67.png">
+  <img width="357" alt="image" src="https://user-images.githubusercontent.com/71438046/217652752-c662f055-c1b6-47bc-9aa4-30fe93a85d00.png">
+  
 </div>
-
+<div align="center">
+  
 ## MVTI - MoVie + mbTI
   
 </div>
 
+  
 # 🏆️ 프로젝트 소개
 
 
@@ -18,9 +20,8 @@
   
 </div>
 
-* [웹사이트](http://인생캐릭터.com/)
+* [인생캐릭터 찾으러가기](http://인생캐릭터.com/)
 
-# 💻 활용 장비
 
 
 # 🙋🏻‍♂️🙋🏻‍♀️ 팀 소개
