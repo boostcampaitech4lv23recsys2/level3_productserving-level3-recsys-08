@@ -489,3 +489,8 @@ junit/
 Recbole/dataset/train_data/train_data.item
 interaction_model/LightGCN_64
 Airflow/BaseLine/airflow.cfg
+
+airflow*
+Airflow/BaseLine/logs/scheduler/latest
+airflow-webserver.pid
+Airflow/BaseLine/airflow-webserver.pid
