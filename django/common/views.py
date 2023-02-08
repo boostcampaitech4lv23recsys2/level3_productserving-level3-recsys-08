@@ -191,6 +191,15 @@ def user_profile(request):
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
     character_data = character_data.to_dict(orient='records')
 
+    tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
+    fit_character_ids = [eval(tmp[i]) for i in range(len(tmp)) if tmp[i]]
+    fit_character_ids = [item for sublist in fit_character_ids for item in sublist]
+    fit_character_data = pd.DataFrame()
+    for id in fit_character_ids:
+        fit_character_data = fit_character_data.append(character_df[character_df['CharacterId']==int(id)])
+    fit_character_data['CharacterId'] = fit_character_data['CharacterId'].map(int)
+    fit_character_data = fit_character_data.to_dict(orient='records')
+
     # 템플릿에 넘겨줄 context
     context = {
         'user' : User,
@@ -199,6 +208,7 @@ def user_profile(request):
         'user_tag' : user_tag,
         'user_desc' : user_desc,
         'character_data' : character_data,
+        'fit_character_data' : fit_character_data,
         'movie_data' : movie_data,
         'tmpusers' : list(tmpusers)[: min(5, len(tmpusers))],
     }
