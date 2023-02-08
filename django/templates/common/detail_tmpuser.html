@@ -211,7 +211,7 @@
               </div>
               <div class="scrollMenu4" style="overflow:scroll; display:grid; grid-auto-flow:column; gap:5px; justify-content: flex-start; align-items: baseline;">
                 {% for movie in movie_data %}
-                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom" data-bs-offset="0, -10">
+                  <img src="/static/img/{{ movie.poster }}" style="height: auto; width: 180px; " data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{ movie.ko_title }}" data-bs-placement="bottom">
                 {% endfor %}
               </div>
             </div>

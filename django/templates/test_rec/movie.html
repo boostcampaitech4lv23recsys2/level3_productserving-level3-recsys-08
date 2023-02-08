@@ -95,15 +95,21 @@
       handler: function(direction){
         console.log('Scrolled!')
       },
-      onBeforePageLoad: function(){},
+      onBeforePageLoad: function(){
+        newTooltipList.forEach(tooltip => {
+        tooltip.dispose();
+      });
+    newTooltipList = [];
+    },
       onAfterPageLoad: function(){
         const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
       }
     })
     
+    let newTooltipList = [];
     const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
   </script>
 {% endblock %}
