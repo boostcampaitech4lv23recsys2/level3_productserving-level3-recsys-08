@@ -23,7 +23,7 @@
       <div class="movie_box2 infinite-container">
         {% for u in character %}
             <div class="infinite-item">
-              <input type="button" class="movie_card" onclick="location.href='/test_rec/result_movie/{{ u.CharacterId }}'" value="{{ u.Character }}" name="movies" id="{{ u.Character }}"  required/>
+              <input type="button" class="movie_card" onclick="location.href='/test_rec/{{ u.CharacterId }}'" value="{{ u.Character }}" name="movies" id="{{ u.Character }}"  required/>
               <label
                 for="{{ u.Character }}"
                 style="background-image: url('{{u.img_src}}'); background-size:cover;"
