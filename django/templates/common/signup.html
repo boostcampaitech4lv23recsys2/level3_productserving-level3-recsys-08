@@ -20,16 +20,17 @@
             {% csrf_token %}
             {% include "form_errors.html" %}
             <div class="input_box">
-                <input placeholder="username" type="text" class="login_input" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+                
+                <input required placeholder="username" type="text" class="login_input" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
             </div>
             <div class="input_box">
-                <input placeholder="password" type="password" class="login_input" name="password1" id="password1" value="{{ form.password.value|default_if_none:'' }}">
+                <input required placeholder="password" type="password" class="login_input" name="password1" id="password1" value="{{ form.password.value|default_if_none:'' }}">
             </div>
             <div class="input_box">
-                <input placeholder="password check" type="password" class="login_input" name="password2" id="password2" value="{{ form.password.value|default_if_none:'' }}">
+                <input required placeholder="password check" type="password" class="login_input" name="password2" id="password2" value="{{ form.password.value|default_if_none:'' }}">
             </div>
             <div class="input_box">
-                <input placeholder="email" type="text" class="login_input" name="email" id="email" value="{{ form.username.value|default_if_none:'' }}">
+                <input required placeholder="email" type="text" class="login_input" name="email" id="email" value="{{ form.username.value|default_if_none:'' }}">
             </div>
         
             <div class="btn_box">
@@ -39,20 +40,20 @@
                         <div class="white_login">구글로 회원가입</div>
                     </div>
                 </a>
-                <a class="login_btn naver_btn" href="{% provider_login_url 'google' %}">
+                <a class="login_btn naver_btn" href="{% provider_login_url 'naver' %}">
                     <div class="login_wrap">
                         <img src="{% static 'naver_icon.png' %}" class="icon" />
                         <div class="white_login">네이버로 회원가입</div>
 
                     </div>
                 </a>
-                <a class="login_btn kakao_btn" href="{% provider_login_url 'google' %}">
+                <a class="login_btn kakao_btn" href="{% provider_login_url 'kakao' %}">
                 <div class="login_wrap">
                     <img src="{% static 'kakao_icon.png' %}" class="icon" />
                     <div class="black_login">카카오로 회원가입</div>
                 </div>
                 </a>
-                <div type="submit" class="login_btn login_submit">회원가입</div>
+                <button type="submit" class="login_btn login_submit">회원가입</div>
             </div>
         </form>
     </div>

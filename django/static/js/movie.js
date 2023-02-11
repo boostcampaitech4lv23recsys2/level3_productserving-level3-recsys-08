@@ -1,7 +1,6 @@
 console.log('movie.js')
 
 // 영화 선택 버튼 css 변경
-
 window.onscroll = function () {
   let movie_length = $('.infinite-item').length;
   let isLoaded = false;
@@ -102,18 +101,6 @@ async function submitForm(e) {
   }, 2000)
 
 }
-
-// async function scrollTop(){
-//   $("html").scrollTop(0);
-// }
-
-// async function submitForm(e) {
-// e.preventDefault();
-// document.documentElement.scrollTop = 0;
-// await scrollTop();
-// await loading();
-// document.querySelector('.movie_box').submit()
-// }
 
 // sweet alert
 function check(e) {

@@ -137,20 +137,25 @@ def final_movie_select(seed, num):
     """
     
     # 데이터 불러오기 - 트렐로 페이지에서 해당 데이터 다운받아서 사용하시면 됩니다.
-    data = pd.read_pickle(cur_filepath('Pickle/movie_random_select_final.pickle'))
+    data = pd.read_pickle(cur_filepath('Pickle/movie_random_select_final2.pickle'))
  
     # 각 군집에서 영화 랜덤 추출
     data_0 = data.loc[data['cluster'] == 0, :]
-    data_0 = data_0.loc[((data_0['contents_year'] >= 2008) & (data_0['npop'] >= 100000)) | \
-        ((data_0['contents_year'] <= 2000) & (data_0['npop'] >= 300000))] 
-    
+    data_0 = data_0[((data_0['contents_year'] >= 2008) & (data_0['npop'] >= 100000)) | \
+        ((data_0['contents_year'] <= 2000) & (data_0['npop'] >= 300000)) | \
+        ((data_0['contents_year'] >= 2019) & (data_0['npop'] >= 10000)) |  \
+        (data_0.country.str.contains("한국"))]
     data_1 = data.loc[data['cluster'] == 1, :]
-    data_1 = data_1.loc[((data_1['contents_year'] >= 2008) & (data_1['npop'] >= 100000)) | \
-        ((data_1['contents_year'] <= 2000) & (data_1['npop'] >= 300000))]
+    data_1 = data_1[((data_1['contents_year'] >= 2008) & (data_1['npop'] >= 100000)) | \
+        ((data_1['contents_year'] <= 2000) & (data_1['npop'] >= 300000)) | \
+        ((data_1['contents_year'] >= 2019) & (data_1['npop'] >= 10000)) |  \
+        (data_1.country.str.contains("한국"))]
     
     data_2 = data.loc[data['cluster'] == 2, :]
-    data_2 = data_2.loc[((data_2['contents_year'] >= 2008) & (data_2['npop'] >= 100000)) | \
-        ((data_2['contents_year'] <= 2000) & (data_2['npop'] >= 300000))]
+    data_2 = data_2[((data_2['contents_year'] >= 2008) & (data_2['npop'] >= 100000)) | \
+        ((data_2['contents_year'] <= 2000) & (data_2['npop'] >= 300000)) | \
+        ((data_2['contents_year'] >= 2019) & (data_2['npop'] >= 10000)) |  \
+        (data_2.country.str.contains("한국"))]
     
     np.random.seed(seed)
     movieId_list = []

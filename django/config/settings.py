@@ -57,8 +57,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    ## 구글
+    ## 구글, 네이버, 카카오
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.kakao',
 ]
 
 SITE_ID = 1
@@ -73,6 +75,22 @@ SOCIALACCOUNT_PROVIDERS = {
         'APP': {
             'client_id': env.get_value('GOOGLE_CLIENT_ID'),
             'secret': env.get_value('GOOGLE_SECRET'),
+            'key': ''
+        }
+    },
+    'naver':{
+        'SCOPE': ['aq:name','email'],
+        'APP': {
+        'client_id': env.get_value('NAVER_CLIENT_ID'),
+            'secret': env.get_value('NAVER_SECRET'),
+            'key': ''
+        }
+    },
+    'kakao':{
+        'SCOPE': ['profile_nickname','account_email'],
+        'APP': {
+            'client_id': env.get_value('KAKAO_CLIENT_ID'),
+            'secret': '',
             'key': ''
         }
     }
