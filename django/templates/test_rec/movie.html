@@ -17,7 +17,7 @@
     <h1 class="test_question">Q5.</h1>
     <h3 class="test_question_subtitle">좋아하는 영화를 3개이상 골라주세요!</h3>  
     <h3 class="test_question_example">
-      ❗선택한 영화 개수가 많을수록 추천 정확도가 올라갑니다
+      ❗선택한 영화 개수가 많을수록<br>&nbsp;&nbsp;&nbsp;&nbsp;추천 정확도가 올라갑니다.
 
     </h3>
   </div>
@@ -95,15 +95,21 @@
       handler: function(direction){
         console.log('Scrolled!')
       },
-      onBeforePageLoad: function(){},
+      onBeforePageLoad: function(){
+        newTooltipList.forEach(tooltip => {
+        tooltip.dispose();
+      });
+    newTooltipList = [];
+    },
       onAfterPageLoad: function(){
         const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
       }
     })
     
+    let newTooltipList = [];
     const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
   </script>
 {% endblock %}

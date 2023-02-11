@@ -114,6 +114,7 @@ footer p {
   text-align: center;
   transition: all 200ms ease-in-out;
   box-shadow: 1px 4px 4px rgb(0, 0, 0, 0.5);
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
   cursor: pointer;
   font-size: 1.2rem;
 }
@@ -124,6 +125,9 @@ footer p {
 
 .button:active {
   box-shadow: 1px 1px 0 rgb(0, 0, 0, 0.5);
+  box-shadow: inset 0px 2px 4px rgba(0,0,0,0.15), 
+            inset 0px 4px 8px rgba(0,0,0,0.15), 
+            inset 0px 8px 16px rgba(0,0,0,0.15);
   position: relative;
   top: 2px;
 }
