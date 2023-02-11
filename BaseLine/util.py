@@ -227,7 +227,8 @@ def mvti_recommend(model_name : str, topk : int, model_path=None)->None:
     try:
         pred_list = full_sort_topk(user_tensor_list, model, test_data, topk, device=device)[1]
     except:
-        breakpoint()
+        print(f"Real User가 없습니다. tail train_data.inter를 확인해주세요!")
+
 
     # user별 item 추천 결과 하나로 합쳐주기
     result = []
