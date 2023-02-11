@@ -77,7 +77,7 @@ def main(args):
     # Default eval_args를 저장
     if model_name not in seq_list:
         parameter_dict['eval_args'] = {
-            'split': {'RS': [1, 99, 0]},
+            'split': {'RS': [9, 1, 0]},
             'group_by': 'user',
             'order': 'RO',
             'mode': 'full',}
@@ -85,7 +85,7 @@ def main(args):
     # Sequential 모델일 경우 eval_args와 loss_type을 변경
     if model_name in seq_list:
         parameter_dict['eval_args'] = {
-            'split': {'RS': [1, 9, 0]},
+            'split': {'RS': [9, 1, 0]},
             'group_by': 'user',
             'order': 'TO',
             'mode': 'full',}
