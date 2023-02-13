@@ -156,7 +156,7 @@ def movie_test(request):
     seed = random.randint(0,int(1e6))
     print(f">>>{seed = }")
     selec_movie_ids = list(set(final_movie_select(seed, N_movies)))
-
+    selec_movie_ids = movie_df[movie_df.movieId.isin(selec_movie_ids)].movieId.tolist()
     print(f">>>>>>>>>>>>>{len(selec_movie_ids)}")
     poster_file_list = [movieId_to_posterfile[id] for id in selec_movie_ids]
     print(f"{len(selec_movie_ids)=},  {len(poster_file_list)=}, {len(set(poster_file_list))=}")
