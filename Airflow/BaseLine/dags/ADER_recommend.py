@@ -26,7 +26,7 @@ ssh_hook = SSHHook(remote_host=host1, username='root', password=host1_pw, port=i
 default_args = {
     'owner': 'cwj',
     'depends_on_past': False,  
-    'start_date': datetime(2023, 2, 8),
+    'start_date': datetime(2023, 2, 13),
     'retires': 1,  
     'retry_delay': timedelta(minutes=5) 
 }
@@ -35,7 +35,7 @@ with DAG(
         dag_id = 'Batch_Train',
         description = 'sample description',
         tags = ['test'],
-        schedule_interval = '@once',
+        schedule_interval='0 15 * * *',
         default_args = default_args
 ) as dag:
     make_dataset_cmd="""
