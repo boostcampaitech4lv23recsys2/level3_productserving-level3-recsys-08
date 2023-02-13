@@ -102,7 +102,7 @@ footer p {
   justify-content: center;
   /* background-color: #c72003; */
   border-radius: 1rem;
-  margin-bottom: 10vh;
+  margin-bottom: 7vh;
 }
 
 .button {
@@ -238,7 +238,10 @@ footer p {
   font-size: 20px;
   color: #28ac8e;
 }
-
+.test_count{
+  margin-bottom: 20px;
+  font-size: 23px;
+}
 
 @media (max-width: 860px) {
 
