@@ -212,7 +212,10 @@
 .block_subtitle {
   font-size: 20px;
 }
-
+.main_login_signup_btn{
+  display: flex;
+  justify-content: center;
+}
 .main_login_signup {
   font-size: 18px;
   display: inline-block;
@@ -387,7 +390,10 @@
     /* 파이어폭스 */
     margin: 0;
   }
-
+  .main_login_signup{
+    font-size:15px;
+    padding: 7px 11px;
+    }
   .mbti_nav_box::-webkit-scrollbar {
     display: none;
   }

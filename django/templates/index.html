@@ -158,9 +158,11 @@
             {% else %}
             <div class="main_box">
               <h2 class="block_title">🤖 나의 테스트 정보가 없습니다!</h2>
-              <p class="block_subtitle">로그인이나 회원가입을 해주세요.</p>
-              <a href="{% url 'common:login' %}" class="main_login_signup" type="button">로그인하러가기</a>
-              <a href="{% url 'common:signup' %}" class="main_login_signup" type="button">회원가입하러가기</a>
+              
+              <div class="main_login_signup_btn">
+                <a href="{% url 'common:login' %}" class="main_login_signup" type="button">로그인하러가기</a>
+                <a href="{% url 'common:signup' %}" class="main_login_signup" type="button">회원가입하러가기</a>
+              </div>
             </div>
             {% endif %}
         </section>
