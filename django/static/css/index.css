@@ -140,6 +140,28 @@
 .inner_block::-webkit-scrollbar {
   display: none;
 }
+.topten{
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 5px;
+  padding: 10px;
+  overflow: scroll;
+}
+.topten::-webkit-scrollbar{
+  display:initial;
+}
+.topten_card{
+  width: 250px;
+  height: 250px;
+}
+.topten_card::before{
+  content: attr('rank');
+}
+.topten_card_image{
+  width: 250px;
+  height: 250px;
+}
 
 .pop_card_image {
   width: 200px;

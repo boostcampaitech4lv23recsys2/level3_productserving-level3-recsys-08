@@ -156,7 +156,7 @@ footer p {
   }
 }
 
-#loading .spinner {
+#loading .spinner_circle {
   box-sizing: border-box;
   position: absolute;
   top: 50%;
