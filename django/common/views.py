@@ -267,7 +267,7 @@ def user_profile(request):
         character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
     character_data = character_data.merge(character_info_df, on='CharacterId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
-    character_data = character_data.to_dict(orient='records')
+    character_data = character_data[:100].to_dict(orient='records')
 
     tmp = [tmpuser.fit_character_id for tmpuser in tmpusers]
     fit_character_ids = [eval(tmp[i]) for i in range(len(tmp)) if tmp[i]]
@@ -278,7 +278,7 @@ def user_profile(request):
     fit_character_data = fit_character_data.merge(character_info_df, on='CharacterId', how='left')
     fit_character_data['CharacterId'] = fit_character_data['CharacterId'].map(int)
     print(fit_character_data.columns)
-    fit_character_data = fit_character_data.to_dict(orient='records')
+    fit_character_data = fit_character_data[:100].to_dict(orient='records')
 
     # 템플릿에 넘겨줄 context
     context = {
