@@ -231,7 +231,7 @@ def user_test_history(request):
 @login_required(login_url='common:login')
 def user_profile(request):
     user = request.user
-    tmpusers = TmpUser.objects.filter(LoginUser=user)
+    tmpusers = TmpUser.objects.filter(LoginUser=user).order_by('-create_time')[:10]
     tmpusers = list(tmpusers)[::-1]
     if len(tmpusers) == 0:
         return redirect('index')
