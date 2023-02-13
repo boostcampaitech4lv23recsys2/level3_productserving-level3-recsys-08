@@ -79,7 +79,7 @@ async function submitForm(e) {
   $(".success-checkmark").hide()
   setTimeout(function () {
     $.ajax({
-      type: 'POST',
+      type: 'GET',
       url: '/test_rec/result_page/',
       data: $('.movie_box').serialize(),
       async: false,
