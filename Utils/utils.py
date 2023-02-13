@@ -96,7 +96,7 @@ def user_input_to_recommend(mbti_list, engram, prefer_movie_ids, top_k=10)->pd.D
     """
 
     ## mbti movie, 애니어그램 유사도 매트릭스 불러오기
-    mbti_movie = pd.read_pickle(cur_filepath('Pickle/230130_Popular_movie_character_2867_cwj.pickle'))
+    mbti_movie = pd.read_pickle(cur_filepath('Pickle/230213_character_movie_merge.pickle'))
     engram_sim = pd.read_pickle(cur_filepath('Pickle/enneagram_similarity_075_099.pickle'))
     model_path=cur_filepath('../interaction_model/LightGCN_64')
     recommend_movie_ids = model_recommend_movies(prefer_movie_ids, top_k, model_path=model_path)

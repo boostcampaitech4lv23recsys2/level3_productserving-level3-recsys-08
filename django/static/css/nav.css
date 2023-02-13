@@ -27,11 +27,12 @@
     list-style: none;
     display: flex;
     justify-content: space-evenly;
-    width: 300px;
+    width: 400px;
 }
 .nav_items{
     display: flex;
 }
+
 #nav_profile{
     margin-right: 20px;
 }

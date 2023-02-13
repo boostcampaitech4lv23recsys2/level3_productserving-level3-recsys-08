@@ -40,13 +40,13 @@
                         <div class="white_login">구글로 회원가입</div>
                     </div>
                 </a>
-                <a class="login_btn naver_btn" href="{% provider_login_url 'naver' %}">
+                {% comment %} <a class="login_btn naver_btn" href="{% provider_login_url 'naver' %}">
                     <div class="login_wrap">
                         <img src="{% static 'naver_icon.png' %}" class="icon" />
                         <div class="white_login">네이버로 회원가입</div>
 
                     </div>
-                </a>
+                </a> {% endcomment %}
                 <a class="login_btn kakao_btn" href="{% provider_login_url 'kakao' %}">
                 <div class="login_wrap">
                     <img src="{% static 'kakao_icon.png' %}" class="icon" />

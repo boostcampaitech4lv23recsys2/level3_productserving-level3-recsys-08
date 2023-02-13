@@ -17,7 +17,7 @@ from environ import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = Env()
+env = Env(DEBUG=(bool, False))
 env_path = BASE_DIR / ".env"
 if env_path.exists():
     with env_path.open("rt", encoding="utf8") as f:
@@ -30,7 +30,7 @@ if env_path.exists():
 SECRET_KEY = 'django-insecure-tc7wa(_vy4#s9=f7!(zq(1degy+ejqy!m2eogyd+n4s@ec248t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.get_value('DEBUG')
 
 ALLOWED_HOSTS = ["*"]
 
@@ -79,7 +79,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
     'naver':{
-        'SCOPE': ['aq:name','email'],
+        'SCOPE': ['aq:name'],
         'APP': {
         'client_id': env.get_value('NAVER_CLIENT_ID'),
             'secret': env.get_value('NAVER_SECRET'),

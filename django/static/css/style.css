@@ -102,7 +102,7 @@ footer p {
   justify-content: center;
   /* background-color: #c72003; */
   border-radius: 1rem;
-  margin-bottom: 10vh;
+  margin-bottom: 7vh;
 }
 
 .button {
@@ -156,7 +156,7 @@ footer p {
   }
 }
 
-#loading .spinner {
+#loading .spinner_circle {
   box-sizing: border-box;
   position: absolute;
   top: 50%;
@@ -238,7 +238,20 @@ footer p {
   font-size: 20px;
   color: #28ac8e;
 }
-
+.test_count_box{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.test_count_text{
+  margin-right: 10px;
+}
+.test_count{
+  font-size: 25px;
+  font-weight: 800;
+  color: #d94840;
+}
 
 @media (max-width: 860px) {
 

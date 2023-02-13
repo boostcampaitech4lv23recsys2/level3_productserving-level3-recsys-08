@@ -4,19 +4,43 @@
 {% block contents %}
 
 <div class="mbti_wrap" > 
-
+  <div class="spinner">
+    <div class="spinner_container">
+      <div class="cube1"></div>
+      <div class="cube2"></div>
+      Loading...
+    </div>
+  </div>
   <div class="mbti_header">
     <div class="mbti_header_box">
       <h1 class="mbti_header_title">{{ mbti }}</h1>
       <h3 class="mbti_header_subtitle">🔥 인기순위 🔥</h3>  
-
     </div>
     <h3 class="test_question_example">
       ❗해당 MBTI의 캐릭터 인기순위입니다.
-
     </h3>
   </div>
-  <div class="contents mbti_contents" id="movie_contents">
+
+  <!-- simple 아코디언 -->
+  <div class="accordion_container">
+    <ul class="accordion_ul">
+      {% for cha in topten %}
+      <li class="accordion_li" style=" background: url('{{ cha.img_src }}');">
+        <div class="accordion_box"> 
+          <a class="accordion_a" href="/test_rec/{{cha.CharacterId}}">
+            <div class="ranking accordion_open">{{cha.index}}</div>
+            <h2 class="accordion_title">{{cha.name}}</h2>
+            <p class="accordion_subtitle">{{cha.hashtag}}</p>
+            <h2 class="accordion_title">{{cha.ko_title}}</h2>
+          </a> 
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+
+  <div class="contents mbti_contents">
 
     <div class="cards_box_container">
       <div class="cards_box infinite-container">
@@ -60,67 +84,19 @@
     
   </div>
 </div>
-  <script>
+<script>
+  
+  (function(){
+      // 이미지 뜨면 spinner 없애기.
+      $('.accordion_container').waitForImages(function() {
+          $('.spinner').fadeOut();
+    }, $.noop, true);
     
-    $('.like_box').click(function(){
-      let characterId = $('.like_box').attr('charId')
-      let loginUserId = $('.like_box').attr('loginUser')
-      let liked = $('.like_box').attr('liked')
-      let url = '/test_rec' + '/' + characterId + '/' + loginUserId
-      console.log('liked', liked)
-      
-      if(loginUserId == 'None'){
-        console.log('로그인 안함')
-        $('.like_cnt').text('로그인 해주세요:)')
-        $('.like_button').css({'width':'160px'})
-       
-        
-      }else{
-        console.log('로그인 한 유저:', loginUserId)
-
-        if(liked == '1'){
-          console.log('좋아요함')
-          like(url);
-        }else{
-          console.log('아직 좋아요안함')
-          like(url);
-        }
-        
-
-      }
-    })
-
-    function like(url){
-      $.ajax({
-        type: 'POST',
-        url: url,
-        success: function (response) {
-          console.log('좋아요 누름!')
-          console.log(response)
-        },
-        error: function (error) {
-          setTimeout(() => {
-            $('.wrap').innerHTML = `failed to load the data`
-          }, 5000)
-        }
-      }).done((response)=>{
-        let like_cnt = response.like_cnt
-        let liked = response.liked
-        let heart = ''
-        $('.like_cnt').text(like_cnt)
-      
-        if(liked == '1'){
-          heart = '<i id="heart" class="fa-solid fa-heart"></i>'
-        }else if (liked == '0'){
-          heart = '<i id="heart" class="fa-regular fa-heart"></i>'
-        }
-        $('#heart').remove();
-        $('.like_button').prepend(heart)
-      })
-    }
-
-    const movieBox = $('.movie_box')
-    movieBox.on('click', movieClick)
+  })();
+  
+    
+  </script>
+  <script>
 
     const infinite = new Waypoint.Infinite({
       element: $('.infinite-container')[0],
@@ -134,9 +110,6 @@
         const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
       }
     })
-    
-    const newTooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const newTooltipList = [...newTooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
   </script>
 {% endblock %}

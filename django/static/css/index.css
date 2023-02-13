@@ -12,6 +12,7 @@
 }
 
 .banner_content {
+  width: 75%;
   height: 400px;
   display: flex;
   flex-direction: column;
@@ -27,6 +28,8 @@
 
 .banner_subtitle {
   font-size: 23px;
+  text-align: center;
+  padding: 0 27px;
 }
 
 .banner_testlink {
@@ -140,6 +143,28 @@
 .inner_block::-webkit-scrollbar {
   display: none;
 }
+.topten{
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 5px;
+  padding: 10px;
+  overflow: scroll;
+}
+.topten::-webkit-scrollbar{
+  display:initial;
+}
+.topten_card{
+  width: 250px;
+  height: 250px;
+}
+.topten_card::before{
+  content: attr('rank');
+}
+.topten_card_image{
+  width: 250px;
+  height: 250px;
+}
 
 .pop_card_image {
   width: 200px;
@@ -187,7 +212,10 @@
 .block_subtitle {
   font-size: 20px;
 }
-
+.main_login_signup_btn{
+  display: flex;
+  justify-content: center;
+}
 .main_login_signup {
   font-size: 18px;
   display: inline-block;
@@ -276,7 +304,11 @@
   }
 
   .block_title {
+    font-size: 22px;
+  }
+  .block_subtitle{
     font-size: 18px;
+    text-align: center;
   }
 
   .main_box {
@@ -358,13 +390,16 @@
     /* 파이어폭스 */
     margin: 0;
   }
-
+  .main_login_signup{
+    font-size:15px;
+    padding: 7px 11px;
+    }
   .mbti_nav_box::-webkit-scrollbar {
     display: none;
   }
 
   .nav-button {
-    padding: 12px 5px;
+    padding: 7px 5px;
     width: 60px;
     height: 36px;
   }
