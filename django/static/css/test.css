@@ -300,6 +300,11 @@
     width: 75vw;
   }
 }
+@media (max-width:622px) {
+  .progress_container{
+    width: 350px;
+  }
+}
 
 @media (max-width:415px) {
   .progress_container {

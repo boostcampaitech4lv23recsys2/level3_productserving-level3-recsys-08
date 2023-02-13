@@ -249,9 +249,6 @@
     }
 }
 @media (max-width:622px) {
-    .progress_container{
-        width: 350px;
-      }
       
     .contents_result{
         width:90%;
@@ -353,6 +350,11 @@
     .wrap{
       top: 30vh;
       width: 90%;
+    }
+    .mbti_flex{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
     .mbti_p{
         margin: 0;
