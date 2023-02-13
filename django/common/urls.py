@@ -14,4 +14,5 @@ urlpatterns = [
     # path('delete_tmpuser/<int:tmpuser_id>/', views.delete_tmpuser, name='delete_tmpuser'),
     path('delete_tmpuser/<int:tmpuser_id>/', TmpUserDeleteView.as_view(), name='delete_tmpuser'),
     path('show_mbti_info/<str:mbti>/', views.show_mbti_info, name='show_mbti_info'),
+    path('share_tmpuser/<int:tmpuser_id>/', views.share_tmpuser, name='share_tmpuser'),
 ]

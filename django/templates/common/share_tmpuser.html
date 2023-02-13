@@ -217,14 +217,9 @@
             </div>
           </div>
           <div class="button-group" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin:0 5vw">
-            <a href="{% url 'common:delete_tmpuser' tmpuser.id %}">
-              <button class="button back_button" style="margin:0 1vw; margin-top:4vw;" type="button">삭제하기</button>
+            <a href="{% url 'test_rec:start_test' %}">
+              <button class="button back_button" style="margin:0 1vw; margin-top:4vw;" type="button">테스트하러 가기</button>
             </a>
-            <button class="button back_button" style="margin:0 1vw; margin-top:4vw;" onclick="history.back()">뒤로 가기</button>
-            <a id="kakaotalk-sharing-btn" href="javascript:;">
-              <button class="button back_button" style="margin:0 1vw; margin-top:4vw;" type="button">카카오톡 공유하기</button>
-            </a>
-            <button class = "button back_button" style="margin:0 1vw; margin-top:4vw;" onclick="copyLink()">링크 공유하기</button>
           </div>
         </div>
         <footer class="index_footer" style="position:inherit">
@@ -251,52 +246,7 @@
       crossorigin="anonymous"
     ></script>
 
-    <script> //카카오톡 공유하는 스크립트
-      var variable = document.getElementById('jsvariable'); // 임시로 만든 변수를 담을 div
-      tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
-
-      Kakao.Share.createDefaultButton({
-        container: '#kakaotalk-sharing-btn',
-        objectType: 'feed',
-        content: {
-          title: '인생캐릭터 테스트 결과',
-          description: '#MBTI #인생캐릭터 #영화추천 #내 최애캐릭터',
-          imageUrl:
-            'https://user-images.githubusercontent.com/57648890/211701382-0014bb80-2371-4fae-b101-0e71a3462c67.png',
-          link: {
-            // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
-            mobileWebUrl: 'https://www.인생캐릭터.com',
-            webUrl: 'https://www.인생캐릭터.com',
-          },
-        },
-        social: {
-          likeCount: 286,
-          commentCount: 45,
-          sharedCount: 845,
-        },
-        buttons: [
-          {
-            title: '웹으로 보기',
-            link: {
-              mobileWebUrl: 'https://www.인생캐릭터.com/common/share_tmpuser/'+tmpuser_id,
-              webUrl: 'https://www.인생캐릭터.com/common/share_tmpuser/'+tmpuser_id,
-            },
-          },
-        ],
-      });
-    </script>    
     
-    <script>
-      function copyLink() {
-        const currentURL = window.location.href;
-        navigator.clipboard.writeText(currentURL).then(function() {
-          alert("링크 복사 완료!🥰");
-        }, function(err) {
-          console.error("링크 복사에 실패했습니다: ", err);
-        });
-      }
-      </script>
-
   </body>
 </html>
 {% endblock %}

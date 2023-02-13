@@ -325,12 +325,13 @@ def detail_tmpuser(request, tmpuser_id):
     recommended_character_ids = tmpuser.recommended_character_id
     # data1은 나와 같은 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
     data1 = pd.DataFrame()
-    for id in eval(recommended_character_ids):
-        data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+    for id, sim in zip(eval(recommended_character_ids), eval(tmpuser.recommended_character_sim)):
+        if len(character_df[character_df['CharacterId']==int(id)]):
+            data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+            data1['Enneagram_sim'] = sim
     data1['CharacterId'] = data1['CharacterId'].map(int)
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
     
-    data1['Enneagram_sim'] = eval(tmpuser.recommended_character_sim)
     cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
     data1 = data1.merge(character_info_df, on='CharacterId')
     data1 = data1[cols][:20].to_dict(orient='records')
@@ -343,8 +344,7 @@ def detail_tmpuser(request, tmpuser_id):
         data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
     data2['CharacterId'] = data2['CharacterId'].map(int)
     data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
-    data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
-    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','name','desc']
     data2 = data2.merge(character_info_df, on='CharacterId')
     data2 = data2[cols][:20].to_dict(orient='records')
     context = {
@@ -362,7 +362,6 @@ def detail_tmpuser(request, tmpuser_id):
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
 
 class TmpUserDeleteView(View):
     def get(self, request, tmpuser_id, *args, **kwargs):
@@ -405,3 +404,64 @@ def show_mbti_info(request, mbti):
     
     return render(request, 'common/mbti_info.html', context)
 
+def share_tmpuser(request, tmpuser_id):
+    tmpuser = TmpUser.objects.get(id=tmpuser_id)
+    user = tmpuser.LoginUser
+    mbti = tmpuser.MBTI
+    enneagram = tmpuser.ennea_res
+    mbti_enneagram = mbti + ' ' + enneagram
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+    print(mbti_enneagram)
+
+    # 유저의 성격 태그
+    user_tag = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['tag']
+    user_tag = " ".join(user_tag.values[0])
+
+    # 유저의 성격 설명
+    user_desc = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['description'].values[0]
+
+
+    # 유저가 선호한다고 고른 영화 정보입니다.
+    prefer_movie_ids = tmpuser.prefer_movie_id
+    movie_data = pd.DataFrame()
+    for id in eval(prefer_movie_ids):
+        movie_data = movie_data.append(movie_df[movie_df['movieId']==int(id)])
+    movie_data['poster'] = movie_data['movieId'].apply(lambda x: movieId_to_posterfile[x])
+    movie_data = movie_data.to_dict(orient='records')
+
+    recommended_character_ids = tmpuser.recommended_character_id
+    # data1은 나와 같은 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
+    data1 = pd.DataFrame()
+    for id, sim in zip(eval(recommended_character_ids), eval(tmpuser.recommended_character_sim)):
+        if len(character_df[character_df['CharacterId']==int(id)]):
+            data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+            data1['Enneagram_sim'] = sim
+    data1['CharacterId'] = data1['CharacterId'].map(int)
+    data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
+    
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
+    data1 = data1.merge(character_info_df, on='CharacterId')
+    data1 = data1[cols][:20].to_dict(orient='records')
+
+    fit_character_ids = tmpuser.fit_character_id
+    # data2는 나와 잘맞는 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
+    fit_character_data = pd.DataFrame()
+    data2 = pd.DataFrame()
+    for id in eval(fit_character_ids):
+        data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
+    data2['CharacterId'] = data2['CharacterId'].map(int)
+    data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','name','desc']
+    data2 = data2.merge(character_info_df, on='CharacterId')
+    data2 = data2[cols][:20].to_dict(orient='records')
+    context = {
+        'user' : user,
+        'tmpuser' : tmpuser,
+        'mbti': mbti,
+        'user_tag' : user_tag,
+        'user_desc' : user_desc,
+        'data1': data1,
+        'data2': data2,
+        'movie_data' : movie_data,
+    }
+    return render(request, 'common/share_tmpuser.html', context)

@@ -256,7 +256,7 @@
   tmpuser_id = variable.getAttribute('tmpuser_id'); // 임시로 만든 변수의 tmpuser_id 속성을 가져옴
       
   function copyLink() {
-    const shareURL = 'https://www.인생캐릭터.com/common/detail_tmpuser/'+tmpuser_id;
+    const shareURL = 'https://www.인생캐릭터.com/common/share_tmpuser/'+tmpuser_id;
     navigator.clipboard.writeText(shareURL).then(function() {
       alert("링크 복사 완료!🥰");
     }, function(err) {
