@@ -12,6 +12,7 @@
 }
 
 .banner_content {
+  width: 75%;
   height: 400px;
   display: flex;
   flex-direction: column;
@@ -27,6 +28,8 @@
 
 .banner_subtitle {
   font-size: 23px;
+  text-align: center;
+  padding: 0 27px;
 }
 
 .banner_testlink {
@@ -298,7 +301,11 @@
   }
 
   .block_title {
+    font-size: 22px;
+  }
+  .block_subtitle{
     font-size: 18px;
+    text-align: center;
   }
 
   .main_box {
@@ -386,7 +393,7 @@
   }
 
   .nav-button {
-    padding: 12px 5px;
+    padding: 7px 5px;
     width: 60px;
     height: 36px;
   }

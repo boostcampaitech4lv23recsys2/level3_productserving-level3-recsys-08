@@ -238,9 +238,19 @@ footer p {
   font-size: 20px;
   color: #28ac8e;
 }
-.test_count{
+.test_count_box{
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
-  font-size: 23px;
+  font-size: 20px;
+}
+.test_count_text{
+  margin-right: 10px;
+}
+.test_count{
+  font-size: 25px;
+  font-weight: 800;
+  color: #d94840;
 }
 
 @media (max-width: 860px) {
