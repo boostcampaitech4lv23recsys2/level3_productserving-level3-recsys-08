@@ -68,11 +68,11 @@ mbti_ennea_df_path = pickle_path / 'MBTI_Enneagram_personality_tag.pickle'
 with open(mbti_ennea_df_path, 'rb') as f:
     mbti_ennea_df = pickle.load(f)
 
-character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
-movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
-watch_link =  pd.read_pickle(pickle_path / '230131_watch_link_4679_rows.pickle')
+movie_df = pd.read_pickle(pickle_path / '230213_Popular_movie_1192_cwj.pickle')
+character_df = pd.read_pickle(pickle_path / '230213_character_movie_merge.pickle')
+character_info_df = pd.read_pickle(pickle_path / '230213_processed_ko_cha_info.pickle')
+watch_link =  pd.read_pickle(pickle_path / '230213_watch_link_4679_rows.pickle')
 engram_sim = pd.read_pickle(pickle_path / 'enneagram_similarity_075_099.pickle')
-character_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
 
 def protect_post(response):
     response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
@@ -82,7 +82,8 @@ def protect_post(response):
 
 @csrf_exempt
 def start_test(request):
-    return render(request, 'test_rec/main.html')
+    test_count = TmpUser.objects.all().count()
+    return render(request, 'test_rec/main.html', {'test_count':test_count} )
 
 
 @csrf_exempt

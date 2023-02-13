@@ -50,11 +50,9 @@ def check_TmpUserInfo(request):
 
 pickle_path = Path(__file__).parent.parent.parent.absolute()/"Utils/Pickle"
 
-movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
-character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
-cha_df_with_ko_title = pd.read_pickle(pickle_path / 'Popular_movie_character_2867_with_ko_title.pickle')
-character_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
-character_ko_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
+movie_df = pd.read_pickle(pickle_path / '230213_Popular_movie_1192_cwj.pickle')
+character_df = pd.read_pickle(pickle_path / '230213_character_movie_merge.pickle')
+character_info_df = pd.read_pickle(pickle_path / '230213_processed_ko_cha_info.pickle')
 engram_sim = pd.read_pickle(pickle_path / 'enneagram_similarity_075_099.pickle')
 
 movieId2poster_path = pickle_path / 'movieid_to_poster_file.pickle'
@@ -91,6 +89,7 @@ def signup(request):
 
 # Create your views here.
 def index(request):
+    test_count = TmpUser.objects.all().count()
     if request.user.is_authenticated:  #로그인이 되어있는지 확인
         print('로그인 OK')
         if check_TmpUserInfo(request): #테스트를 마쳤는지 확인
@@ -107,9 +106,9 @@ def index(request):
     
     # 인기있는 캐릭터 Top 10의 정보를 담은 리스트
     for c in characterid1:
-        cha_li1.extend(cha_df_with_ko_title[cha_df_with_ko_title['CharacterId'] == c].to_dict(orient='records'))
+        cha_li1.extend(character_df[character_df['CharacterId'] == c].to_dict(orient='records'))
         # print(cha_li1)
-        cha_df_with_ko_title[cha_df_with_ko_title.CharacterId.isin(characterid1)].to_dict(orient='records')
+        character_df[character_df.CharacterId.isin(characterid1)].to_dict(orient='records')
         char1 = character_df[character_df.CharacterId.isin(characterid1)]
         char1.sort_values('vote', ascending=False, inplace=True)
         char1_merge = char1.merge(character_info_df, on='CharacterId')
@@ -208,6 +207,7 @@ def index(request):
     
 
     context = {
+        'test_count': int(test_count)+1,
         'my_person_list': [],
         'datetime' : "",
         'characters1' : cha_li1,
@@ -265,7 +265,7 @@ def user_profile(request):
     character_data = pd.DataFrame()
     for id in recommended_character_ids:
         character_data = character_data.append(character_df[character_df['CharacterId']==int(id)])
-    character_data = character_data.merge(character_ko_info_df, on='CharacterId', how='left')
+    character_data = character_data.merge(character_info_df, on='CharacterId', how='left')
     character_data['CharacterId'] = character_data['CharacterId'].map(int)
     character_data = character_data.to_dict(orient='records')
 
@@ -275,7 +275,7 @@ def user_profile(request):
     fit_character_data = pd.DataFrame()
     for id in fit_character_ids:
         fit_character_data = fit_character_data.append(character_df[character_df['CharacterId']==int(id)])
-    fit_character_data = fit_character_data.merge(character_ko_info_df, on='CharacterId', how='left')
+    fit_character_data = fit_character_data.merge(character_info_df, on='CharacterId', how='left')
     fit_character_data['CharacterId'] = fit_character_data['CharacterId'].map(int)
     print(fit_character_data.columns)
     fit_character_data = fit_character_data.to_dict(orient='records')
@@ -388,8 +388,7 @@ def clean(votes):
 # MBTI 상세 페이지 함수
 def show_mbti_info(request, mbti):
     get_mbti = mbti
-    
-    cha_df_with_ko_title['vote'] = cha_df_with_ko_title['Votes'].apply(lambda x:clean(x))
+
     char_df = character_df[character_df.MBTI==mbti].copy()
     char_df.sort_values('npop',ascending=False,inplace=True)
     char_df[char_df.vote>=1000]
