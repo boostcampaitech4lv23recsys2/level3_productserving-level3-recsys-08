@@ -370,6 +370,7 @@
     }
     .contents{
         margin-top: 40px;
+        align-items: center;
     }
     .button_box{
         width: auto;
