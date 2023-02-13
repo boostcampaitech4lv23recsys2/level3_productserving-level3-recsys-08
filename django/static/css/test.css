@@ -34,11 +34,13 @@
 .mbti_button:hover {
   background-color: #c72003;
 }
-.engram_button{
+
+.engram_button {
   width: auto;
   background-color: rgb(201, 147, 142);
   font-size: 24px;
 }
+
 .engram_box {
   width: 80%;
   display: grid;
@@ -67,8 +69,8 @@
 }
 
 /* 영화 선택 페이지 */
-#movie_contents{
-  padding-left:20px;
+#movie_contents {
+  padding-left: 20px;
 }
 
 .movie_box {
@@ -108,7 +110,8 @@
   transition: all 50ms ease-in-out;
   position: relative;
 }
-.movie_card+label:hover{
+
+.movie_card+label:hover {
   transform: scale(1.1);
   transition: 0.4s;
 }
@@ -117,13 +120,13 @@
   content: '🤍';
   display: none;
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   padding-top: 67px;
   padding-left: 47px;
   font-size: 26px;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   border-radius: 1rem;
   background: rgba(0, 0, 0, 0.7);
   z-index: 10;
@@ -134,99 +137,140 @@
 }
 
 /* test 프로그레스바 */
-.progressbar{
+.progressbar {
   display: flex;
   align-items: center;
-  margin-top:7vh;
+  margin-top: 7vh;
   height: fit-content;
 }
-#left{
-  color:#cccccc;
+
+#left {
+  color: #cccccc;
   font-size: 22px;
   padding: 25px;
   z-index: 10;
 }
-.progressbar_left{
+
+.progressbar_left {
   width: 50px;
   height: 50px;
-  background-color: #d94840;;
+  background-color: #d94840;
+  ;
   border-radius: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.progressbar_left:hover{
-  background-color:#000000;
+
+.progressbar_left:hover {
+  background-color: #000000;
   cursor: pointer;
-}
-.progressbar_left:hover #left{
-  cursor: pointer;
-  color:white;
 }
 
-.progress_container{
+.progressbar_left:hover #left {
+  cursor: pointer;
+  color: white;
+}
+
+.progress_container {
   width: 500px;
   height: 25px;
   border-radius: 1rem;
-  overflow:hidden;
+  overflow: hidden;
   background: #ccc;
-  position:relative;
+  position: relative;
   margin-left: 10px;
 }
-.progress_container::after{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
+
+.progress_container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 25px;
-  width:0;
-  background:#d94840;;
+  width: 0;
+  background: #d94840;
+  ;
   animation-duration: 1s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
 }
 
-.test_progress_bar{
+.test_progress_bar {
   position: absolute;
-  top:4px;
-  right:5px;
-  z-index:99;
+  top: 4px;
+  right: 5px;
+  z-index: 99;
 }
-.progress1::after{
+
+.progress1::after {
   animation-name: progress1;
 }
-.progress2::after{
+
+.progress2::after {
   animation-name: progress2;
 }
-.progress3::after{
+
+.progress3::after {
   animation-name: progress3;
 }
-.progress4::after{
+
+.progress4::after {
   animation-name: progress4;
 }
-.progress5::after{
+
+.progress5::after {
   animation-name: progress5;
 }
 
-@keyframes progress1{
-  0%{width: 0px}
-  100%{width: 20%;}
+@keyframes progress1 {
+  0% {
+    width: 0px
+  }
+
+  100% {
+    width: 20%;
+  }
 }
+
 @keyframes progress2 {
-  0%{width: 20%}
-  100%{width: 40%;}
+  0% {
+    width: 20%
+  }
+
+  100% {
+    width: 40%;
+  }
 }
+
 @keyframes progress3 {
-  0%{width: 40%}
-  100%{width: 60%;}
+  0% {
+    width: 40%
+  }
+
+  100% {
+    width: 60%;
+  }
 }
+
 @keyframes progress4 {
-  0%{width: 60%}
-  100%{width: 80%;}
+  0% {
+    width: 60%
+  }
+
+  100% {
+    width: 80%;
+  }
 }
+
 @keyframes progress5 {
-  0%{width: 80%}
-  100%{width: 100%;}
+  0% {
+    width: 80%
+  }
+
+  100% {
+    width: 100%;
+  }
 }
 
 /* .test_progress_bar::after{
@@ -234,14 +278,15 @@
 } */
 
 @media (max-width:1447px) {
-  #movie_contents{
-    width:70%;
+  #movie_contents {
+    width: 70%;
   }
 }
-@media (max-width:1131px){
-  #movie_contents{
+
+@media (max-width:1131px) {
+  #movie_contents {
     padding: 0 25px;
-    width:72%;
+    width: 72%;
   }
 }
 
@@ -255,15 +300,18 @@
     width: 75vw;
   }
 }
-@media (max-width:415px){
-  .progress_container{
+
+@media (max-width:415px) {
+  .progress_container {
     width: 200px;
   }
-  .progressbar_left{
+
+  .progressbar_left {
     width: 40px;
     height: 40px;
   }
-  .progressbar{
+
+  .progressbar {
     margin-top: 5vh;
   }
 }

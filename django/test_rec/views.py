@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Q
+from django.views.decorators.cache import never_cache
 import simplejson as json
 import pandas as pd
 import numpy
@@ -67,50 +68,65 @@ mbti_ennea_df_path = pickle_path / 'MBTI_Enneagram_personality_tag.pickle'
 with open(mbti_ennea_df_path, 'rb') as f:
     mbti_ennea_df = pickle.load(f)
 
-character_df = pd.read_pickle(pickle_path / '230203_character_movie_merge.pickle')
-movie_df = pd.read_pickle(pickle_path / '230130_Popular_movie_1192_cwj.pickle')
-watch_link =  pd.read_pickle(pickle_path / '230131_watch_link_4679_rows.pickle')
+movie_df = pd.read_pickle(pickle_path / '230213_Popular_movie_1192_cwj.pickle')
+character_df = pd.read_pickle(pickle_path / '230213_character_movie_merge.pickle')
+character_info_df = pd.read_pickle(pickle_path / '230213_processed_ko_cha_info.pickle')
+watch_link =  pd.read_pickle(pickle_path / '230213_watch_link_4679_rows.pickle')
 engram_sim = pd.read_pickle(pickle_path / 'enneagram_similarity_075_099.pickle')
-character_info_df = pd.read_pickle(pickle_path / 'processed_ko_cha_info.pickle')
+
+def protect_post(response):
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 @csrf_exempt
 def start_test(request):
-    return render(request, 'test_rec/main.html')
+    test_count = TmpUser.objects.all().count()
+    return render(request, 'test_rec/main.html', {'test_count':test_count} )
 
 
 @csrf_exempt
 def mbti_test(request):
     user = TmpUser.objects.create(create_time=timezone.now())
     request.session['user_id'] = user.id
-    return render(request, 'test_rec/mbti.html')
+    return protect_post(render(request, 'test_rec/mbti.html'))
 
 
 @csrf_exempt
 def enneagram_test(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
-    if request.method == 'POST':
-        mbti = request.POST.get('MBTI')
+    if request.method == 'GET':
+        mbti = request.GET.get('MBTI')
         user.MBTI = mbti
         user.save()
-    return render(request, 'test_rec/enneagram.html')
+    response = render(request, 'test_rec/enneagram.html')
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 
 @csrf_exempt
 def enneagram_test2(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
-    if request.method == 'POST':
-        ans1 = request.POST.get('enneagram1')
+    if request.method == 'GET':
+        ans1 = request.GET.get('enneagram1')
         user.ennea_ans1 = ans1
         user.save()
-    return render(request, 'test_rec/enneagram2.html')
+    response = render(request, 'test_rec/enneagram2.html')
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 
 @csrf_exempt
 def enneagram_test3(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
     # 이전페이지의 애니어그램 답변2 받아서 유저정보에 저장
-    if request.method == 'POST':
-        ans2 = request.POST.get('enneagram2')
+    if request.method == 'GET':
+        ans2 = request.GET.get('enneagram2')
         user.ennea_ans2 = ans2
         user.save()
     # 유저정보에 저장된 애니어그램 답변을 바탕으로 추가질문 불러오기
@@ -127,10 +143,13 @@ def movie_test(request):
     user = TmpUser.objects.get(id=request.session['user_id'])
 
     # 이전 페이지의 애니어그램 답변3 받아서 유저정보에 저장 (1w2 형식)
-    if request.method == 'POST':
-        ans3 = request.POST.get('enneagram3')
-        user.ennea_res = ans3
-        user.save()
+    if request.method == 'GET':
+        ans3 = request.GET.get('enneagram3')
+        if ans3==None: # 영화 무한 스크롤 하는 경우
+            pass
+        else:
+            user.ennea_res = ans3
+            user.save()
 
     # 추천할 영화리스트 불러오기
     N_movies=100
@@ -179,9 +198,9 @@ def result_page(request):
     user_desc = mbti_ennea_df[mbti_ennea_df['MBTI_Enneagram'] == mbti_enneagram]['description'].values[0]
 
     # print(">>>>>>>>>>>>>>",request.POST.getlist('movies'))
-    if request.method == 'POST':
+    if request.method == 'GET':
         # 이전 페이지의 영화선택 받아서 유저정보에 저장
-        movies = request.POST.getlist('movies')
+        movies = request.GET.getlist('movies')
         movie_list = [i.split('_')[0] for i in movies]
         print(f"{movie_list=}")
         if movie_list:
@@ -298,6 +317,7 @@ def result_movie(request, character_id):
         print(f"테스트 안했을 때: {user=} {login_user=}")
     need_cols=['Character','movieId']
     character_name, movie_id = character_df[character_df.CharacterId==int(character_id)][need_cols].values[0]
+    character_name = character_info_df[character_info_df.CharacterId==int(character_id)][['name']].values[0][0]
     char_df = character_df[character_df.movieId==movie_id].copy()
 
     if user:
@@ -305,9 +325,11 @@ def result_movie(request, character_id):
         user_fit_MBTI = fit_mbti_dict[user.MBTI]
         mbti_list=[user.MBTI,user_fit_MBTI]
         print(f"{mbti_list=}")
-
-        char_df['Enneagram_sim'] = char_df.Enneagram.map(get_en_sim(user_enn,engram_sim))
-        char_df.Enneagram_sim = char_df.Enneagram_sim.map(lambda x: int(round(x*100)))
+        try:
+            char_df['Enneagram_sim'] = char_df.Enneagram.map(get_en_sim(user_enn,engram_sim))
+            char_df.Enneagram_sim = char_df.Enneagram_sim.map(lambda x: int(round(x*100)))
+        except:
+            breakpoint()
 
     ## hashtag
     char_df['hashtag'] = char_df.CharacterId.map(characterid_to_hashtag)
@@ -323,21 +345,24 @@ def result_movie(request, character_id):
     }
 
     if user:
-        char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag','Enneagram_sim']
+        char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag','Enneagram_sim','name','desc']
         char_df.sort_values('Enneagram_sim',ascending=False,inplace=True)
     else:
-        char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag']
+        char_cols=['CharacterId','Character','img_src','ko_title','MBTI','hashtag','name','desc']
     # print(result_movie)
 
     links_df = watch_link[watch_link.movieId==movie_id][['platform','link']]
     links = links_df.to_dict(orient='records')
 
+    #캐릭터 한글 이름, 설명 붙이기
+    char_df = char_df.merge(character_info_df, on='CharacterId')
     cur_char_df = char_df[char_df.CharacterId==int(character_id)]
     print(cur_char_df[char_cols])
     cur_character = cur_char_df[char_cols].to_dict(orient='records')[0]
-    cur_character['char_info'] = character_info_df[character_info_df.CharacterId==int(character_id)]['desc'].values[0]
-    cur_character['char_name'] = character_info_df[character_info_df.CharacterId==int(character_id)]['name'].values[0]
+    # cur_character['char_info'] = character_info_df[character_info_df.CharacterId==int(character_id)]['desc'].values[0]
+    # cur_character['char_name'] = character_info_df[character_info_df.CharacterId==int(character_id)]['name'].values[0]
     
+    # 작품에 등장한 다른 캐릭터
     char_df = char_df[char_df.CharacterId!=int(character_id)]
     if len(char_df)==0:
         char_data = []

@@ -79,7 +79,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
     'naver':{
-        'SCOPE': ['aq:name','email'],
+        'SCOPE': ['aq:name'],
         'APP': {
         'client_id': env.get_value('NAVER_CLIENT_ID'),
             'secret': env.get_value('NAVER_SECRET'),

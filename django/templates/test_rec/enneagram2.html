@@ -28,7 +28,7 @@
     <form
       class="quiz_form"
       novalidate
-      method="post"
+      method="get"
       action="{% url 'test_rec:enneagram_test3' %}"
     >
       <div class="engram_box">
@@ -66,5 +66,9 @@
     console.log('document ready!')
     $('.progress_container').addClass('progress2')
   })
+  window.addEventListener('popstate', function (event) {
+//Your code here
+  console.log("back!");
+});
 </script>
 {% endblock %}
