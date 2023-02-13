@@ -25,7 +25,7 @@
 
     <form
       class="movie_box"
-      method="post"
+      method="get"
       action="{% url 'test_rec:result_page' %}"
     >
       <div class="movie_box2 infinite-container">
@@ -64,7 +64,10 @@
     $(document).ready(function(){
       $('.progress_container').addClass('progress4')
     })
-    
+    window.addEventListener('popstate', function (event) {
+    //Your code here
+      console.log("back!");
+    });
 
     function movieClick(){
       let checkedMovies = $('input[type=checkbox][name=movies]:checked').length
