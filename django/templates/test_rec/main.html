@@ -7,7 +7,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
-    <title>Recsys 8</title>
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="{% static 'apple-icon-180x180.png' %}">
+    
+    <title>ITS</title>
+
+    <!-- OG Meta Tag 설정 -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.xn--py2bl5k6yfu6hbpd.com/">
+    <meta property="og:title" content="MVTI">
+    <meta property="og:image" content="{% static 'mvti_black2.png' %}">
+    <meta property="og:description" content="MVTI는 사용자 성격 정보를 이용한 캐릭터 추천 서비스입니다.">
+    <meta property="og:site_name" content="MVTI">
+    <meta property="og:locale" content="en_US">
     
     {% comment %} 부트스트랩 {% endcomment %}
     <link
@@ -44,7 +56,36 @@
     <link rel="stylesheet" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" href="{% static 'css/netflix.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-
+    <script>
+      const counter = ($counter, max) => {
+        let now = max;
+      
+        const handle = setInterval(() => {
+          $counter.innerHTML = Math.ceil(max - now);
+        
+          // 목표수치에 도달하면 정지
+          if (now < 1) {
+            clearInterval(handle);
+          }
+          
+          // 증가되는 값이 계속하여 작아짐
+          const step = now / 7;
+          
+          // 값을 적용시키면서 다음 차례에 영향을 끼침
+          now -= step;
+        }, 50);
+      }
+      
+      window.onload = () => {
+        // 카운트를 적용시킬 요소
+        const $counter = document.querySelector(".test_count");
+        
+        // 목표 수치
+        const max = parseInt($('.test_count').attr('test_count'))
+        console.log('max : ',max)
+        setTimeout(() => counter($counter, max), 10);
+      }
+    </script>
     
   </head>
   <body>
@@ -61,6 +102,12 @@
         <div class="img_box">
           <img src="https://www.16personalities.com/static/images/system/research/united-states-personalities.svg" alt="logo" style="width:100%" />
         </div>
+        <div class="test_count_box">
+          <div class="test_count_text">지금까지 총 </div>
+          <div class="test_count" test_count="{{test_count}}">{{test_count}}</div>
+          <div class="test_count_text">명이 참여했어요! </div>
+
+        </div>
         <div class="button" onclick="location.href='{% url "test_rec:mbti_test" %}'">
           > &nbsp;테스트 시작하기!
         </div>
@@ -68,7 +115,7 @@
       </div>
     </div>
     
-    {% include "test_rec/footer.html" %}
+    
   </body>
 </html>
 

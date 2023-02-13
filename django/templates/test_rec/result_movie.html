@@ -21,7 +21,7 @@
               </div>
               <div class="character_body_info">
                 <div class="fullText">
-                  <div class="character_title">{{ cur_character.char_name }}</div>
+                  <div class="character_title">{{ cur_character.name }}</div>
                   <div class="character_info">MBTI: {{ cur_character.MBTI }}</div>
                   <div class="character_info_tag">{{ cur_character.hashtag }}</div>
                   <div class="like_box" charId="{{cur_character.CharacterId}}" loginUser="{{login_user}}" like_cnt="{{like_cnt}}" liked="{{liked}}">
@@ -43,7 +43,7 @@
                     </div>
                   </div>
                 </div>
-                <div id="character_description" class="character_info">{{ cur_character.char_info }}</div>
+                <div id="character_description" class="character_info">{{ cur_character.desc }}</div>
                 <div class="plus_box">
                   <a href="#", id="plus" class="plus_button">더보기</a>
                 </div>
@@ -205,7 +205,7 @@
                       alt="Responsive image"
                     />
                     <div class="card_body">
-                      <div class="card_title">{{ character.Character }}</div>
+                      <div class="card_title">{{ character.name }}</div>
                       <div class="card_info" data-sim="{{character.Enneagram_sim}}">
                         <div class="card_info_items">
                           <div class="card_info_items_box">

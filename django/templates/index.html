@@ -6,11 +6,12 @@
     <div class="banner">
       <div class="banner_content">
         <h1 class="banner_title">MoVie + mbTI = MVTI</h1>
-        <h2 class="banner_subtitle">주인공이 되어 영화에 몰입해보세요!</h2>
+        <h2 class="banner_subtitle">{{test_count}} 번째 주인공이 되어 영화에 몰입해보세요!</h2>
         <a href="{% url 'test_rec:start_test' %}" class="banner_testlink" type="button">
           <div class="testlink_box">
               테스트 하러가기
           </div>
+          
         </a>
       </div>
     </div>
@@ -157,9 +158,11 @@
             {% else %}
             <div class="main_box">
               <h2 class="block_title">🤖 나의 테스트 정보가 없습니다!</h2>
-              <p class="block_subtitle">로그인이나 회원가입을 해주세요.</p>
-              <a href="{% url 'common:login' %}" class="main_login_signup" type="button">로그인하러가기</a>
-              <a href="{% url 'common:signup' %}" class="main_login_signup" type="button">회원가입하러가기</a>
+              
+              <div class="main_login_signup_btn">
+                <a href="{% url 'common:login' %}" class="main_login_signup" type="button">로그인하러가기</a>
+                <a href="{% url 'common:signup' %}" class="main_login_signup" type="button">회원가입하러가기</a>
+              </div>
             </div>
             {% endif %}
         </section>

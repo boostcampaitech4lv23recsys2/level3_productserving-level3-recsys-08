@@ -171,6 +171,9 @@
 }
 
 @media (max-width:1410px){
+    .mbti_wrap{
+        width: 90%;
+    }
     .wrap{
         width:80%;
     }
@@ -189,6 +192,9 @@
 
 /* 세로로 배치 */
 @media (max-width:954px) {
+    .mbti_wrap{
+        width: 95%;
+    }
     .wrap{
       flex-direction: column;
       align-items: center;
@@ -243,9 +249,6 @@
     }
 }
 @media (max-width:622px) {
-    .progress_container{
-        width: 350px;
-      }
       
     .contents_result{
         width:90%;
@@ -341,9 +344,17 @@
 }
 
 @media (max-width:415px){
+    .mbti_wrap{
+        top: 18vh;
+    }
     .wrap{
       top: 30vh;
       width: 90%;
+    }
+    .mbti_flex{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
     .mbti_p{
         margin: 0;
@@ -359,6 +370,7 @@
     }
     .contents{
         margin-top: 40px;
+        align-items: center;
     }
     .button_box{
         width: auto;
