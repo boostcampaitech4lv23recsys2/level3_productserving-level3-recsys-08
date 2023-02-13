@@ -7,6 +7,12 @@ from recbole.data import create_dataset, data_preparation, Interaction
 from recbole.utils import init_logger, get_trainer, get_model, init_seed, set_color
 from recbole.utils.case_study import full_sort_topk
 import os
+import glob
+from environ import Env
+from pathlib import Path
+from sqlalchemy import create_engine
+import warnings
+warnings.filterwarnings('ignore')
 
 def make_config(config_name : str) -> None:
     yamldata="""
@@ -154,17 +160,35 @@ def mvti_recommend(model_name : str, topk : int, model_path=None)->None:
         model_name (str): 돌렸던 모델의 이름입니다. 해당 모델의 이름이 들어가는 pth파일 중 최근 걸로 불러옵니다.
         topk (int): submission에 몇 개의 아이템을 출력할지 정합니다.
     """
+    
+    print("create_engine!")
+    # Build paths inside the project like this: BASE_DIR / 'subdir'.
+    BASE_DIR = Path(os.curdir).resolve().parent
+    env = Env()
+    env_path = BASE_DIR / "django/.env"
+    if env_path.exists():
+        with env_path.open("rt", encoding="utf8") as f:
+            env.read_env(f, overwrite=True)
+
+    dbname = env.get_value('GCPDB_NAME')
+    user = env.get_value('GCPDB_USER')
+    pw = env.get_value('GCPDB_PASSWORD')
+    host = env.get_value('GCPDB_HOST')
+
+    # engine 생성
+    engine = create_engine(f'mysql+mysqldb://{user}:{pw}@{host}:3306/{dbname}?charset=utf8')
     print('inference start!')
     if model_path is None:
         # model_name이 들어가는 pth 파일 중 최근에 생성된 걸로 불러옴
         os.makedirs('saved',exist_ok=True)
-        save_path = os.listdir('./saved')
-        model_path = './saved/' + sorted([file for file in save_path if model_name in file ])[-1]
-
+        save_path = glob.glob('./saved/*')
+        latest_model_path = max(save_path, key=os.path.getctime)
+    model_path_absolute = Path(latest_model_path).absolute()
     K = topk
+    print(f"{model_path_absolute = }")
 
     # config, model, dataset 불러오기
-    checkpoint = torch.load(model_path)
+    checkpoint = torch.load(model_path_absolute)
     config = checkpoint['config']
 
     init_seed(config['seed'], config['reproducibility'])
@@ -191,72 +215,48 @@ def mvti_recommend(model_name : str, topk : int, model_path=None)->None:
     user_id2token = dataset.field2id_token[user_id]
     item_id2token = dataset.field2id_token[item_id]
 
-    # user id list
-    all_user_list = torch.arange(1, len(user_id2token)).view(-1,128) # 245, 128
+    # 30만 번 이상 유저만, user tensor list 생성
+    user_list=[]
+    for idx,i in enumerate(user_id2token):
+        if i!='[PAD]':
+            if int(i)>=300_000:
+                user_list.append(idx)
+    user_tensor_list = torch.tensor(user_list)
+    print(f"{user_tensor_list = }, {len(user_tensor_list) = }")
+    # 예측
+    try:
+        pred_list = full_sort_topk(user_tensor_list, model, test_data, topk, device=device)[1]
+    except:
+        print(f"Real User가 없습니다. tail train_data.inter를 확인해주세요!")
 
-    # user, item 길이
-    user_len = len(user_id2token) # 31361 (PAD 포함)
-    item_len = len(item_id2token) # 6808 (PAD 포함)
-
-    # user-item sparse matrix
-    matrix = dataset.inter_matrix(form='csr') # (31361, 6808)
-
-    # user id, predict item id 저장 변수
-    pred_list = None
-    user_list = []
-
-    # user id list
-    all_user_list = torch.arange(1, len(user_id2token)).view(-1,128) # 245, 128
-
-    tbar = tqdm(all_user_list, desc=set_color(f"Inference", 'pink')) # 245, 128
-
-    for data in tbar:
-        batch_pred_list = full_sort_topk(data, model, test_data, K+50, device=device)[1]
-        batch_pred_list = batch_pred_list.clone().detach().cpu().numpy()
-        if pred_list is None:
-            pred_list = batch_pred_list
-            user_list = data.numpy()
-        else:
-            pred_list = np.append(pred_list, batch_pred_list, axis=0)
-            user_list = np.append(
-                user_list, data.numpy(), axis=0
-            )
-    tbar.close()
 
     # user별 item 추천 결과 하나로 합쳐주기
     result = []
     for user, pred in zip(user_list, pred_list):
         for item in pred:
             result.append((int(user_id2token[user]), int(item_id2token[item])))
-
     sub = pd.DataFrame(result, columns=["user", "item"])
 
-    # 인덱스 -> 유저 아이템번호 dictionary 불러오기
-    with open('./index/uidx2user.pickle','rb') as f:
-        uidx2user = pickle.load(f)
-    with open('./index/iidx2item.pickle','rb') as f:
-        iidx2item = pickle.load(f)   
+    # DB에 쓸 결과 파일 생성
+    result = sub.groupby('user').item.apply(list).reset_index()
 
-    # submission 생성
-    sub = pd.DataFrame(result, columns=["user", "item"])
-    sub.user = sub.user.map(uidx2user)
-    sub.item = sub.item.map(iidx2item)
+    # 결과 파일 정제
+    result['model_name'] = model_name
+    result['model_path'] = model_path_absolute
+    result['create_time'] = str(pd.Timestamp.now())
+    result['id'] = 0
 
-    # extract Top K 
-    users = sub.groupby('user').user.head(K).reset_index(drop=True)
-    items = sub.groupby('user').item.head(K).reset_index(drop=True)
-    sub = pd.concat([users,items],axis=1)
-    
-    print(f"submission length: {sub.shape[0]}")
+    # 유저 번호 30만 내려주기
+    result.user -= 300_000
 
-    os.makedirs('submission',exist_ok=True)
-    submission=f"./submission/{model_path[8:-4]}.csv"
-    submission = uniquify(submission)
-    sub[['user','item']].to_csv(
-        submission, index=False # "./saved/" 와 ".pth" 제거
-    )
-    print(f"model path: {model_path}")
-    print(f"submission path: {os.path.relpath(submission)}")
+    result.rename(columns={'user':'LoginUser_id','item':'recommended_movie_list'},inplace=True)
+    cols = ['id','LoginUser_id', 'model_name','model_path', 'recommended_movie_list', 'create_time']
+    result = result[cols]
+    print(f"{result.shape = }")
+    print(result[:3])
+    # DB에 쓰기
+    result.astype(str).to_sql(name='common_batchtrain', con=engine, index=False, if_exists='append')
+    print("DB wirte done!")
     print('inference done!')
     return
 

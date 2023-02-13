@@ -28,28 +28,32 @@ def parse_args():
 
     parser.add_argument("--dataset_name", default="train_data", type=str)
 
-    parser.add_argument("--inference", default=False, type=lambda s : s.lower() in ['true','1'])
+    parser.add_argument("--inference", default=True, type=lambda s : s.lower() in ['true','1'])
 
     parser.add_argument("--config",default = "basic_config.yaml",type=str)
 
-    parser.add_argument("--top_k",default = 10,type=int)
+    parser.add_argument("--top_k",default = 500,type=int)
+
+    parser.add_argument("--mvti",default=False, type=lambda s : s.lower() in ['true','1'])
+
+    parser.add_argument("--wandb",default=False, type=lambda s : s.lower() in ['true','1'])
 
 #     #EASE
-#     parser.add_argument("--reg_weight", default=250.0, type=float)
+    parser.add_argument("--reg_weight", default=250.0, type=float)
 
 #     #ADMMSLIM
-#     parser.add_argument("--lambda1", default=3.0, type=float)
+    parser.add_argument("--lambda1", default=3.0, type=float)
 
-#     parser.add_argument("--lambda2", default=200.0, type=float)
+    parser.add_argument("--lambda2", default=200.0, type=float)
 
-#     parser.add_argument("--alpha", default=0.5, type=float)
+    parser.add_argument("--alpha", default=0.5, type=float)
 
-#     parser.add_argument("--rho", default=4000.0, type=float)
+    parser.add_argument("--rho", default=4000.0, type=float)
 
-#     parser.add_argument("--k", default=100, type=int)
+    parser.add_argument("--k", default=100, type=int)
 
 #     #MultiVAE, MultiDAE, NeuMF
-#     parser.add_argument("--latent_dimendion", default=128, type=int)
+    parser.add_argument("--latent_dimendion", default=128, type=int)
 
     parser.add_argument("--mlp_hidden_size", default=[600], type=list) # list 형태 sweep 적용
 
@@ -61,11 +65,11 @@ def parse_args():
 #     parser.add_argument("--total_anneal_steps", default=200000, type=int)
 
 #     #CDAE
-#     parser.add_argument("--hid_activation", default="relu", type=str)
+    parser.add_argument("--hid_activation", default="relu", type=str)
 
-#     parser.add_argument("--out_activation", default="sigmoid", type=str)
+    parser.add_argument("--out_activation", default="sigmoid", type=str)
 
-#     parser.add_argument("--corruption_ratio", default=0.5, type=float)
+    parser.add_argument("--corruption_ratio", default=0.5, type=float)
 
     parser.add_argument("--embedding_size", default=64, type=int)
 

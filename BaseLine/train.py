@@ -46,18 +46,19 @@ def main(args):
     config_name = args.config
     top_k = args.top_k
     dataset_name = args.dataset_name
-    
-    # dataset이 하나라도 없을 경우 생성
-    if (not os.path.isfile(f'./dataset/{dataset_name}/{dataset_name}.inter')) or\
-        (not os.path.isfile(f'./dataset/{dataset_name}/{dataset_name}.item')) or\
-        (not os.path.isfile(f'./dataset/{dataset_name}/{dataset_name}.user')):
-        print("Make dataset...")
-        make_dataset(dataset_name)
 
-    # config 파일이 없을 경우 생성                
-    if not os.path.isfile(f'./{config_name}'):
-        print("Make config...")
-        make_config(config_name)
+    if not args.mvti:
+        # dataset이 하나라도 없을 경우 생성
+        if (not os.path.isfile(f'./dataset/{dataset_name}/{dataset_name}.inter')) or\
+            (not os.path.isfile(f'./dataset/{dataset_name}/{dataset_name}.item')) or\
+            (not os.path.isfile(f'./dataset/{dataset_name}/{dataset_name}.user')):
+            print("Make dataset...")
+            make_dataset(dataset_name)
+
+        # config 파일이 없을 경우 생성                
+        if not os.path.isfile(f'./{config_name}'):
+            print("Make config...")
+            make_config(config_name)
 
     parameter_dict = args.__dict__
    
@@ -90,8 +91,13 @@ def main(args):
         config_dict = parameter_dict,
     )
     
-    print(result)
-    wandb.run.finish()
+    print("result : ",result)
+
+    if args.mvti:
+        return result
+
+    if args.wandb:
+        wandb.run.finish()
 
     if infer:
         inference(model_name,top_k)
