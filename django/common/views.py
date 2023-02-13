@@ -432,12 +432,13 @@ def share_tmpuser(request, tmpuser_id):
     recommended_character_ids = tmpuser.recommended_character_id
     # data1은 나와 같은 MBTI를 가진 캐릭터 정보 담은 데이터 입니다.
     data1 = pd.DataFrame()
-    for id in eval(recommended_character_ids):
-        data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+    for id, sim in zip(eval(recommended_character_ids), eval(tmpuser.recommended_character_sim)):
+        if len(character_df[character_df['CharacterId']==int(id)]):
+            data1 = data1.append(character_df[character_df['CharacterId']==int(id)])
+            data1['Enneagram_sim'] = sim
     data1['CharacterId'] = data1['CharacterId'].map(int)
     data1['hashtag'] = data1.CharacterId.map(characterid_to_hashtag)
     
-    data1['Enneagram_sim'] = eval(tmpuser.recommended_character_sim)
     cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
     data1 = data1.merge(character_info_df, on='CharacterId')
     data1 = data1[cols][:20].to_dict(orient='records')
@@ -450,8 +451,7 @@ def share_tmpuser(request, tmpuser_id):
         data2 = data2.append(character_df[character_df['CharacterId']==int(id)])
     data2['CharacterId'] = data2['CharacterId'].map(int)
     data2['hashtag'] = data2.CharacterId.map(characterid_to_hashtag)
-    data2['Enneagram_sim'] = eval(tmpuser.fit_character_sim)
-    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','Enneagram_sim','name','desc']
+    cols=['CharacterId','Character','ko_title','MBTI','img_src','hashtag','npop','name','desc']
     data2 = data2.merge(character_info_df, on='CharacterId')
     data2 = data2[cols][:20].to_dict(orient='records')
     context = {
