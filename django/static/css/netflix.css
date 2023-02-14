@@ -47,6 +47,7 @@
     background-color: transparent;
     flex-grow:1;
     margin-bottom:10vh;
+    position: relative;
 }
 .main_header{
     max-width:70%;
@@ -263,7 +264,7 @@
         padding: 0 20px;
     }
     .main_container{
-        top: 20vh;
+        top: 135px;
     }
     .wrap{
         top: 37vh;
@@ -277,7 +278,9 @@
     }
 }
 @media (max-width:622px) {
-      
+    .main_header_h1{
+        font-size:25px
+    }
     .contents_result{
         width:90%;
         background-color: white;
@@ -373,11 +376,12 @@
 
 @media (max-width:415px){
     .mbti_wrap{
-        top: 20vh;
+        top: 155px;
     }
     .wrap{
-      top: 32vh;
-      width: 90%;
+      top: 85px;
+      width: 100%;
+      padding: 0 10px;
     }
     .mbti_flex{
         flex-direction: row;
@@ -386,6 +390,7 @@
     }
     .mbti_p{
         margin: 0;
+        font-size: 14px;
     }
     
     .test_question, .test_question_subtitle{
@@ -408,9 +413,9 @@
         margin: 0 10px;
     }
     .button{
-        width: 50vw;
-        font-size: 18px;
-        padding: 10px;
+        width: 58vw;
+        font-size: 14px;
+        padding: 7px;
     }
     .mbtitest{
         width: 40vw;
