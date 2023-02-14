@@ -5,6 +5,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 21px 40px;
+    background-color: white;
+    z-index: 10;
 }
 .nav_item_box{
     display: flex;
