@@ -19,14 +19,14 @@
       </div>
       <div class="background_wrap">
         <div class="contents_result">
-            <div class="character" style="display:grid; grid-template-columns: 1fr 2fr; background-color: #222020; color:#ffffff; border-radius:1rem; align-items: center; flex-wrap: wrap;">
+            <div class="character">
               <img
                 src="/static/img/mbti/{{ tmpuser.MBTI }}.png"
                 alt="Responsive image"
                 class="character_image"
                 style="grid-column: 1 / 2; margin: auto; width:auto; max-width: 250px; max-height:340px;"
               />
-              <div style="padding-right:4%; padding-left:1%">
+              <div class="result_character_info">
                 <div class="character_info" style="margin-bottom:3px">선택한 MBTI: {{ tmpuser.MBTI }}</div>
                 <div class="character_info" style="margin-bottom:6px">설문을 통한 성격</div>
                 <ul>
@@ -115,9 +115,7 @@
     </div>
     
     <div class="button_group">
-      <button class="retest_button" >
-        <a href="/test_rec/start_test" class="result_button">다시 테스트하기</a>
-      </button>
+      
       <div class="feedback_box" data_user="{{tmpuser}}" data_loginUser="{{tmpuser.LoginUser_id}}">
         <!-- 이미 피드백을 했을때 -->  
         {% if feedback %}
@@ -147,6 +145,9 @@
         </button>
         {% endif %}  
       </div>
+      <button class="retest_button" >
+        <a href="/test_rec/start_test" class="result_button">다시 테스트하기</a>
+      </button>
       <button class="retest_button" >
         <a class="result_button" id="kakaotalk-sharing-btn" href="javascript:;" >카카오톡 공유하기</a>
       </button>

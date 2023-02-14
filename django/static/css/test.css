@@ -82,7 +82,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 10px 0px;
+  gap: 10px;
   justify-content: center;
   justify-items: center;
   grid-auto-flow: row dense;
