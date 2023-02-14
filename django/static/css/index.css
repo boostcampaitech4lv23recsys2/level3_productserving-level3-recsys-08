@@ -133,15 +133,27 @@
   grid-auto-flow: column;
   gap: 5px;
   padding: 10px;
-  overflow: scroll;
-  -ms-overflow-style: none;
+  overflow-x: scroll;
+  overflow-y:hidden;
+  /* -ms-overflow-style: none; */
   /* 인터넷 익스플로러 */
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
   /* 파이어폭스 */
 }
 
 .inner_block::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
+  width: 8px;
+}
+.inner_block::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #818181; /* 스크롤바의 색상 */
+  
+  border-radius: 10px;
+}
+
+.inner_block::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
 }
 .topten{
   width: 100%;

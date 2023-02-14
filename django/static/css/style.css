@@ -259,6 +259,17 @@ footer p {
     width: 40vw;
   }
 }
+@media (max-width:500px) {
+  .test_count_text{
+    margin-right: 4px;
+  }
+  .test_count{
+    font-size: 20px;
+  }
+  .test_count_box{
+    font-size: 16px;
+  }
+}
 @media (max-width:400px) {
   .button{
     width: 50vw;
