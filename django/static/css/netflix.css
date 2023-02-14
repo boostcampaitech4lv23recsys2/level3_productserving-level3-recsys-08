@@ -266,10 +266,14 @@
         top: 20vh;
     }
     .wrap{
+        top: 37vh;
         width:85%;
     }
     .button_box{
         width:35vw;
+    }
+    .button{
+        font-size: 1.1rem;
     }
 }
 @media (max-width:622px) {
@@ -372,7 +376,7 @@
         top: 20vh;
     }
     .wrap{
-      top: 37vh;
+      top: 32vh;
       width: 90%;
     }
     .mbti_flex{
@@ -398,11 +402,15 @@
     }
     .button_box{
         width: auto;
+        gap:15px 5px;
+    }
+    .mbti_bar{
+        margin: 0 10px;
     }
     .button{
         width: 50vw;
-        font-size: 20px;
-        padding: 10px 15px;
+        font-size: 18px;
+        padding: 10px;
     }
     .mbtitest{
         width: 40vw;

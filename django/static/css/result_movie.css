@@ -409,4 +409,10 @@
     .button_group{
         flex-direction: column;
     }
+    .feedback_box{
+        margin-bottom: 10px;
+    }
+    .retest_button{
+        margin: 10px 0;
+    }
 }
