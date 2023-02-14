@@ -406,4 +406,7 @@
         border: none;
         box-shadow: 3px 3px 3px 3px rgb(0 0 0 / 30%);
     }
+    .button_group{
+        flex-direction: column;
+    }
 }
