@@ -23,6 +23,7 @@ from train import main
 warnings.filterwarnings('ignore')
 
 def ml_django_interaction_merge():
+    print("Start to make dataset!!")
 
     # Build paths inside the project like this: BASE_DIR / 'subdir'.
     BASE_DIR = Path(os.curdir).resolve().parent
@@ -89,10 +90,12 @@ def ml_django_interaction_merge():
     merge_rating.to_csv("./dataset/train_data/train_data.inter",sep='\t',index = False)
     merge_rating_user.to_csv("./dataset/train_data/train_data.user",sep='\t',index = False)
     merge_rating_item.to_csv("./dataset/train_data/train_data.item",sep='\t',index = False)
+    print("Complete make dataset!!")
 
 def train_LGCN():
+    print("Train start!!")
     args = argparse.Namespace(
-    epochs = 1,
+    epochs = 15,
     model_name="LightGCN",
     dataset_name = "train_data",
     inference = False,
@@ -102,15 +105,46 @@ def train_LGCN():
     wandb = "False"
     )
     result = main(args)
-    return result
+    print("Train end!!")
+
+    print("Upload MLFlow")
+    remote_server_uri="http://101.101.219.178:30005"
+    mlflow.set_tracking_uri(remote_server_uri)
+
+    client = mlflow.tracking.MlflowClient()
+    experiment_name = "LightGCN" # experiment 이름
+    try:
+        experiment_id = client.create_experiment(experiment_name)
+    except:
+        experiment = client.get_experiment_by_name(experiment_name)
+        experiment_id = experiment.experiment_id
+    experiment_id
+
+    run_name="LightGCN"
+
+    model_name = "LightGCN"
+
+    # model_name이 들어가는 pth 파일 중 최근에 생성된 걸로 불러옴
+    os.makedirs('saved',exist_ok=True)
+    save_path = os.listdir('./saved')
+    model_path = './saved/' + sorted([file for file in save_path if model_name in file ])[-1]
+
+    desc="Model path: " + model_path
+    with mlflow.start_run(run_name=run_name, description=desc, experiment_id=experiment_id) as run:
+        for metric, score in result['best_valid_result'].items():
+            print(metric,score)
+            mlflow.log_metric(metric.replace('@','.'), score)
+    print("done")
 
 def save_annoy():
+    print("Save annoy")
     model_name = "LightGCN"
     
     # model_name이 들어가는 pth 파일 중 최근에 생성된 걸로 불러옴
     os.makedirs('saved',exist_ok=True)
     save_path = os.listdir('./saved')
     model_path = './saved/' + sorted([file for file in save_path if model_name in file ])[-1]
+    print("model_path : ",model_path)
 
     checkpoint = torch.load(model_path)
     config = checkpoint['config']
@@ -143,32 +177,21 @@ def save_annoy():
         annoy_lgcn.add_item(int(item_id2token[idx]),emb) 
     annoy_lgcn.build(n_trees)
 
-    annoy_lgcn.save("LightGCN_test_64")
+    annoy_lgcn.save("LightGCN_64")
+    print("done!")
 
-def mlflow_upload(result:dict):
-    remote_server_uri="http://101.101.219.178:30005"
-    mlflow.set_tracking_uri(remote_server_uri)
+if __name__=="__main__":
+    parser = argparse.ArgumentParser()
 
-    client = mlflow.tracking.MlflowClient()
-    experiment_name = "LightGCN" # experiment 이름
-    try:
-        experiment_id = client.create_experiment(experiment_name)
-    except:
-        experiment = client.get_experiment_by_name(experiment_name)
-        experiment_id = experiment.experiment_id
-    experiment_id
+    parser.add_argument('--task',help = "실행할 task 선택\n make_dataset train save_annoy")
 
-    run_name="LightGCN"
+    args = parser.parse_args()
 
-    model_name = "LightGCN"
+    if args.task=="make_dataset":
+        ml_django_interaction_merge()
+    elif args.task == "train":
+        train_LGCN()
+    elif args.task ==  "save_annoy":
+        save_annoy()
 
-    # model_name이 들어가는 pth 파일 중 최근에 생성된 걸로 불러옴
-    os.makedirs('saved',exist_ok=True)
-    save_path = os.listdir('./saved')
-    model_path = './saved/' + sorted([file for file in save_path if model_name in file ])[-1]
-
-    desc="Model path: " + model_path
-    with mlflow.start_run(run_name=run_name, description=desc, experiment_id=experiment_id) as run:
-        for metric, score in result['best_valid_result'].items():
-            print(metric,score)
-            mlflow.log_metric(metric.replace('@','.'), score)
+    
