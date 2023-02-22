@@ -70,12 +70,12 @@
 
 # 🌈 상세 Readme
 
-- [Data](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Data)
+- [🍄 Data](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Data)
 
-- [Model](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Model)
+- [🌻 Model](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Model)
 
-- [web](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Django)
+- [🌐 Web](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Django)
 
-- [Airflow](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Airflow)
+- [🌪️ Airflow](https://github.com/boostcampaitech4lv23recsys2/level3_productserving-level3-recsys-08/tree/master/Airflow)
 
 <br>
