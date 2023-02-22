@@ -29,7 +29,7 @@
     justify-content: space-around;
     width: 100%;
     margin-bottom: 5vh;
-    box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
+    box-shadow: -5px -5px 9px rgba(255,255,255,0.4), 5px 5px 9px rgba(255,255,255,0.4);
     padding: 25px;
    
   }
@@ -103,6 +103,9 @@
     top: 0;
     right: 0;
 }
+.like_box:hover{
+    cursor: pointer;
+}
 
 .like_button{
     display: flex;
@@ -114,8 +117,7 @@
     border-radius: 1rem;
     background-color: rgb(42, 41, 39);
     color: white;
-    box-shadow: -10px -10px 15px rgba(255,255,255,0.5), 10px 10px 15px rgba(70,70,70,0.12);
-    box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+    box-shadow: -1px -1px 4px rgba(0, 0, 0, 0.4), 1px 1px 4px rgba(94,104,121,0.3);
 }
 .like_box i{
     color: #e50914;
@@ -125,7 +127,6 @@
     opacity: 0.9;
 }
 .like_button:active{
-    box-shadow: inset -10px -10px 15px rgba(255, 255, 255, 0.5), inset 10px 10px 15px rgba(70, 70, 70, 0.12);
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.15), 
             inset 0px 4px 8px rgba(0,0,0,0.15), 
             inset 0px 8px 16px rgba(0,0,0,0.15);
@@ -319,10 +320,10 @@
 
     }
     .character{
-        border-top: 1px solid rgb(0 0 0 / 30%);
+        /* border-top: 1px solid rgb(0 0 0 / 30%);
         border-bottom: 1px solid rgb(0 0 0 / 30%);
+        */
         padding:20px 0px;
-        box-shadow: none;
     }
     .movie{
         border-top: 1px solid rgb(0 0 0 / 30%);
@@ -373,7 +374,7 @@
         flex-direction: column;
         align-items: center;
         border: none;
-        box-shadow: 3px 3px 3px 3px rgb(0 0 0 / 30%);
+        
     }
     .character_body_info, .movie_info_box{
         width:90%;
@@ -414,5 +415,10 @@
     }
     .retest_button{
         margin: 10px 0;
+    }
+}
+@media (max-width:415px) {
+    .character_image{
+        width: 240px;
     }
 }

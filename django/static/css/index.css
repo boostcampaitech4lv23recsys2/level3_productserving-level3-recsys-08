@@ -133,15 +133,21 @@
   grid-auto-flow: column;
   gap: 5px;
   padding: 10px;
-  overflow: scroll;
-  -ms-overflow-style: none;
-  /* 인터넷 익스플로러 */
-  scrollbar-width: none;
-  /* 파이어폭스 */
+  overflow-x: scroll;
+  
 }
 
 .inner_block::-webkit-scrollbar {
-  display: none;
+  width: auto;
+}
+.inner_block::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #a7a7a7; /* 스크롤바의 색상 */
+  border-radius: 10px;
+}
+
+.inner_block::-webkit-scrollbar-track {
+  background: rgba(176, 176, 176, 0.1);  /*스크롤바 뒷 배경 색상*/
 }
 .topten{
   width: 100%;
@@ -352,6 +358,9 @@
     height: 56px;
     align-items: center;
     display: flex;
+  }
+  .inner_block::-webkit-scrollbar{
+    display: none;
   }
 
 }
