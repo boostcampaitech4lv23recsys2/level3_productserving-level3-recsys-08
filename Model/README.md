@@ -48,11 +48,3 @@
 - **실시간 추천**
     - 유저의 성향과 테스트 결과를 바탕으로 학습된 모델을 통해 추천
 
-<br>
-
-## D. 모델 성능 기록
-![MLflow_record](https://user-images.githubusercontent.com/79351899/220561025-429130a8-2905-4e51-83b5-58364461e230.png)
-- **배치 추천**
-    - ADMMSLIM, RecVAE, EASE의 성능 기록
-- **실시간 추천**
-    - LightGCN의 성능 기록
