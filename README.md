@@ -54,13 +54,16 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/71438046/217651629-961a43a2-c7e7-4580-bde6-c14b8a8e331e.png" /><br><br></p>
 
 # 👉🏻 시연 영상
-1. 테스트 과정 및 결과<br>
+1. 테스트 과정 및 결과
+
     https://user-images.githubusercontent.com/98138782/220566092-1fff91ec-03c1-4a3c-bd7b-20504abe026b.mp4
     
-2. 메인 페이지<br>
+2. 메인 페이지
+
     https://user-images.githubusercontent.com/98138782/220566248-794cb390-75cf-432d-847c-9061915609c5.mp4
 
-3. 내 정보 페이지<br>
+3. 내 정보 페이지
+
     https://user-images.githubusercontent.com/98138782/220566357-27815816-ed86-4208-b67a-b3e1d9ab42bc.mp4
 
 <br>
