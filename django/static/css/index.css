@@ -134,28 +134,27 @@
   gap: 5px;
   padding: 10px;
   overflow-x: scroll;
-  overflow-y:hidden;
-  /* -ms-overflow-style: none; */
-  /* 인터넷 익스플로러 */
-  /* scrollbar-width: none; */
-  /* 파이어폭스 */
+
 }
 
 .inner_block::-webkit-scrollbar {
-  /* display: none; */
-  width: 8px;
+  width: auto;
 }
+
 .inner_block::-webkit-scrollbar-thumb {
-  height: 30%; /* 스크롤바의 길이 */
-  background: #818181; /* 스크롤바의 색상 */
-  
+  height: 30%;
+  /* 스크롤바의 길이 */
+  background: #a7a7a7;
+  /* 스크롤바의 색상 */
   border-radius: 10px;
 }
 
 .inner_block::-webkit-scrollbar-track {
-  background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+  background: rgba(176, 176, 176, 0.1);
+  /*스크롤바 뒷 배경 색상*/
 }
-.topten{
+
+.topten {
   width: 100%;
   display: grid;
   grid-auto-flow: column;
@@ -163,17 +162,21 @@
   padding: 10px;
   overflow: scroll;
 }
-.topten::-webkit-scrollbar{
-  display:initial;
+
+.topten::-webkit-scrollbar {
+  display: initial;
 }
-.topten_card{
+
+.topten_card {
   width: 250px;
   height: 250px;
 }
-.topten_card::before{
+
+.topten_card::before {
   content: attr('rank');
 }
-.topten_card_image{
+
+.topten_card_image {
   width: 250px;
   height: 250px;
 }
@@ -224,10 +227,12 @@
 .block_subtitle {
   font-size: 20px;
 }
-.main_login_signup_btn{
+
+.main_login_signup_btn {
   display: flex;
   justify-content: center;
 }
+
 .main_login_signup {
   font-size: 18px;
   display: inline-block;
@@ -318,7 +323,8 @@
   .block_title {
     font-size: 22px;
   }
-  .block_subtitle{
+
+  .block_subtitle {
     font-size: 18px;
     text-align: center;
   }
@@ -366,6 +372,10 @@
     display: flex;
   }
 
+  .inner_block::-webkit-scrollbar {
+    display: none;
+  }
+
 }
 
 /* mobile */
@@ -401,10 +411,12 @@
     /* 파이어폭스 */
     margin: 0;
   }
-  .main_login_signup{
-    font-size:15px;
+
+  .main_login_signup {
+    font-size: 15px;
     padding: 7px 11px;
-    }
+  }
+
   .mbti_nav_box::-webkit-scrollbar {
     display: none;
   }
@@ -418,6 +430,7 @@
   .character_section {
     width: 95%;
   }
+
   .index_footer {
     bottom: -710px;
   }

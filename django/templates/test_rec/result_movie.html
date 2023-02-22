@@ -324,11 +324,11 @@
       let links = document
         .querySelector(".link_box")
         .getAttribute("data-links");
-      console.log(
-        "links",
-        links.includes("no_link"),
-        links.includes("no_result")
-      );
+      // console.log(
+        // "links",
+        // links.includes("no_link"),
+        // links.includes("no_result")
+      // );
       if (
         links.length === 0 ||
         links.includes("no_link") ||
@@ -338,8 +338,5 @@
         // resultContents.style.display = "inherit";
       }
     </script>
-    <script
-      src="https://kit.fontawesome.com/eb52efc223.js"
-      crossorigin="anonymous"
-    ></script>
+    
 {% endblock %}
